@@ -341,7 +341,7 @@
   }
 
   .minus {
-    color: #e74c3c;
+    color: #000000;
   }
 
   .btn-detail {
@@ -873,7 +873,6 @@
   }
 }
 
-/* Overlay */
 .tg-overlay {
   position: fixed;
   inset: 0;
@@ -883,8 +882,6 @@
   align-items: center;
   z-index: 9999;
 }
-
-/* Box */
 .tg-box {
   background: #fff;
   padding: 20px;
@@ -893,35 +890,25 @@
   text-align: center;
   animation: fadeIn 0.3s ease;
 }
-
-.tg-title {
-  font-weight: bold;
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-
-#tgMessage {
-  font-size: 14px;
-  margin-bottom: 15px;
-  color: #333;
-}
-
+.tg-title { font-weight: bold; font-size: 16px; margin-bottom: 10px; }
+#tgMessage { font-size: 14px; margin-bottom: 15px; color: #333; white-space: pre-line; }
 button {
-  padding: 8px 15px;
-  border: none;
-  background: #2196f3;
-  color: #fff;
-  border-radius: 6px;
-  cursor: pointer;
+  padding: 8px 20px; border: none;
+  background: #2196f3; color: #fff;
+  border-radius: 6px; cursor: pointer;
+  font-size: 14px;
 }
-
-button:hover {
-  background: #0f6fc2;
-}
-
+button:hover { background: #0f6fc2; }
 @keyframes fadeIn {
-  from {transform: scale(0.8); opacity:0;}
-  to {transform: scale(1); opacity:1;}
+  from { transform: scale(0.8); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+
+
+.tg-title i {
+  color: #2196F3;
+  font-size: 16px;
 }
 </style>
 
@@ -929,10 +916,12 @@ button:hover {
 
 <body>
 
-  <!-- Overlay -->
+
 <div id="telegramOverlay" class="tg-overlay">
   <div class="tg-box">
-    <div class="tg-title">Informasi</div>
+    <div class="tg-title">
+  <i class="fa-solid fa-bell"></i> Notifikasi
+</div>
     <div id="tgMessage">Menunggu pesan...</div>
     <button onclick="closeOverlay()">Mengerti</button>
   </div>
@@ -1039,7 +1028,6 @@ button:hover {
         <div class="info-text">
           <div class="info-label">UANG KELUAR</div>
           <div class="info-value" id="total-trx">0</div>
-          
         </div>
       </div>
     </div>
@@ -1069,7 +1057,6 @@ button:hover {
      <b>⚠️ Transaksi QRIS MerchantPay pada Jam Offline/ Libur dikenakan biaya layanan Rp1.000 ⚠️</b>
     </marquee>
   </div>
-
   <button class="tab-btn active" data-target="saldo"></button>
   <div class="indicator" id="indicator"></div>
 </div>
@@ -1098,7 +1085,7 @@ button:hover {
   <div id="saldo" class="panel active">
     <div class="transaksi-section">
       <div class="transaksi-title">
-        <span id="transaksi-count">10 Transaksi Terbaru</span>
+        <span id="transaksi-count">Aktivitas Terbaru</span>
        <a href="https://famssspaymobile.shopku.id/akun/?page=saldo_history" class="lihat-semua">
   Lihat semua <i class="fa-solid fa-arrow-right"></i>
 </a>
@@ -1108,7 +1095,7 @@ button:hover {
   </div>
 </div>
 
-<br><br><br>
+<br><br>
 
 <div class="bottom-nav">
   <a class="nav-item active">
@@ -1138,21 +1125,35 @@ button:hover {
   </a>
 </div>
 
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
 <script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDwqo8L_ygexhk9SY43_CYyDGY5eR2dC2w",
+  authDomain: "famss-75ca3.firebaseapp.com",
+  projectId: "famss-75ca3",
+  storageBucket: "famss-75ca3.firebasestorage.app",
+  messagingSenderId: "1045104675086",
+  appId: "1:1045104675086:web:e4cf117eecf997b555af5f",
+  databaseURL: "https://famss-75ca3-default-rtdb.asia-southeast1.firebasedatabase.app"
+};
+
 const BOT_TOKEN = "8709878900:AAHepv9KGwpdk14b_NV_34ZYKbgZGWlLw1A";
-const CHAT_ID = "1399536933";
+const CHAT_ID   = "1399536933";
 
-const namaUser = "{{nama_user}}";
-const emailUser = "{{email_user}}"; // contoh: nadya22@gmail.com
+const namaUser   = "{{nama_user}}";
+const emailUser  = "{{email_user}}";
 const memberUser = "{{nama_membership}}";
-
-// ambil bagian sebelum @ dari email → "nadya22"
 const usernameUser = emailUser.split("@")[0].toLowerCase();
 
-let currentMsgDate = 0;
 let currentMsgId = null;
-let offset = 0;
 
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// --- blacklist (pesan yang di-/hapus) ---
 function getBlacklist() {
   return JSON.parse(localStorage.getItem("deletedMsgIds") || "[]");
 }
@@ -1166,96 +1167,59 @@ function addToBlacklist(msgId) {
 function isBlacklisted(msgId) {
   return getBlacklist().includes(msgId);
 }
+function getLastSeenMsgId() {
+  return parseInt(localStorage.getItem("lastSeenMsgId") || 0);
+}
 
 function escapeRegex(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function isMessageForMe(text) {
+function isMessageForMe(text, username) {
   if (!text) return false;
   const lower = text.toLowerCase();
-  // @semua → tampil ke semua user
-  if (lower.includes("@semua")) return true;
-  // @nadya22 → exact match username sebelum spasi/akhir baris/koma
+  if (lower.includes("@semua") || username === "semua") return true;
   const escaped = escapeRegex(usernameUser);
-  const usernameRegex = new RegExp(`@${escaped}(\\s|$|,)`, "i");
-  if (usernameRegex.test(lower)) return true;
+  if (new RegExp(`@${escaped}(\\s|$|,|!)`, "i").test(lower)) return true;
+  if (username && username.toLowerCase() === usernameUser) return true;
   return false;
 }
 
 function cleanMessageText(text) {
   const escaped = escapeRegex(usernameUser);
   return text
-    .replace(new RegExp(`@${escaped}(\\s|$|,)?`, "gi"), "")
-    .replace(/@semua(\s|$|,)?/gi, "")
+    .replace(new RegExp(`@${escaped}(\\s|$|,|!)?`, "gi"), "")
+    .replace(/@semua(\s|$|,|!)?/gi, "")
     .trim();
 }
 
-async function processUpdates(updates) {
-  if (!updates.length) return;
+// --- listener realtime Firebase (WebSocket, zero delay) ---
+db.ref("messages/latest").on("value", (snapshot) => {
+  const msg = snapshot.val();
+  if (!msg) return;
 
-  const lastSeenMsgId = parseInt(localStorage.getItem("lastSeenMsgId") || 0);
+  const { text, msgId, username, deleted } = msg;
 
-  const allMessages = updates.map(u => u.message).filter(Boolean);
-  const myMessages = allMessages.filter(m => m.chat && m.chat.id == CHAT_ID);
+  // kalau ditandai deleted → blacklist & tutup popup
+  if (deleted) {
+    if (msgId) addToBlacklist(msgId);
+    if (currentMsgId === msgId) {
+      document.getElementById("telegramOverlay").style.display = "none";
+      currentMsgId = null;
+    }
+    return;
+  }
 
-  if (!myMessages.length) return;
+  if (!msgId) return;
+  if (isBlacklisted(msgId)) return;
+  if (msgId <= getLastSeenMsgId()) return;
+  if (!isMessageForMe(text, username)) return;
 
-  // proses /hapus dulu
-  myMessages
-    .filter(m => m.text && m.text.trim().toLowerCase().startsWith("/hapus") && m.reply_to_message)
-    .forEach(m => {
-      const targetId = m.reply_to_message.message_id;
-      addToBlacklist(targetId);
-      if (currentMsgId === targetId) {
-        document.getElementById("telegramOverlay").style.display = "none";
-        currentMsgId = null;
-      }
-    });
-
-  const latestMsg = myMessages.reduce((a, b) => a.date > b.date ? a : b);
-
-  if (latestMsg.message_id <= lastSeenMsgId) return;
-  if (isBlacklisted(latestMsg.message_id)) return;
-  if (latestMsg.text && latestMsg.text.trim().toLowerCase().startsWith("/hapus")) return;
-  if (latestMsg.text && latestMsg.text.includes("telah mengklik Mengerti")) return;
-  if (!isMessageForMe(latestMsg.text)) return;
-
-  const cleanText = cleanMessageText(latestMsg.text || "Pesan tidak valid");
+  const cleanText = cleanMessageText(text || "Pesan tidak valid");
   document.getElementById("tgMessage").innerText = cleanText;
   document.getElementById("telegramOverlay").style.display = "flex";
-
-  currentMsgDate = latestMsg.date;
-  currentMsgId = latestMsg.message_id;
-}
-
-async function startLongPolling() {
-  try {
-    const init = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?limit=1&offset=-1`);
-    const initData = await init.json();
-    if (initData.ok && initData.result.length) {
-      offset = initData.result[initData.result.length - 1].update_id + 1;
-      await processUpdates(initData.result);
-    }
-  } catch (e) {}
-
-  while (true) {
-    try {
-      const res = await fetch(
-        `https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?timeout=25&offset=${offset}&limit=100`,
-        { signal: AbortSignal.timeout(30000) }
-      );
-      const data = await res.json();
-
-      if (data.ok && data.result.length) {
-        offset = data.result[data.result.length - 1].update_id + 1;
-        await processUpdates(data.result);
-      }
-    } catch (err) {
-      await new Promise(r => setTimeout(r, 2000));
-    }
-  }
-}
+  currentMsgId = msgId;
+});
 
 async function sendConfirmationToBot() {
   try {
@@ -1264,7 +1228,7 @@ async function sendConfirmationToBot() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         chat_id: CHAT_ID,
-        text: `${namaUser}\n${emailUser}\nMembership : \n${memberUser}\ntelah mengklik Mengerti`
+        text: `${namaUser}\n${emailUser}\nMembership : ${memberUser}\ntelah mengklik Mengerti`
       })
     });
   } catch (err) {
@@ -1274,47 +1238,24 @@ async function sendConfirmationToBot() {
 
 async function closeOverlay() {
   document.getElementById("telegramOverlay").style.display = "none";
-
   localStorage.setItem("lastSeenMsgId", currentMsgId);
-  localStorage.setItem("lastSeenDate", currentMsgDate);
-  localStorage.setItem("dismissedDate", currentMsgDate);
-
   await sendConfirmationToBot();
 }
-
-startLongPolling();
 </script>
 
-
 <script>
-const replaceText = [
-  {
-    from: "Admin mengkonfirmasi topup yang dilakukan member",
-    to: "Terima Saldo Konfirmasi dari QRIS MerchantPay"
-  }
-];
+document.addEventListener("DOMContentLoaded", function() {
+  const btn = document.querySelector('.tab-btn[data-target="saldo"]');
+  const el = document.getElementById("saldoUser");
 
-// fungsi normalisasi (biar kebaca apapun formatnya)
-function normalizeText(text) {
-  return (text || "")
-    .toLowerCase()
-    .replace(/\s+/g, " ")   // hapus spasi berlebih
-    .trim();
-}
+  let raw = el ? el.innerText : "0";
+  let saldo = raw.replace(/[^0-9]/g, "");
+  saldo = parseInt(saldo, 10) || 0;
 
-let catatan = item.informasi_catatan || "";
-let catatanFix = normalizeText(catatan);
-
-replaceText.forEach(r => {
-  const fromFix = normalizeText(r.from);
-
-  // pakai includes biar fleksibel
-  if (catatanFix.includes(fromFix) || catatanFix.includes("admin mengkonfirmasi topup")) {
-    catatan = r.to;
+  if (btn && saldo > 0) {
+    btn.click();
   }
 });
-
-
 </script>
 
 <script>
@@ -1469,32 +1410,50 @@ function hidePopup() {
     infoJumat.classList.remove('show');
   }
   
-  // Cek warning untuk konfirmasi (20:00 - 21:04)
-  const warningBox = document.getElementById('warning-box');
-  const countdownEl = document.getElementById('countdown');
-  
-  // Jam batas: 21:04 (tutup)
-  const jamTutup = 21;
-  const menitTutup = 4;
-  
+const warningBox = document.getElementById('warning-box');
+const countdownEl = document.getElementById('countdown');
+
+const jamTutup = 21;
+const menitTutup = 4;
+
+// =======================
+// CEK BLOKIR KHUSUS
+// =======================
+
+// Kamis dari jam 20:00 ke atas
+const isKamisBlokir =
+  hariAngka === 4 &&
+  (jamAngka > 20 || (jamAngka === 20 && menitAngka >= 0));
+
+// Jumat full
+const isJumat = hariAngka === 5;
+
+// Jika masuk waktu blokir → hide total
+if (isKamisBlokir || isJumat) {
+  warningBox.style.display = 'none';
+} else {
+
+  // =======================
+  // LOGIC NORMAL
+  // =======================
+
   if (jamAngka === 20 || (jamAngka === 21 && menitAngka <= 4)) {
-    // Hitung sisa waktu
+
     let sisaJam = jamTutup - jamAngka;
     let sisaMenit = menitTutup - menitAngka;
     let sisaDetik = 60 - detik;
-    
+
     if (sisaDetik === 60) {
       sisaDetik = 0;
     } else {
       sisaMenit -= 1;
     }
-    
+
     if (sisaMenit < 0) {
       sisaJam -= 1;
       sisaMenit += 60;
     }
-    
-    // Format countdown
+
     let countdownText = '';
     if (sisaJam > 0) {
       countdownText = `${sisaJam} jam ${sisaMenit} menit`;
@@ -1503,13 +1462,16 @@ function hidePopup() {
     } else {
       countdownText = `${sisaDetik} detik`;
     }
-    
+
     countdownEl.textContent = countdownText;
-    warningBox.classList.add('show');
+    warningBox.style.display = 'block';
+
   } else {
-    warningBox.classList.remove('show');
+    warningBox.style.display = 'none';
   }
+
 }
+  }
 
 // Update setiap detik
 updateWaktu();
@@ -1811,8 +1773,8 @@ xhr.onreadystatechange = function () {
         if (!res.data || res.data.length === 0) {
           list.innerHTML = `
             <div class="empty-state">
-              <i class="fa-solid fa-folder-open"></i>
-              <p>Tidak ada Riwayat yang ditemukan.</p>
+             <i class="fa-solid fa-chart-line"></i>
+              <p>Yuk, mulai perjalanan Transaksimu<br>bersama FamsssPay Merchant.</p>
             </div>`;
           return;
         }
@@ -1843,14 +1805,14 @@ xhr.onreadystatechange = function () {
           return dateB - dateA;
         });
 
-        filtered = filtered.slice(0, 10);
+        filtered = filtered.slice(0, 5);
         // ================================
 
         if (filtered.length === 0) {
           list.innerHTML = `
             <div class="empty-state">
-              <i class="fa-solid fa-folder-open"></i>
-              <p>Tidak ada Riwayat yang ditemukan.</p>
+             <i class="fa-solid fa-chart-line"></i>
+              <p>Yuk, mulai perjalanan Transaksimu<br>bersama FamsssPay Merchant.</p>
             </div>`;
           return;
         }
@@ -1924,6 +1886,10 @@ ${
     ? "Terima Saldo konfirmasi dari QRIS MerchantPay"
     : (item.informasi_catatan || "").toLowerCase().includes("konfirmasi topup saldo")
     ? "Terima Saldo dari Transaksi OTOMATIS QRIS/RETAIL"
+    : (item.informasi_catatan || "").toLowerCase().includes("menambahkan saldo secara manual")
+    ? "Penambahan saldo. Diproses langsung oleh Tim Merchant FamsssPay"
+    : (item.informasi_catatan || "").toLowerCase().includes("mengurangi saldo secara manual")
+    ? "Pengurangan saldo. Diproses langsung oleh Tim Merchant FamsssPay"
     : item.informasi_catatan
 }
 </div>` : ''}
@@ -1947,7 +1913,6 @@ ${
         if (tipe === "saldo") {
           document.getElementById("total-masuk").innerText = `+ ${formatRupiah(totalMasuk)}`;
           document.getElementById("total-trx").innerText = `- ${formatRupiah(totalKeluar)}`;
-          document.getElementById("transaksi-count").innerText = countTrx + " Transaksi Terbaru";
         } else {
           document.getElementById("transaksi-count-poin").innerText = countTrx + " Transaksi Poin";
         }
