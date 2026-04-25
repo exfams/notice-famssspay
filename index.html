@@ -2,1950 +2,352 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FamsssPay Merchant</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+<title>FamsssPay Notice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body {
-    font-family: "Lexend Deca", sans-serif;
-    background: #f5f5f5;
-    color: #333;
-     -webkit-tap-highlight-color: transparent; /* Hilangkan efek tap Android */
-     
+:root {
+  --bg: #0f1117;
+  --surface: #1a1d27;
+  --surface2: #22263a;
+  --border: #2e334d;
+  --blue: #4f8ef7;
+  --blue-dim: rgba(79,142,247,0.12);
+  --red: #f75f5f;
+  --red-dim: rgba(247,95,95,0.12);
+  --green: #4fca8e;
+  --green-dim: rgba(79,202,142,0.12);
+  --amber: #f7c44f;
+  --amber-dim: rgba(247,196,79,0.1);
+  --text: #e8eaf6;
+  --muted: #6b7280;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
 }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; padding: 32px 16px; }
+.layout { max-width: 960px; margin: 0 auto; display: grid; grid-template-columns: 380px 1fr; gap: 24px; align-items: start; }
+.header { grid-column: 1/-1; display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.header-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.header h1 { font-size: 18px; font-weight: 600; letter-spacing: -0.3px; }
+.header span { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-left: auto; }
 
- /* Tidak ada highlight ketika user tahan dan block teks */
-  *::selection {
-    background: transparent;
-    color: inherit;
-  }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px; }
+.card-title { font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); margin-bottom: 18px; }
 
-  /* Matikan drag image/text */
-  img, a, span, div, p {
-    -webkit-user-drag: none;
-    pointer-events: auto;
-  }
-
-  /* Header */
-  .header {
-    background: linear-gradient(135deg,#2196f3 100%);
-    color: #fff;
-    padding: 20px;
-    padding-top: 15px;
-  }
-
-  .header-logo {
-    font-size: 14px;
-    font-weight: 600;
-    opacity: 0.9;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .saldo-section {
-    background: #fff;
-    border-radius: 12px;
-    padding: 15px;
-    margin-bottom: 15px;
-  }
-
-  .saldo-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-
-  .saldo-label {
-    font-size: 12px;
-    color: #666;
-    font-weight: 500;
-  }
-
-  .saldo-label i {
-    margin-left: 4px;
-    color: #999;
-    cursor: help;
-  }
-
-  .saldo-amount {
-    font-size: 28px;
-    font-weight: 700;
-    color: #2196f3;
-    margin-bottom: 8px;
-  }
-
-  .saldo-date {
-    font-size: 12px;
-    color: #999;
-    margin-bottom: 12px;
-  }
-
-  .saldo-info {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 12px;
-  }
-
-  .info-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .info-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-  }
-
-  .icon-masuk {
-    background: #e8f5e9;
-    color: #4caf50;
-  }
-
-  .icon-transaksi {
-    background: #e3f2fd;
-    color: #2196f3;
-  }
-
-  .info-text {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .info-label {
-    font-size: 11px;
-    color: #999;
-    text-transform: uppercase;
-  }
-
-  .info-value {
-    font-size: 14px;
-    font-weight: 700;
-    color: #333;
-  }
-
-  .btn-tarik {
-    width: 100%;
-    background: #1786e2;
-    color: #fff;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.2s;
-    font-family: "Lexend Deca", sans-serif;
-  }
-
-  .btn-tarik:active {
-    transform: scale(0.98);
-  }
-
-  /* Filter Tabs */
-  .filter-tabs {
-    display: flex;
-    gap: 8px;
-    padding: 12px 20px;
-    background: #fff;
-    overflow-x: auto;
-    justify-content: center;
-    margin-bottom: 10px;
-    font-family: "Lexend Deca", sans-serif;
-  }
-
-  .filter-btn {
-    background: #f0f0f0;
-    border: 1px solid #ddd;
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 12px;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: 0.2s;
-    color: #666;
-    font-weight: 500;
-    font-family: "Lexend Deca", sans-serif;
-  }
-
-  .filter-btn.active {
-    background:  #008cff;
-    color: #fff;
-    border-color:  #1786e2;
-  }
-
- .tab-header {
-  position: relative;
-  display: flex;
-  flex-direction: column; /* supaya marquee di atas tombol tab */
-  gap: 8px;
+label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 6px; margin-top: 16px; }
+label:first-of-type { margin-top: 0; }
+select, input, textarea {
+  width: 100%; padding: 10px 13px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 8px; font-size: 13px; color: var(--text);
+  font-family: var(--sans); outline: none; transition: border-color 0.15s;
 }
+select:focus, input:focus, textarea:focus { border-color: var(--blue); }
+textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+select option { background: var(--surface2); }
 
-
-  .tab-btn {
-    color: #666;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    padding: 8px 30px;
-    border: none;
-    background: none;
-  }
-
-  .tab-btn.active {
-    color: #1786e2;
-  }
-
-  .indicator {
-    position: absolute;
-    bottom: 0;
-    height: 2px;
-    width: calc(50% - 40px);
-    border-radius: 2px;
-    transition: 0.3s;
-  }
-
-  /* Panel */
-  .panel {
-    display: none;
-  }
-
-  .panel.active {
-    display: block;
-  }
-
-  /* Transaksi Section */
-  .transaksi-section {
-    padding: 0 20px;
-  }
-
-  .transaksi-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
- .lihat-semua {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  font-size: 13px;
-  color: #2196f3;
-  text-decoration: none;
-  font-weight: 600;
-  border: 1px solid #e5e7eb;
-  border-radius: 999px;
-  background: #fff;
-  transition: all 0.2s ease;
+.btn-row { display: flex; gap: 10px; margin-top: 18px; }
+.btn {
+  flex: 1; padding: 11px; border: none; border-radius: 8px;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  font-family: var(--sans); transition: opacity 0.15s, transform 0.1s;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
 }
+.btn:hover { opacity: 0.85; }
+.btn:active { transform: scale(0.98); }
+.btn-send { background: var(--blue); color: #fff; }
+.btn-hapus { background: var(--red); color: #fff; }
 
-.lihat-semua i {
-  font-size: 14px;
-}
-
-.lihat-semua:hover {
-  background: #f5faff;
-  border-color: #0033ff15;
-}
-
-  .transaksi-list {
-    background: #fff;
-    border-radius: 12px;
-    padding: 0;
-    overflow: hidden;
-  }
-
-  .transaksi-item {
-    display: flex;
-    gap: 12px;
-    padding: 12px 15px;
-    border-bottom: 1px solid #f0f0f0;
-    align-items: flex-start;
-  }
-
-  .transaksi-item:last-child {
-    border-bottom: none;
-  }
-
-  .transaksi-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-
-  .icon-in {
-    background: #fff3cd;
-    color: #ff9800;
-  }
-
-  .icon-out {
-    background: #f3e5f5;
-    color: #9c27b0;
-  }
-
-  .transaksi-info {
-    flex: 1;
-  }
-
-  .transaksi-name {
-    font-size: 13px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 3px;
-  }
-
-  .transaksi-time {
-    font-size: 11px;
-    color: #999;
-  }
-
-  .transaksi-amount {
-    text-align: right;
-  }
-
-  .amount-value {
-    font-size: 13px;
-    font-weight: 700;
-    margin-bottom: 4px;
-  }
-
-  .plus {
-    color: #4caf50;
-  }
-
-  .minus {
-    color: #000000;
-  }
-
-  .btn-detail {
-    font-size: 10px;
-    background: #f0f0f0;
-    border: none;
-    padding: 4px 8px;
-    border-radius: 4px;
-    cursor: pointer;
-    color: #666;
-    font-weight: 500;
-  }
-
-  .btn-detail:active {
-    background: #e0e0e0;
-  }
-
-  /* Empty State */
-  .empty-state {
-    background: #fff;
-    border-radius: 12px;
-    padding: 40px 20px;
-    text-align: center;
-    color: #999;
-  }
-
-  .empty-state i {
-    font-size: 48px;
-    margin-bottom: 12px;
-    opacity: 0.4;
-  }
-
-  .empty-state p {
-    font-size: 13px;
-  }
-
-  .loading {
-    background: #fff;
-    border-radius: 12px;
-    padding: 30px;
-    text-align: center;
-    color: #999;
-  }
-
-  /* Bottom Navigation */
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #fff;
-  border-top: 1px solid #e0e0e0;
-  display: flex;
-  justify-content: space-around;
-  padding: 6px 0;
-  z-index: 100;
-}
-
-.nav-item {
-  flex: 1;
-  text-align: center;
-  padding: 8px 0;
-  color: #999;
-  font-size: 10px;
-  cursor: pointer;
-  text-decoration: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  transition: 0.3s;
-}
-
-/* warna active */
-.nav-item.active {
-  color: #1692E0;
-}
-
-.nav-item i {
-  font-size: 22px;
-}
-
-/* -----------------------------
-   Efek bulat timbul untuk KASIR
--------------------------------- */
-.nav-item.kasir-effect i {
-  width: 60px;
-  height: 60px;
-  line-height: 60px;
-  border-radius: 50%;
-  background: #2195f3;
-  box-shadow: 
-      0 5px 12px rgba(0,0,0,0.18),
-      inset 0 3px 6px rgba(255,255,255,0.8);
-  font-size: 21px;
-  margin-top: -33px;
-  transition: 0.3s;
-
-  color: #ffffff; /* icon selalu putih */
-}
-
-/* saat KASIR active tetap putih */
-.nav-item.kasir-effect.active i {
-  color: #ffffff;
-}
-
-
-/* Content padding */
-.content {
-  padding-bottom: 70px;
-}
-
-/* Logo Bisnis */
-.logo-bisnis {
-  width: 80px;
-  object-fit: contain;
-}
-
-.saldo-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.saldo-amount {
-    font-size: 20px;
-    font-weight: 600;
-}
-
-.refresh-saldo {
-    font-size: 18px;
-    text-decoration: none;
-    color: #3498db;
-    cursor: pointer;
-    transition: 0.2s ease;
-}
-
-.refresh-saldo:hover {
-    transform: rotate(90deg);
-}
-
-/* Container info */
-.info-running {
-  display: flex;
-  align-items: center;
-  padding: 6px 12px;
-  background: #eef6ff;
-  border-radius: 6px;
-  margin-top: 8px;
-  overflow: hidden;
-  gap: 6px;
-}
-
-/* Icon informasi */
-.info-icon {
-  font-size: 18px;
-  color: #3498db;
-  flex-shrink: 0;
-}
-
-/* Marquee wrapper */
-.marquee {
-  position: relative;
-  overflow: hidden;
-  white-space: nowrap;
-  width: 100%;
-}
-
-/* Text bergerak */
-.marquee-text {
-  display: inline-block;
-  padding-left: 100%;
-  animation: marqueeLeft 12s linear infinite;
-  font-size: 14px;
-  color: #333;
-}
-
-@keyframes marqueeLeft {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-.text-marquee {
-    font-size: 12px;
-  background: #ffffff;
-  padding: 8px 12px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  margin-top: 10px;
-
-  /* Efek 3D */
-  box-shadow:
-    1px 1px 2px rgba(0, 0, 0, 0.12),
-    -4px -4px 10px rgba(255, 255, 255, 0.9);
-  transition: 0.2s ease-in-out;
-}
-
-
-.text-marquee i {
-  color: #3498db;
-  font-size: 18px;
-}
-
-
-/* Popup overlay */
-.popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.116);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  z-index: 9999;
-}
-
-.popup-overlay.active {
-  display: flex;
-}
-
-.popup-content {
-  background: #fff;
-  padding: 18px 20px;
-  border-radius: 10px;
-  width: 85%;
-  max-width: 400px;
-  text-align: center;
-  animation: fadeIn 0.2s ease-in-out;
-}
-
-.popup-content i {
-  color: #085081;
-  font-size: 20px;
-  margin-bottom: 8px;
-}
-
-.popup-content p {
-  font-size: 15px;
-  color: #333;
+.status-bar {
+  margin-top: 14px; font-size: 12px; padding: 10px 13px;
+  border-radius: 8px; display: none; font-family: var(--mono);
   line-height: 1.5;
 }
+.status-bar.ok { background: var(--green-dim); color: var(--green); border: 1px solid rgba(79,202,142,0.2); display: block; }
+.status-bar.err { background: var(--red-dim); color: var(--red); border: 1px solid rgba(247,95,95,0.2); display: block; }
 
-@keyframes fadeIn {
-  from { transform: scale(0.85); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+/* History */
+.history-panel { display: flex; flex-direction: column; gap: 0; }
+.history-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.history-title { font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); }
+.clear-btn { font-size: 11px; color: var(--muted); background: none; border: none; cursor: pointer; font-family: var(--sans); padding: 3px 8px; border-radius: 5px; transition: background 0.15s; }
+.clear-btn:hover { background: var(--surface2); color: var(--text); }
+
+.history-list { display: flex; flex-direction: column; gap: 8px; max-height: 520px; overflow-y: auto; padding-right: 4px; }
+.history-list::-webkit-scrollbar { width: 4px; }
+.history-list::-webkit-scrollbar-track { background: transparent; }
+.history-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+.history-item {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 13px 15px;
+  animation: slideIn 0.2s ease;
 }
+@keyframes slideIn { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
 
-
-.foto-kanan {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  object-fit: cover;
-  position: absolute;
-  top: 9px;
-  right: 25px;
-  border: 2px solid #2196f3;
+.hi-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.hi-badge {
+  font-size: 10px; font-weight: 600; padding: 3px 8px;
+  border-radius: 5px; font-family: var(--mono); letter-spacing: 0.5px;
 }
+.badge-send { background: var(--blue-dim); color: var(--blue); }
+.badge-hapus { background: var(--red-dim); color: var(--red); }
+.badge-ok { background: var(--green-dim); color: var(--green); }
+.badge-fail { background: var(--red-dim); color: var(--red); }
 
-.saldo-time {
-  font-size: 14px;
-  color: #555;
-  font-weight: 600;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+.hi-time { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-left: auto; }
+.hi-target { font-size: 11px; color: var(--muted); margin-bottom: 5px; }
+.hi-target span { color: var(--amber); font-family: var(--mono); }
+.hi-msg { font-size: 13px; color: var(--text); line-height: 1.5; word-break: break-word; }
+.hi-msg.hapus-msg { color: var(--muted); font-style: italic; }
 
-.saldo-time i {
-  color: #2196F3;
-}
+.empty-state { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 13px; }
+.empty-icon { font-size: 28px; margin-bottom: 10px; opacity: 0.4; }
 
-.warning-box {
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-  color: white;
-  padding: 12px 16px;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  display: none;
-  animation: pulse 2s infinite;
-}
-
-.warning-box.show {
-  display: block;
-}
-
-.warning-box .warning-title {
-  font-weight: 700;
-  font-size: 14px;
-  margin-bottom: 4px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.warning-box .warning-text {
-  font-size: 12px;
-  opacity: 0.95;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.02);
-  }
-}
-
-.info-box {
-  background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%);
-  color: white;
-  padding: 12px 16px;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  display: none;
-}
-
-.info-box.show {
-  display: block;
-}
-
-.info-box .info-title {
-  font-weight: 700;
-  font-size: 14px;
-  margin-bottom: 4px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.info-box .info-text {
-  font-size: 12px;
-  opacity: 0.95;
-  line-height: 1.5;
-}
-
-.tutorial-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.75);
-  z-index: 9998;
-
-  /* INI KUNCI SPOTLIGHT */
-  pointer-events: none;
-}
-
-/* OVERLAY */
-.tutorial-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.75);
-  z-index: 9998;
-
-  /* INI KUNCI SPOTLIGHT */
-  pointer-events: none;
-}
-
-/* SPOTLIGHT BULAT (DINAMIS) */
-.tutorial-overlay.spotlight {
-  background: radial-gradient(
-    circle at var(--x) var(--y),
-    transparent var(--r1, 70px),
-    rgba(0,0,0,0.75) var(--r2, 80px)
-  );
-}
-
-/* HIGHLIGHT TOMBOL */
-.nav-item.highlight {
-  position: relative;
-  z-index: 10000;
-}
-
-.nav-item.highlight::before {
-  content: "";
-  position: absolute;
-  inset: -8px; /* 🔥 lebih presisi dari -10px */
-  background: #fff;
-  border-radius: 50%;
-  z-index: -1;
-
-  /* tambahan biar smooth */
-  box-shadow: 0 0 15px rgba(255,255,255,0.7);
-}
-
-/* POPUP */
-.tutorial-popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  text-align: center;
-  z-index: 9999;
-  width: 80%;
-  max-width: 300px;
-}
-
-.tutorial-popup button {
-  margin-top: 10px;
-  padding: 10px 16px;
-  border: none;
-  background: #2196f3;
-  color: #fff;
-  border-radius: 8px;
-}
-
-/* HIGHLIGHT TARGET */
-.nav-item.highlight {
-  position: relative;
-  z-index: 10000;
-  background: #fff;
-  border-radius: 12px;
-}
-
-/* BOX PENJELAS */
-.highlight-box {
-  position: fixed;
-  bottom: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #fff;
-  padding: 12px 16px;
-  border-radius: 10px;
-  z-index: 10000;
-  font-size: 13px;
-  text-align: center;
-  width: 80%;
-  max-width: 260px;
-}
-
-/* SEMBUNYI DEFAULT */
-.tutorial-overlay,
-.tutorial-popup,
-.highlight-box {
-  display: none;
-}
-
-/* ===== ANIMASI OVERLAY (FADE) ===== */
-.tutorial-overlay {
-  animation: fadeIn 0.4s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* ===== SPOTLIGHT MUNCUL HALUS ===== */
-.tutorial-overlay.spotlight {
-  animation: spotlightFade 0.5s ease;
-}
-
-@keyframes spotlightFade {
-  from {
-    background: rgba(0,0,0,0.75);
-  }
-  to {
-    background: radial-gradient(
-      circle at var(--x) var(--y),
-      transparent var(--r1, 70px),
-      rgba(0,0,0,0.75) var(--r2, 80px)
-    );
-  }
-}
-
-/* ===== POPUP MASUK (ZOOM + FADE) ===== */
-.tutorial-popup {
-  animation: popupIn 0.4s ease;
-}
-
-@keyframes popupIn {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -60%) scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-
-/* ===== BOX PENJELAS NAIK ===== */
-.highlight-box {
-  animation: slideUp 0.4s ease;
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translate(-50%, 20px);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-}
-
-/* ===== EFEK DENYUT DI JADWAL 🔥 ===== */
-.nav-item.highlight::before {
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 10px rgba(255,255,255,0.6);
-  }
-  50% {
-    transform: scale(1.1);
-    box-shadow: 0 0 25px rgba(255,255,255,0.9);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 10px rgba(255,255,255,0.6);
-  }
-}
-
-.tg-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-.tg-box {
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  width: 320px;
-  text-align: center;
-  animation: fadeIn 0.3s ease;
-}
-.tg-title { font-weight: bold; font-size: 16px; margin-bottom: 10px; }
-#tgMessage { font-size: 14px; margin-bottom: 15px; color: #333; white-space: pre-line; }
-button {
-  padding: 8px 20px; border: none;
-  background: #2196f3; color: #fff;
-  border-radius: 6px; cursor: pointer;
-  font-size: 14px;
-}
-button:hover { background: #0f6fc2; }
-@keyframes fadeIn {
-  from { transform: scale(0.8); opacity: 0; }
-  to   { transform: scale(1);   opacity: 1; }
-}
-
-
-
-.tg-title i {
-  color: #2196F3;
-  font-size: 16px;
-}
+.stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 18px; }
+.stat { background: var(--surface2); border-radius: 8px; padding: 12px; text-align: center; }
+.stat-num { font-family: var(--mono); font-size: 20px; font-weight: 600; }
+.stat-lbl { font-size: 10px; color: var(--muted); margin-top: 2px; letter-spacing: 0.5px; }
+.stat-num.blue { color: var(--blue); }
+.stat-num.green { color: var(--green); }
+.stat-num.red { color: var(--red); }
 </style>
-
 </head>
-
 <body>
 
-
-<div id="telegramOverlay" class="tg-overlay">
-  <div class="tg-box">
-    <div class="tg-title">
-  <i class="fa-solid fa-bell"></i> Notifikasi
-</div>
-    <div id="tgMessage">Menunggu pesan...</div>
-    <button onclick="closeOverlay()">Mengerti</button>
-  </div>
-</div>
-
-  <!-- OVERLAY GELAP -->
-<div id="tutorialOverlay" class="tutorial-overlay"></div>
-
-<!-- POPUP AWAL -->
-<div id="tutorialPopup" class="tutorial-popup">
-  <p>Welcome <b>{{nama_user}}!</b><br><br></p>
-<p>Pengguna baru diharapkan untuk membaca dan memahami cara penggunaan layanan.<br><br></p>
-<p>
-  Dengan menekan tombol <b>Mengerti</b>, Kamu dianggap telah menyetujui 
-  <a href="https://famssspaymobile.shopku.id/digital/354599" target="_blank" style="text-decoration: underline;">
-    Syarat & Ketentuan
-  </a> yang berlaku.
-  <br><br>
-</p>
-  <button id="btnMengerti">Mengerti</button>
-</div>
-
-<!-- HIGHLIGHT STEP -->
-<div id="highlightBox" class="highlight-box">
-  <p>Klik disini untuk melihat jadwal QRIS MerchantPay beserta keterangan penggunaan.</p>
-</div>
-
-<!-- Header -->
-<div class="header">
-  <div class="header-logo">
-        <img 
-      src="https://images.bukaolshop.com/hosting/170956/60d3ef8e647e570537.png" 
-      alt="Logo Bisnis"
-      class="logo-bisnis"
-    >
+<div class="layout">
+  <div class="header">
+    <div class="header-dot"></div>
+    <h1>Panel Notifikasi Admin</h1>
+    <span id="clock">—</span>
   </div>
 
-  <img src="{{foto_profil}}" alt="User" class="foto-kanan">
+  <!-- Kiri: Form kirim -->
+  <div class="card">
+    <div class="card-title">Kirim Pesan</div>
 
+    <label>Target penerima</label>
+    <select id="target">
+      <option value="semua">@semua — semua user</option>
+      <option value="personal">Personal — username tertentu</option>
+    </select>
 
-  <div class="saldo-section">
-    <div class="saldo-header">
-      <div class="saldo-label">Total Saldo <i class="fas fa-info-circle"></i></div>
-     <button class="btn-tarik" 
-        style="width: auto; padding: 6px 20px; font-size: 12px;" 
-        onclick="window.location.href='https://famssspaymobile.shopku.id/digital/376176'">
-  TARIK SALDO
-</button>
+    <div id="usernameWrap" style="display:none;">
+      <label>Username (bagian sebelum @gmail.com)</label>
+      <input id="username" type="text" placeholder="contoh: nadya22" />
     </div>
-    <div class="saldo-wrapper">
-    <div class="saldo-amount" id="saldo-main">Rp{{saldo_user}}</div>
 
-    <a href="https://famssspaymobile.shopku.id/refresh_saldo" class="refresh-saldo">
-  <img src="https://img.icons8.com/?size=100&id=BUtO0i9u8bcs&format=png&color=2196F3" 
-       alt="refresh" 
-       style="width:22px; height:22px;">
-</a>
+    <label>Pesan</label>
+    <textarea id="msgText" placeholder="Tulis pesan notifikasi..."></textarea>
 
-</div>
+    <div class="btn-row">
+      <button class="btn btn-send" onclick="kirimPesan()">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+        Kirim Sekarang
+      </button>
+      <button class="btn btn-hapus" onclick="hapusPesan()">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        Hapus Popup
+      </button>
+    </div>
 
-    <div class="saldo-date" id="tanggal-sekarang">9 Des 2025</div>
-    <div class="saldo-time" id="jam-sekarang">
-  <i class="fas fa-clock"></i>
-  <span>00:00 WIB</span>
-</div>
-
-<div class="warning-box" id="warning-box">
-  <div class="warning-title">
-    <i class="fas fa-exclamation-triangle"></i>
-    KONFIRMASI SEGERA!
+    <div id="statusBar" class="status-bar"></div>
   </div>
-  <div class="warning-text" id="warning-text">
-    Konfirmasi akan Offline dalam <strong id="countdown">-</strong>
-  </div>
-</div>
-    
-<div class="info-box" id="info-jumat">
-  <div class="info-title">
-    <i class="fas fa-calendar-day"></i>
-    INFORMASI HARI JUMAT
-  </div>
-  <div class="info-text">
-    Setiap hari Jumat, QRIS MerchantPay dan Konfirmasi Offline ditutup.<br>
-    <strong>Gunakan QRIS Otomatis</strong><br>
-    Layanan kembali aktif hari Sabtu pukul 08:30 WIB.
-  </div>
-</div>
 
-    <div class="saldo-info">
-      <div class="info-item">
-        <div class="info-icon icon-masuk">
-          <i class="fas fa-arrow-down"></i>
-        </div>
-        <div class="info-text">
-          <div class="info-label">Uang Masuk</div>
-          <div class="info-value" id="total-masuk">Rp0</div>
-          
-        </div>
+  <!-- Kanan: History -->
+  <div class="card history-panel">
+    <div class="history-header">
+      <div class="history-title">Riwayat Pengiriman</div>
+      <button class="clear-btn" onclick="clearHistory()">Hapus riwayat</button>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-num blue" id="statTotal">0</div>
+        <div class="stat-lbl">TOTAL</div>
       </div>
-      <div class="info-item">
-        <div class="info-icon icon-transaksi">
-          <i class="fas fa-exchange-alt"></i>
-        </div>
-        <div class="info-text">
-          <div class="info-label">UANG KELUAR</div>
-          <div class="info-value" id="total-trx">0</div>
-        </div>
+      <div class="stat">
+        <div class="stat-num green" id="statOk">0</div>
+        <div class="stat-lbl">SUKSES</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num red" id="statFail">0</div>
+        <div class="stat-lbl">GAGAL</div>
       </div>
     </div>
-    
-    <button class="btn-tarik" id="btnTarik" onclick="window.location.href='https://famssspaymobile.shopku.id/akun/?page=topup'">
-  KONFIRMASI SALDO
-</button>
-  </div>
-</div>
 
-<!-- Filter Tabs -->
-<div class="filter-tabs">
-  <button class="filter-btn active" data-filter="all">Hari ini</button>
-  <button class="filter-btn" data-filter="7">7 Hari</button>
-  <button class="filter-btn" data-filter="30">30 Hari</button>
-</div>
-
-
-
-<!-- Tab Navigation -->
-<div class="tab-header">
-
-  <!-- pesan-->
-  <div class="text-marquee" id="marqueeBox" onclick="showPopup()">
-    <i class="fa-solid fa-bullhorn"></i>
-    <marquee id="runningText">
-     <b>⚠️ Transaksi QRIS MerchantPay pada Jam Offline/ Libur dikenakan biaya layanan Rp1.000 ⚠️</b>
-    </marquee>
-  </div>
-  <button class="tab-btn active" data-target="saldo"></button>
-  <div class="indicator" id="indicator"></div>
-</div>
-
-
-
-
-<!-- Popup Overlay -->
-<div id="popupOverlay" class="popup-overlay" onclick="hidePopup()">
-  <div class="popup-content">
-    <i class="fa-solid fa-bullhorn"></i>
-    <p id="popupText"></p>
-    <br>
-    <span style="color:#0000006d; font-size:12px; font-weight:600;">
-  — Admin FamsssPay
-</span>
-  </div>
-</div>
-
-
-
-<!-- Content -->
-<div class="content">
-
-  <!-- SALDO Panel -->
-  <div id="saldo" class="panel active">
-    <div class="transaksi-section">
-      <div class="transaksi-title">
-        <span id="transaksi-count">Aktivitas Terbaru</span>
-       <a href="https://famssspaymobile.shopku.id/akun/?page=saldo_history" class="lihat-semua">
-  Lihat semua <i class="fa-solid fa-arrow-right"></i>
-</a>
+    <div class="history-list" id="historyList">
+      <div class="empty-state">
+        <div class="empty-icon">📭</div>
+        Belum ada riwayat pengiriman
       </div>
-      <div class="transaksi-list" id="mutasi-list-saldo"></div>
     </div>
   </div>
 </div>
-
-<br><br>
-
-<div class="bottom-nav">
-  <a class="nav-item active">
-    <i class="fas fa-store"></i>
-    <span>Aktivitas</span>
-  </a>
-
-  <a href="https://famssspaymobile.shopku.id/akun/?page=saldo_history" class="nav-item">
-    <i class="fa-solid fa-list-check"></i>
-
-    <span>Mutasi</span>
-  </a>
-
- <a id="linkQris" href="https://famssspaymobile.shopku.id/digital/372268" class="nav-item kasir-effect">
-  <i class="fa-solid fa-qrcode"></i>
-  <span>QRIS</span>
-</a>
-
-  <a href="https://famssspaymobile.shopku.id/digital/384710" class="nav-item">
-    <i class="fa-solid fa-calendar-days"></i>
-    <span>Jadwal</span>
-  </a>
-
-  <a href="https://famssspaymobile.shopku.id/digital/382501" class="nav-item">
-   <i class="fas fa-user"></i>
-    <span>Profil</span>
-  </a>
-</div>
-
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyDwqo8L_ygexhk9SY43_CYyDGY5eR2dC2w",
-  authDomain: "famss-75ca3.firebaseapp.com",
-  projectId: "famss-75ca3",
-  storageBucket: "famss-75ca3.firebasestorage.app",
-  messagingSenderId: "1045104675086",
-  appId: "1:1045104675086:web:e4cf117eecf997b555af5f",
-  databaseURL: "https://famss-75ca3-default-rtdb.asia-southeast1.firebasedatabase.app"
-};
+const DB_URL = "https://famss-75ca3-default-rtdb.asia-southeast1.firebasedatabase.app";
+const HISTORY_KEY = "notif_history";
 
-const BOT_TOKEN = "8709878900:AAHepv9KGwpdk14b_NV_34ZYKbgZGWlLw1A";
-const CHAT_ID   = "1399536933";
+// clock
+setInterval(() => {
+  document.getElementById("clock").textContent = new Date().toLocaleString("id-ID", {
+    day:"2-digit", month:"short", year:"numeric",
+    hour:"2-digit", minute:"2-digit", second:"2-digit"
+  });
+}, 1000);
 
-const namaUser   = "{{nama_user}}";
-const emailUser  = "{{email_user}}";
-const memberUser = "{{nama_membership}}";
-const usernameUser = emailUser.split("@")[0].toLowerCase();
+document.getElementById("target").addEventListener("change", function() {
+  document.getElementById("usernameWrap").style.display = this.value === "personal" ? "block" : "none";
+});
 
-let currentMsgId = null;
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-
-// --- blacklist (pesan yang di-/hapus) ---
-function getBlacklist() {
-  return JSON.parse(localStorage.getItem("deletedMsgIds") || "[]");
+// --- History helpers ---
+function getHistory() {
+  return JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
 }
-function addToBlacklist(msgId) {
-  const list = getBlacklist();
-  if (!list.includes(msgId)) {
-    list.push(msgId);
-    localStorage.setItem("deletedMsgIds", JSON.stringify(list));
-  }
+function saveHistory(list) {
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(list.slice(0, 100)));
 }
-function isBlacklisted(msgId) {
-  return getBlacklist().includes(msgId);
+function addHistory(item) {
+  const list = getHistory();
+  list.unshift(item);
+  saveHistory(list);
+  renderHistory();
 }
-function getLastSeenMsgId() {
-  return parseInt(localStorage.getItem("lastSeenMsgId") || 0);
+function clearHistory() {
+  if (!confirm("Hapus semua riwayat?")) return;
+  localStorage.removeItem(HISTORY_KEY);
+  renderHistory();
 }
 
-function escapeRegex(str) {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
+function renderHistory() {
+  const list = getHistory();
+  const el = document.getElementById("historyList");
 
-function isMessageForMe(text, username) {
-  if (!text) return false;
-  const lower = text.toLowerCase();
-  if (lower.includes("@semua") || username === "semua") return true;
-  const escaped = escapeRegex(usernameUser);
-  if (new RegExp(`@${escaped}(\\s|$|,|!)`, "i").test(lower)) return true;
-  if (username && username.toLowerCase() === usernameUser) return true;
-  return false;
-}
+  // update stats
+  const total = list.length;
+  const ok = list.filter(i => i.status === "ok").length;
+  const fail = list.filter(i => i.status === "fail").length;
+  document.getElementById("statTotal").textContent = total;
+  document.getElementById("statOk").textContent = ok;
+  document.getElementById("statFail").textContent = fail;
 
-function cleanMessageText(text) {
-  const escaped = escapeRegex(usernameUser);
-  return text
-    .replace(new RegExp(`@${escaped}(\\s|$|,|!)?`, "gi"), "")
-    .replace(/@semua(\s|$|,|!)?/gi, "")
-    .trim();
-}
-
-// --- listener realtime Firebase (WebSocket, zero delay) ---
-db.ref("messages/latest").on("value", (snapshot) => {
-  const msg = snapshot.val();
-  if (!msg) return;
-
-  const { text, msgId, username, deleted } = msg;
-
-  // kalau ditandai deleted → blacklist & tutup popup
-  if (deleted) {
-    if (msgId) addToBlacklist(msgId);
-    if (currentMsgId === msgId) {
-      document.getElementById("telegramOverlay").style.display = "none";
-      currentMsgId = null;
-    }
+  if (!list.length) {
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div>Belum ada riwayat pengiriman</div>`;
     return;
   }
 
-  if (!msgId) return;
-  if (isBlacklisted(msgId)) return;
-  if (msgId <= getLastSeenMsgId()) return;
-  if (!isMessageForMe(text, username)) return;
+  el.innerHTML = list.map(item => {
+    const isHapus = item.type === "hapus";
+    const badgeType = isHapus ? `<span class="hi-badge badge-hapus">HAPUS</span>` : `<span class="hi-badge badge-send">KIRIM</span>`;
+    const badgeStatus = item.status === "ok"
+      ? `<span class="hi-badge badge-ok">✓ SUKSES</span>`
+      : `<span class="hi-badge badge-fail">✗ GAGAL</span>`;
+    const targetLabel = isHapus ? "—" : (item.target === "semua" ? "@semua" : `@${item.target}`);
 
-  const cleanText = cleanMessageText(text || "Pesan tidak valid");
-  document.getElementById("tgMessage").innerText = cleanText;
-  document.getElementById("telegramOverlay").style.display = "flex";
-  currentMsgId = msgId;
-});
+    return `
+      <div class="history-item">
+        <div class="hi-top">
+          ${badgeType}
+          ${badgeStatus}
+          <span class="hi-time">${item.time}</span>
+        </div>
+        ${!isHapus ? `<div class="hi-target">Target: <span>${targetLabel}</span></div>` : ""}
+        <div class="hi-msg ${isHapus ? 'hapus-msg' : ''}">${isHapus ? "Popup dihapus dari semua user" : escHtml(item.msg)}</div>
+        ${item.error ? `<div style="font-size:11px;color:var(--red);margin-top:5px;font-family:var(--mono);">Error: ${escHtml(item.error)}</div>` : ""}
+      </div>`;
+  }).join("");
+}
 
-async function sendConfirmationToBot() {
+function escHtml(str) {
+  return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+function nowStr() {
+  return new Date().toLocaleString("id-ID", {
+    day:"2-digit", month:"short", year:"numeric",
+    hour:"2-digit", minute:"2-digit", second:"2-digit"
+  });
+}
+
+// --- Kirim pesan ---
+async function kirimPesan() {
+  const target = document.getElementById("target").value;
+  const username = document.getElementById("username").value.trim().toLowerCase();
+  const text = document.getElementById("msgText").value.trim();
+
+  if (!text) { showStatus("Pesan tidak boleh kosong!", false); return; }
+  if (target === "personal" && !username) { showStatus("Username harus diisi!", false); return; }
+
+  const finalText = target === "semua" ? `@semua ${text}` : `@${username} ${text}`;
+  const msgId = Date.now();
+
+  showStatus("Mengirim...", null);
+
   try {
-    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-      method: "POST",
+    const res = await fetch(`${DB_URL}/messages/latest.json`, {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        chat_id: CHAT_ID,
-        text: `${namaUser}\n${emailUser}\nMembership : ${memberUser}\ntelah mengklik Mengerti`
+        text: finalText,
+        username: target === "semua" ? "semua" : username,
+        msgId, deleted: false
       })
     });
-  } catch (err) {
-    console.log("Gagal kirim konfirmasi:", err);
-  }
-}
 
-async function closeOverlay() {
-  document.getElementById("telegramOverlay").style.display = "none";
-  localStorage.setItem("lastSeenMsgId", currentMsgId);
-  await sendConfirmationToBot();
-}
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  const btn = document.querySelector('.tab-btn[data-target="saldo"]');
-  const el = document.getElementById("saldoUser");
-
-  let raw = el ? el.innerText : "0";
-  let saldo = raw.replace(/[^0-9]/g, "");
-  saldo = parseInt(saldo, 10) || 0;
-
-  if (btn && saldo > 0) {
-    btn.click();
-  }
-});
-</script>
-
-<script>
-(function(){
-  let membership = ("{{nama_membership}}" || "").toLowerCase();
-
-  // cek mengandung "pengguna prioritas 100"
-  if(membership.includes("pengguna prioritas 100")){
-    document.getElementById("linkQris").href =
-      "https://famssspaymobile.shopku.id/digital/387159";
-  }
-})();
-</script>
-
-<script>
-
-  
-const rect = jadwalBtn.getBoundingClientRect();
-
-const x = rect.left + rect.width / 2;
-const y = rect.top + rect.height / 2;
-
-// AUTO SIZE (inti fix nya disini)
-const radius = Math.max(rect.width, rect.height) / 2 + 5;
-
-overlay.style.setProperty("--x", x + "px");
-overlay.style.setProperty("--y", y + "px");
-overlay.style.setProperty("--r1", radius + "px");
-overlay.style.setProperty("--r2", (radius + 12) + "px");
-</script>
-
-<script>
-  
-document.addEventListener("DOMContentLoaded", function () {
-
-  const overlay = document.getElementById("tutorialOverlay");
-  const popup = document.getElementById("tutorialPopup");
-  const btn = document.getElementById("btnMengerti");
-  const highlightBox = document.getElementById("highlightBox");
-  const jadwalBtn = document.querySelector('a[href*="384710"]');
-
-  // ANTISIPASI kalau elemen tidak ada
-  if (!overlay || !popup || !btn || !highlightBox || !jadwalBtn) return;
-
-  // CEK SUDAH PERNAH LIHAT ATAU BELUM
-  if (localStorage.getItem("tutorial_sudah") === "true") return;
-
-  // TAMPILKAN AWAL
-  overlay.style.display = "block";
-  popup.style.display = "block";
-
-  // KLIK MENGERTI
-  btn.addEventListener("click", () => {
-  popup.style.display = "none";
-
-  function updateSpotlight() {
-    const rect = jadwalBtn.getBoundingClientRect();
-
-    const x = rect.left + rect.width / 2;
-    const y = rect.top + rect.height / 2;
-
-    const radius = Math.max(rect.width, rect.height) / 2 + 12;
-
-    overlay.style.setProperty("--x", x + "px");
-    overlay.style.setProperty("--y", y + "px");
-    overlay.style.setProperty("--r1", radius + "px");
-    overlay.style.setProperty("--r2", (radius + 10) + "px");
-  }
-
-  updateSpotlight();
-  overlay.classList.add("spotlight");
-
-  jadwalBtn.classList.add("highlight");
-  highlightBox.style.display = "block";
-
-  window.addEventListener("resize", updateSpotlight);
-  window.addEventListener("scroll", updateSpotlight);
-
-  overlay.addEventListener("click", selesaiTutorial);
-  jadwalBtn.addEventListener("click", selesaiTutorial);
-});
-
-  function selesaiTutorial() {
-    overlay.style.display = "none";
-    highlightBox.style.display = "none";
-    overlay.classList.remove("spotlight");
-
-    jadwalBtn.classList.remove("highlight");
-
-    // SIMPAN AGAR TIDAK MUNCUL LAGI
-    localStorage.setItem("tutorial_sudah", "true");
-  }
-
-});
-</script>
-
-<script>
-function showPopup() {
-  const popup = document.getElementById("popupOverlay");
-  const text = document.getElementById("runningText").innerText;
-
-  document.getElementById("popupText").innerText = text;
-  popup.classList.add("active");
-}
-
-function hidePopup() {
-  document.getElementById("popupOverlay").classList.remove("active");
-}
-</script>
-
-<script>
-  function updateWaktu() {
-  const now = new Date();
-  
-  // Format tanggal
-  const options = { day: 'numeric', month: 'short', year: 'numeric' };
-  const tanggal = now.toLocaleDateString('id-ID', options);
-  document.getElementById('tanggal-sekarang').textContent = tanggal;
-  
-  // Format jam
-  const jam = String(now.getHours()).padStart(2, '0');
-  const menit = String(now.getMinutes()).padStart(2, '0');
-  const detik = String(now.getSeconds()).padStart(2, '0');
-  document.getElementById('jam-sekarang').innerHTML = 
-    `<i class="fas fa-clock"></i><span>${jam}:${menit}:${detik} WIB</span>`;
-  
-  // Cek hari
-  const hariAngka = now.getDay(); // 0=Minggu, 1=Senin, ..., 4=Kamis, 5=Jumat, 6=Sabtu
-  const jamAngka = now.getHours();
-  const menitAngka = now.getMinutes();
-  
-  // Cek info hari Jumat
-  const infoJumat = document.getElementById('info-jumat');
-  let tampilkanInfoJumat = false;
-  
-  // Kamis dari jam 21:05 keatas
-  if (hariAngka === 4 && (jamAngka > 21 || (jamAngka === 21 && menitAngka >= 5))) {
-    tampilkanInfoJumat = true;
-  }
-  // Jumat full day (00:00 - 23:59)
-  else if (hariAngka === 5) {
-    tampilkanInfoJumat = true;
-  }
-  // Sabtu sebelum jam 08:30
-  else if (hariAngka === 6 && (jamAngka < 8 || (jamAngka === 8 && menitAngka < 30))) {
-    tampilkanInfoJumat = true;
-  }
-  
-  if (tampilkanInfoJumat) {
-    infoJumat.classList.add('show');
-  } else {
-    infoJumat.classList.remove('show');
-  }
-  
-const warningBox = document.getElementById('warning-box');
-const countdownEl = document.getElementById('countdown');
-
-const jamTutup = 21;
-const menitTutup = 4;
-
-// =======================
-// CEK BLOKIR KHUSUS
-// =======================
-
-// Kamis dari jam 20:00 ke atas
-const isKamisBlokir =
-  hariAngka === 4 &&
-  (jamAngka > 20 || (jamAngka === 20 && menitAngka >= 0));
-
-// Jumat full
-const isJumat = hariAngka === 5;
-
-// Jika masuk waktu blokir → hide total
-if (isKamisBlokir || isJumat) {
-  warningBox.style.display = 'none';
-} else {
-
-  // =======================
-  // LOGIC NORMAL
-  // =======================
-
-  if (jamAngka === 20 || (jamAngka === 21 && menitAngka <= 4)) {
-
-    let sisaJam = jamTutup - jamAngka;
-    let sisaMenit = menitTutup - menitAngka;
-    let sisaDetik = 60 - detik;
-
-    if (sisaDetik === 60) {
-      sisaDetik = 0;
+    if (res.ok) {
+      showStatus(`✅ Pesan terkirim ke ${target === "semua" ? "semua user" : "@" + username}`, true);
+      addHistory({ type:"kirim", target: target === "semua" ? "semua" : username, msg: text, status:"ok", time: nowStr() });
+      document.getElementById("msgText").value = "";
     } else {
-      sisaMenit -= 1;
+      const errText = await res.text();
+      showStatus("❌ Gagal kirim. Cek Rules Firebase.", false);
+      addHistory({ type:"kirim", target: target === "semua" ? "semua" : username, msg: text, status:"fail", time: nowStr(), error: `HTTP ${res.status}` });
     }
-
-    if (sisaMenit < 0) {
-      sisaJam -= 1;
-      sisaMenit += 60;
-    }
-
-    let countdownText = '';
-    if (sisaJam > 0) {
-      countdownText = `${sisaJam} jam ${sisaMenit} menit`;
-    } else if (sisaMenit > 0) {
-      countdownText = `${sisaMenit} menit ${sisaDetik} detik`;
-    } else {
-      countdownText = `${sisaDetik} detik`;
-    }
-
-    countdownEl.textContent = countdownText;
-    warningBox.style.display = 'block';
-
-  } else {
-    warningBox.style.display = 'none';
+  } catch(e) {
+    showStatus("❌ Error: " + e.message, false);
+    addHistory({ type:"kirim", target: target === "semua" ? "semua" : username, msg: text, status:"fail", time: nowStr(), error: e.message });
   }
-
-}
-  }
-
-// Update setiap detik
-updateWaktu();
-setInterval(updateWaktu, 1000);
-  </script>
-
-<script>
-// Fungsi untuk update teks tombol sesuai waktu WIB
-function updateButtonText() {
-    const btn = document.getElementById("btnTarik");
-
-    // Ambil waktu device lalu ubah ke WIB (UTC+7)
-    const now = new Date();
-    const wib = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
-
-    const day = wib.getDay(); // 0=Minggu, 1=Senin, ..., 4=Kamis, 5=Jumat, 6=Sabtu
-    const hour = wib.getHours();
-    const minute = wib.getMinutes();
-
-    // Hitung total menit
-    const totalMinutes = hour * 60 + minute;
-
-    const startQRIS = 21 * 60 + 4;  // 21:04 WIB
-    const endNormal = 8 * 60 + 30;  // 08:30 WIB
-
-    let useQRIS = false;
-
-    // Logika 1: Setiap hari dari jam 21:04 sampai 08:30 → QRIS Otomatis
-    if (totalMinutes >= startQRIS || totalMinutes < endNormal) {
-        useQRIS = true;
-    }
-
-    // Logika 2: Kamis dari jam 21:04 keatas → QRIS Otomatis
-    if (day === 4 && totalMinutes >= startQRIS) {
-        useQRIS = true;
-    }
-
-    // Logika 3: Jumat full day → QRIS Otomatis
-    if (day === 5) {
-        useQRIS = true;
-    }
-
-    // Logika 4: Sabtu sebelum jam 08:30 → QRIS Otomatis
-    if (day === 6 && totalMinutes < endNormal) {
-        useQRIS = true;
-    }
-
-    // Update text tombol
-    if (useQRIS) {
-        btn.textContent = "GUNAKAN QRIS OTOMATIS";
-    } else {
-        btn.textContent = "KONFIRMASI SALDO";
-    }
 }
 
-// Jalankan saat halaman terbuka
-updateButtonText();
+// --- Hapus popup ---
+async function hapusPesan() {
+  showStatus("Menghapus...", null);
+  try {
+    const res = await fetch(`${DB_URL}/messages/latest.json`);
+    const data = await res.json();
 
-// Cek ulang setiap 1 menit
-setInterval(updateButtonText, 60000);
-</script>
+    if (!data) { showStatus("Tidak ada pesan aktif.", false); return; }
 
-<script>
-// Set tanggal hari ini dengan nama hari (dengan animasi smooth)
-window.addEventListener('load', function() {
-  // Tambahkan CSS animasi
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes fadeIn {
-      from { opacity: 0.7; }
-      to { opacity: 1; }
-    }
-    .tanggal-smooth {
-      animation: fadeIn 0.3s ease-in-out;
-    }
-  `;
-  document.head.appendChild(style);
-
-  let lastDateStr = '';
-
-  function updateTanggalDenganHari() {
-
-    const dayName = days[today.getDay()];
-    const dateStr = dayName + ', ' + today.getDate() + ' ' + months[today.getMonth()] + ' ' + today.getFullYear();
-
-    const element = document.getElementById("tanggal-sekarang");
-    if (element && element.innerText !== dateStr) {
-      // Tambah class animasi
-      element.classList.remove('tanggal-smooth');
-      
-      // Trigger reflow untuk restart animasi
-      void element.offsetWidth;
-      
-      element.innerText = dateStr;
-      element.classList.add('tanggal-smooth');
-      lastDateStr = dateStr;
-    }
-  }
-
-  // Jalankan pertama kali
-  updateTanggalDenganHari();
-
-  // Update setiap 500ms dengan animasi smooth
-  setInterval(updateTanggalDenganHari, 500);
-});
-
-//foother
-const navItems = document.querySelectorAll(".nav-item");
-
-// simpan nav default (yang active di awal)
-const defaultNav = document.querySelector(".nav-item.active");
-
-navItems.forEach(item => {
-
-  // efek sentuh
-  item.addEventListener("pointerdown", () => {
-    item.classList.add("tap");
-  });
-
-  item.addEventListener("pointerup", () => {
-    item.classList.remove("tap");
-  });
-
-  item.addEventListener("pointerleave", () => {
-    item.classList.remove("tap");
-  });
-
-  // logic active (sementara)
-  item.addEventListener("click", () => {
-
-    navItems.forEach(i => i.classList.remove("active"));
-    item.classList.add("active");
-
-    // langsung balik ke default
-    requestAnimationFrame(() => {
-      navItems.forEach(i => i.classList.remove("active"));
-      if (defaultNav) defaultNav.classList.add("active");
+    const res2 = await fetch(`${DB_URL}/messages/latest.json`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...data, deleted: true })
     });
 
-  });
-
-});
-
-
-// fungsi format rupiah
-function formatRupiah(angka) {
-    return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
-
-// ambil saldo dari HTML ({{saldo_user}} diganti angka oleh backend)
-let saldo = document.getElementById("saldo-main").innerText.replace("Rp", "").trim();
-
-// format ulang
-let saldoFormatted = "Rp" + formatRupiah(saldo);
-
-// tampilkan kembali ke HTML
-document.getElementById("saldo-main").innerText = saldoFormatted;
-
-//jam
-function updateWaktu() {
-  const now = new Date();
-  
-  // Format tanggal
-  const options = { day: 'numeric', month: 'short', year: 'numeric' };
-  const tanggal = now.toLocaleDateString('id-ID', options);
-  document.getElementById('tanggal-sekarang').textContent = tanggal;
-  
-  // Format jam
-  const jam = String(now.getHours()).padStart(2, '0');
-  const menit = String(now.getMinutes()).padStart(2, '0');
-  const detik = String(now.getSeconds()).padStart(2, '0');
-  document.getElementById('jam-sekarang').innerHTML = 
-    `<i class="fas fa-clock"></i><span>${jam}:${menit}:${detik} WIB</span>`;
-  
-  // Cek warning untuk konfirmasi (20:00 - 21:04)
-  const jamAngka = now.getHours();
-  const menitAngka = now.getMinutes();
-  const warningBox = document.getElementById('warning-box');
-  const countdownEl = document.getElementById('countdown');
-  
-  // Jam batas: 21:04 (tutup)
-  const jamTutup = 21;
-  const menitTutup = 4;
-  
-  if (jamAngka === 20 || (jamAngka === 21 && menitAngka <= 4)) {
-    // Hitung sisa waktu
-    let sisaJam = jamTutup - jamAngka;
-    let sisaMenit = menitTutup - menitAngka;
-    let sisaDetik = 60 - detik;
-    
-    if (sisaDetik === 60) {
-      sisaDetik = 0;
+    if (res2.ok) {
+      showStatus("✅ Popup berhasil dihapus dari semua user.", true);
+      addHistory({ type:"hapus", status:"ok", time: nowStr() });
     } else {
-      sisaMenit -= 1;
+      showStatus("❌ Gagal hapus.", false);
+      addHistory({ type:"hapus", status:"fail", time: nowStr(), error: `HTTP ${res2.status}` });
     }
-    
-    if (sisaMenit < 0) {
-      sisaJam -= 1;
-      sisaMenit += 60;
-    }
-    
-    // Format countdown
-    let countdownText = '';
-    if (sisaJam > 0) {
-      countdownText = `${sisaJam} jam ${sisaMenit} menit`;
-    } else if (sisaMenit > 0) {
-      countdownText = `${sisaMenit} menit ${sisaDetik} detik`;
-    } else {
-      countdownText = `${sisaDetik} detik`;
-    }
-    
-    countdownEl.textContent = countdownText;
-    warningBox.classList.add('show');
-  } else {
-    warningBox.classList.remove('show');
+  } catch(e) {
+    showStatus("❌ Error: " + e.message, false);
+    addHistory({ type:"hapus", status:"fail", time: nowStr(), error: e.message });
   }
 }
 
-// Update setiap detik
-updateWaktu();
-setInterval(updateWaktu, 1000);
-
-  // Format Poin
-  function formatPoin(number) {
-    return Number(number).toLocaleString("id-ID") + " Poin";
-  }
-
-  // Tab Navigation
-  const tabs = document.querySelectorAll(".tab-btn");
-  const indicator = document.getElementById("indicator");
-  const panels = document.querySelectorAll(".panel");
-
-  function moveIndicator(element) {
-    const rect = element.getBoundingClientRect();
-    indicator.style.left = rect.left + rect.width / 2 - indicator.clientWidth / 2 + "px";
-  }
-
-  tabs.forEach(btn => {
-    btn.addEventListener("click", () => {
-      tabs.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-
-      panels.forEach(panel => panel.classList.remove("active"));
-      const target = btn.dataset.target;
-      document.getElementById(target).classList.add("active");
-
-      moveIndicator(btn);
-      getMutasi(target);
-    });
-  });
-
-  window.addEventListener("load", () => {
-    moveIndicator(tabs[0]);
-    getMutasi("saldo");
-  });
-
-  window.addEventListener("resize", () => {
-    const activeTab = document.querySelector(".tab-btn.active");
-    if (activeTab) moveIndicator(activeTab);
-  });
-
-  // Filter
-  let currentFilter = "all";
-  document.querySelectorAll(".filter-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      currentFilter = btn.dataset.filter;
-      const activeType = document.querySelector(".panel.active").id;
-      getMutasi(activeType);
-    });
-  });
-
-  // Get Mutasi dari API - UPDATED
-  function getMutasi(tipe = "saldo") {
-    const list = document.getElementById("mutasi-list-" + tipe);
-    list.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>';
-
-    // GANTI dengan token_user dan id_user yang sebenarnya
-    let token_user = "{{token_user}}";
-    let id_user = "{{id_user}}";
-
-    let api = "https://openapi.bukaolshop.net/v1/user/catatan"
-      + "?token=eyJhcHAiOiIxNzA5NTYiLCJhdXRoIjoiMjAyNTAzMTIiLCJzaWduIjoibmVDSjRYXC92R2V6QWJJUjZxaXNUcnc9PSJ9"
-      + "&token_user=" + token_user
-      + "&id_user=" + id_user
-      + "&tipe=" + tipe
-      + "&total_data=100";
-
-    let xhr = new XMLHttpRequest();
-xhr.open("GET", api, true);
-
-xhr.onreadystatechange = function () {
-  if (this.readyState == 4) {
-    if (this.status == 200) {
-      try {
-        const res = JSON.parse(this.responseText);
-
-        if (!res.data || res.data.length === 0) {
-          list.innerHTML = `
-            <div class="empty-state">
-             <i class="fa-solid fa-chart-line"></i>
-              <p>Yuk, mulai perjalanan Transaksimu<br>bersama FamsssPay Merchant.</p>
-            </div>`;
-          return;
-        }
-
-        // FILTER DATA
-        let filtered = res.data.filter(item => {
-          const isSaldo = item.tipe_jumlah === "tambah" || item.tipe_jumlah === "kurang";
-          const catatan = (item.informasi_catatan || "").toLowerCase();
-          const isCancelledProduct = catatan.includes("dibatalkan") || catatan.includes("pengembalian");
-          return isSaldo || isCancelledProduct;
-        });
-
-        // FILTER TANGGAL
-        if (currentFilter !== "all") {
-          const days = parseInt(currentFilter);
-          const now = new Date();
-          filtered = filtered.filter(item => {
-            const itemDate = new Date(item.tanggal || item.tanggal_poin);
-            const diff = (now - itemDate) / (1000 * 60 * 60 * 24);
-            return diff <= days;
-          });
-        }
-
-        // ✅ TAMBAHAN PENTING (URUTKAN + AMBIL 10 TERBARU)
-        filtered.sort((a, b) => {
-          const dateA = new Date(a.tanggal || a.tanggal_poin);
-          const dateB = new Date(b.tanggal || b.tanggal_poin);
-          return dateB - dateA;
-        });
-
-        filtered = filtered.slice(0, 5);
-        // ================================
-
-        if (filtered.length === 0) {
-          list.innerHTML = `
-            <div class="empty-state">
-             <i class="fa-solid fa-chart-line"></i>
-              <p>Yuk, mulai perjalanan Transaksimu<br>bersama FamsssPay Merchant.</p>
-            </div>`;
-          return;
-        }
-
-        let totalMasuk = 0;
-        let totalKeluar = 0;
-        let countTrx = filtered.length;
-
-        list.innerHTML = "";
-
-        filtered.forEach(item => {
-          const rawJumlah = tipe === "saldo" ? item.jumlah_dana : item.jumlah_poin;
-          const jumlah = Number(String(rawJumlah).replace(/[^0-9]/g, ""));
-          
-          let info;
-          let iconHTML;
-          let iconColor;
-          
-          if (item.tipe_jumlah === "tambah" || item.tipe_jumlah === "kurang") {
-            info = item.tipe_jumlah === "tambah" ? "Terima Uang" : "Penarikan Saldo";
-            iconColor = item.tipe_jumlah === "tambah" ? "color: #10b981;" : "color: #ef4444;";
-            iconHTML = item.tipe_jumlah === "tambah" 
-              ? `<span style="position:relative; display:inline-block;">
-                   <i class="fa-solid fa-money-bill"></i>
-                   <i class="fa-solid fa-arrow-up" style="position:absolute; right:-6px; bottom:-6px; font-size:10px;"></i>
-                 </span>`
-              : `<span style="position:relative; display:inline-block;">
-                   <i class="fa-solid fa-money-bill"></i>
-                   <i class="fa-solid fa-arrow-down" style="position:absolute; right:-6px; bottom:-6px; font-size:10px;"></i>
-                 </span>`;
-          } else {
-            info = item.informasi_catatan;
-            iconColor = "color: #f97316;";
-            iconHTML = `<span style="position:relative; display:inline-block;">
-                         <i class="fa-solid fa-box"></i>
-                         <i class="fa-solid fa-xmark" style="position:absolute; right:-6px; bottom:-6px; font-size:10px;"></i>
-                       </span>`;
-          }
-          
-          const tanggal = tipe === "saldo" ? item.tanggal : item.tanggal_poin;
-          const jenis = item.tipe_jumlah === "tambah" ? "plus" : "minus";
-
-          if (item.tipe_jumlah === "tambah") {
-            totalMasuk += jumlah;
-          } else if (item.tipe_jumlah === "kurang") {
-            totalKeluar += jumlah;
-          }
-
-          let jumlahFormat = tipe === "saldo" ? formatRupiah(jumlah) : formatPoin(jumlah);
-          
-          let message;
-          if (item.tipe_jumlah === "tambah") {
-            message = `+ ${jumlahFormat}`;
-          } else if (item.tipe_jumlah === "kurang") {
-            message = `- ${jumlahFormat}`;
-          } else {
-            message = jumlahFormat;
-          }
-
-          let html = `
-            <div class="transaksi-item">
-              <div class="transaksi-icon" style="${iconColor}">
-                ${iconHTML}
-              </div>
-              <div class="transaksi-info">
-                <div class="transaksi-name">${info}</div>
-                <div class="transaksi-time">${tanggal}</div>
-               ${item.informasi_catatan ? `<div class="transaksi-catatan" style="font-size: 12px; color: #666; margin-top: 4px;">
-${
-  (item.informasi_catatan || "").toLowerCase().includes("admin mengkonfirmasi topup")
-    ? "Terima Saldo konfirmasi dari QRIS MerchantPay"
-    : (item.informasi_catatan || "").toLowerCase().includes("konfirmasi topup saldo")
-    ? "Terima Saldo dari Transaksi OTOMATIS QRIS/RETAIL"
-    : (item.informasi_catatan || "").toLowerCase().includes("menambahkan saldo secara manual")
-    ? "Penambahan saldo. Diproses langsung oleh Tim Merchant FamsssPay"
-    : (item.informasi_catatan || "").toLowerCase().includes("mengurangi saldo secara manual")
-    ? "Pengurangan saldo. Diproses langsung oleh Tim Merchant FamsssPay"
-    : item.informasi_catatan
+function showStatus(msg, ok) {
+  const el = document.getElementById("statusBar");
+  el.textContent = msg;
+  if (ok === null) { el.className = "status-bar"; el.style.display = "block"; el.style.background = "var(--surface2)"; el.style.color = "var(--muted)"; el.style.border = "1px solid var(--border)"; }
+  else { el.style.background = ""; el.style.color = ""; el.style.border = ""; el.className = "status-bar " + (ok ? "ok" : "err"); }
 }
-</div>` : ''}
-          `;
 
-          if (item.link_transaksi && item.link_transaksi !== "") {
-            html += `<button class="btn-detail" onclick="window.open('${item.link_transaksi}', '_blank')">Detail Transaksi</button>`;
-          }
-
-          html += `
-              </div>
-              <div class="transaksi-amount">
-                <div class="amount-value ${jenis}">${message}</div>
-              </div>
-            </div>`;
-
-          list.innerHTML += html;
-        });
-
-        // UPDATE INFO
-        if (tipe === "saldo") {
-          document.getElementById("total-masuk").innerText = `+ ${formatRupiah(totalMasuk)}`;
-          document.getElementById("total-trx").innerText = `- ${formatRupiah(totalKeluar)}`;
-        } else {
-          document.getElementById("transaksi-count-poin").innerText = countTrx + " Transaksi Poin";
-        }
-
-      } catch (e) {
-        list.innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-exclamation-circle"></i>
-            <p>Error parsing data</p>
-          </div>`;
-        console.error("Error:", e);
-      }
-    } else {
-      list.innerHTML = `
-        <div class="empty-state">
-          <i class="fas fa-wifi-off"></i>
-          <p>Gagal memuat data</p>
-        </div>`;
-    }
-  }
-};
-
-xhr.onerror = function () {
-  list.innerHTML = `
-    <div class="empty-state">
-      <i class="fas fa-exclamation-triangle"></i>
-      <p>Error koneksi ke server</p>
-    </div>`;
-};
-
-xhr.send();
-  }
+// init
+renderHistory();
 </script>
-
 </body>
 </html>
