@@ -1,352 +1,361 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>FamsssPay Notice</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#2186f3">
+<link rel="manifest" href="manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" href="https://fmgaming0.wordpress.com/wp-content/uploads/2025/11/photo_2026-04-27_15-35-21.jpg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="transparent">
+  <title>FM-NOTIF-USER</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #0f1117;
-  --surface: #1a1d27;
-  --surface2: #22263a;
-  --border: #2e334d;
-  --blue: #4f8ef7;
-  --blue-dim: rgba(79,142,247,0.12);
-  --red: #f75f5f;
-  --red-dim: rgba(247,95,95,0.12);
-  --green: #4fca8e;
-  --green-dim: rgba(79,202,142,0.12);
-  --amber: #f7c44f;
-  --amber-dim: rgba(247,196,79,0.1);
-  --text: #e8eaf6;
-  --muted: #6b7280;
-  --mono: 'JetBrains Mono', monospace;
-  --sans: 'DM Sans', sans-serif;
-}
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; padding: 32px 16px; }
-.layout { max-width: 960px; margin: 0 auto; display: grid; grid-template-columns: 380px 1fr; gap: 24px; align-items: start; }
-.header { grid-column: 1/-1; display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-.header-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-.header h1 { font-size: 18px; font-weight: 600; letter-spacing: -0.3px; }
-.header span { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-left: auto; }
-
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px; }
-.card-title { font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); margin-bottom: 18px; }
-
-label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 6px; margin-top: 16px; }
-label:first-of-type { margin-top: 0; }
-select, input, textarea {
-  width: 100%; padding: 10px 13px;
-  background: var(--surface2); border: 1px solid var(--border);
-  border-radius: 8px; font-size: 13px; color: var(--text);
-  font-family: var(--sans); outline: none; transition: border-color 0.15s;
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: #f0f2f5;
+  min-height: 100vh;
+  padding: 16px;
+  color: #1a1a2e;
 }
-select:focus, input:focus, textarea:focus { border-color: var(--blue); }
-textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
-select option { background: var(--surface2); }
+.wrap { max-width: 480px; margin: 0 auto; }
 
-.btn-row { display: flex; gap: 10px; margin-top: 18px; }
+.top-bar {
+  display: flex; align-items: center; gap: 10px;
+  background: #fff; border-radius: 14px;
+  padding: 14px 18px; margin-bottom: 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.top-bar h1 { font-size: 15px; font-weight: 700; flex: 1; }
+.dot-live { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 2px rgba(34,197,94,0.25); animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.clock { font-size: 11px; color: #888; }
+
+.card { background: #fff; border-radius: 14px; padding: 18px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #aaa; margin-bottom: 14px; }
+
+.field { margin-bottom: 12px; }
+.field label { font-size: 12px; font-weight: 600; color: #555; display: block; margin-bottom: 5px; }
+select, input[type=text], textarea {
+  width: 100%; padding: 10px 13px;
+  border: 1.5px solid #e8e8e8; border-radius: 10px;
+  font-size: 13px; color: #1a1a2e; font-family: inherit;
+  background: #fafafa; outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+select:focus, input:focus, textarea:focus { border-color: #3b82f6; background: #fff; }
+textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+
+.btn-row { display: flex; gap: 10px; margin-top: 4px; }
 .btn {
-  flex: 1; padding: 11px; border: none; border-radius: 8px;
-  font-size: 13px; font-weight: 600; cursor: pointer;
-  font-family: var(--sans); transition: opacity 0.15s, transform 0.1s;
+  flex: 1; padding: 12px 8px; border: none; border-radius: 10px;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  font-family: inherit; transition: all 0.15s;
   display: flex; align-items: center; justify-content: center; gap: 6px;
 }
-.btn:hover { opacity: 0.85; }
-.btn:active { transform: scale(0.98); }
-.btn-send { background: var(--blue); color: #fff; }
-.btn-hapus { background: var(--red); color: #fff; }
+.btn:active { transform: scale(0.97); }
+.btn-send { background: #3b82f6; color: #fff; }
+.btn-send:hover { background: #2563eb; }
+.btn-hapus-semua { background: #fee2e2; color: #dc2626; }
+.btn-hapus-semua:hover { background: #fecaca; }
 
-.status-bar {
-  margin-top: 14px; font-size: 12px; padding: 10px 13px;
-  border-radius: 8px; display: none; font-family: var(--mono);
-  line-height: 1.5;
+.status-msg { margin-top: 12px; font-size: 12px; padding: 10px 13px; border-radius: 8px; display: none; font-weight: 500; }
+.status-msg.ok { background: #dcfce7; color: #16a34a; display: block; }
+.status-msg.err { background: #fee2e2; color: #dc2626; display: block; }
+.status-msg.loading { background: #eff6ff; color: #3b82f6; display: block; }
+
+.stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 14px; }
+.stat-box { background: #f8faff; border-radius: 10px; padding: 12px 8px; text-align: center; }
+.stat-n { font-size: 22px; font-weight: 700; }
+.stat-n.blue { color: #3b82f6; }
+.stat-n.green { color: #22c55e; }
+.stat-n.red { color: #ef4444; }
+.stat-l { font-size: 10px; color: #aaa; font-weight: 600; letter-spacing: 0.5px; margin-top: 2px; }
+
+.history-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.clear-all { font-size: 12px; color: #aaa; background: none; border: none; cursor: pointer; font-family: inherit; padding: 4px 8px; border-radius: 6px; }
+.clear-all:hover { background: #f0f2f5; color: #555; }
+
+.history-list { display: flex; flex-direction: column; gap: 8px; }
+
+.hi-item { border: 1.5px solid #f0f0f0; border-radius: 10px; padding: 12px 14px; animation: fadeUp 0.2s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+
+.hi-head { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap; }
+.badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; letter-spacing: 0.3px; }
+.b-kirim { background: #eff6ff; color: #3b82f6; }
+.b-hapus { background: #fee2e2; color: #dc2626; }
+.b-ok { background: #dcfce7; color: #16a34a; }
+.b-fail { background: #fee2e2; color: #dc2626; }
+.hi-time { font-size: 10px; color: #bbb; margin-left: auto; }
+
+.hi-target { font-size: 11px; color: #888; margin-bottom: 4px; }
+.hi-target strong { color: #f59e0b; }
+.hi-msg { font-size: 13px; color: #333; line-height: 1.5; word-break: break-word; }
+.hi-link { font-size: 11px; color: #3b82f6; margin-top: 4px; word-break: break-all; }
+.hi-err { font-size: 11px; color: #dc2626; margin-top: 4px; }
+
+.hi-actions { display: flex; justify-content: flex-end; gap: 6px; margin-top: 8px; }
+.btn-sm {
+  font-size: 11px; border: none; border-radius: 6px; padding: 4px 10px;
+  cursor: pointer; font-family: inherit; font-weight: 600; transition: background 0.15s;
 }
-.status-bar.ok { background: var(--green-dim); color: var(--green); border: 1px solid rgba(79,202,142,0.2); display: block; }
-.status-bar.err { background: var(--red-dim); color: var(--red); border: 1px solid rgba(247,95,95,0.2); display: block; }
+.btn-sm-red { background: #fee2e2; color: #dc2626; }
+.btn-sm-red:hover { background: #fecaca; }
+.btn-sm-gray { background: #f0f0f0; color: #888; }
+.btn-sm-gray:hover { background: #e5e5e5; }
+.btn-sm-blue { background: #eff6ff; color: #3b82f6; }
+.btn-sm-blue:hover { background: #dbeafe; }
 
-/* History */
-.history-panel { display: flex; flex-direction: column; gap: 0; }
-.history-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-.history-title { font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); }
-.clear-btn { font-size: 11px; color: var(--muted); background: none; border: none; cursor: pointer; font-family: var(--sans); padding: 3px 8px; border-radius: 5px; transition: background 0.15s; }
-.clear-btn:hover { background: var(--surface2); color: var(--text); }
-
-.history-list { display: flex; flex-direction: column; gap: 8px; max-height: 520px; overflow-y: auto; padding-right: 4px; }
-.history-list::-webkit-scrollbar { width: 4px; }
-.history-list::-webkit-scrollbar-track { background: transparent; }
-.history-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-
-.history-item {
-  background: var(--surface2); border: 1px solid var(--border);
-  border-radius: 10px; padding: 13px 15px;
-  animation: slideIn 0.2s ease;
-}
-@keyframes slideIn { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
-
-.hi-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-.hi-badge {
-  font-size: 10px; font-weight: 600; padding: 3px 8px;
-  border-radius: 5px; font-family: var(--mono); letter-spacing: 0.5px;
-}
-.badge-send { background: var(--blue-dim); color: var(--blue); }
-.badge-hapus { background: var(--red-dim); color: var(--red); }
-.badge-ok { background: var(--green-dim); color: var(--green); }
-.badge-fail { background: var(--red-dim); color: var(--red); }
-
-.hi-time { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-left: auto; }
-.hi-target { font-size: 11px; color: var(--muted); margin-bottom: 5px; }
-.hi-target span { color: var(--amber); font-family: var(--mono); }
-.hi-msg { font-size: 13px; color: var(--text); line-height: 1.5; word-break: break-word; }
-.hi-msg.hapus-msg { color: var(--muted); font-style: italic; }
-
-.empty-state { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 13px; }
-.empty-icon { font-size: 28px; margin-bottom: 10px; opacity: 0.4; }
-
-.stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 18px; }
-.stat { background: var(--surface2); border-radius: 8px; padding: 12px; text-align: center; }
-.stat-num { font-family: var(--mono); font-size: 20px; font-weight: 600; }
-.stat-lbl { font-size: 10px; color: var(--muted); margin-top: 2px; letter-spacing: 0.5px; }
-.stat-num.blue { color: var(--blue); }
-.stat-num.green { color: var(--green); }
-.stat-num.red { color: var(--red); }
+.empty { text-align: center; padding: 32px; color: #bbb; font-size: 13px; }
+.empty-icon { font-size: 24px; margin-bottom: 8px; }
 </style>
 </head>
 <body>
+<div class="wrap">
 
-<div class="layout">
-  <div class="header">
-    <div class="header-dot"></div>
-    <h1>Panel Notifikasi Admin</h1>
-    <span id="clock">—</span>
+  <div class="top-bar">
+    <div class="dot-live"></div>
+    <h1>Panel Notifikasi</h1>
+    <span class="clock" id="clock">—</span>
   </div>
 
-  <!-- Kiri: Form kirim -->
   <div class="card">
-    <div class="card-title">Kirim Pesan</div>
+    <div class="card-label">Kirim Pesan</div>
 
-    <label>Target penerima</label>
-    <select id="target">
-      <option value="semua">@semua — semua user</option>
-      <option value="personal">Personal — username tertentu</option>
-    </select>
-
-    <div id="usernameWrap" style="display:none;">
-      <label>Username (bagian sebelum @gmail.com)</label>
-      <input id="username" type="text" placeholder="contoh: nadya22" />
+    <div class="field">
+      <label>Target penerima</label>
+      <select id="target">
+        <option value="semua">@semua — semua user</option>
+        <option value="personal">Personal — username tertentu</option>
+      </select>
     </div>
 
-    <label>Pesan</label>
-    <textarea id="msgText" placeholder="Tulis pesan notifikasi..."></textarea>
+    <div class="field" id="usernameWrap" style="display:none;">
+      <label>Username (sebelum @gmail.com)</label>
+      <input type="text" id="username" placeholder="contoh: nadya22" />
+    </div>
+
+    <div class="field">
+      <label>Pesan</label>
+      <textarea id="msgText" placeholder="Tulis pesan notifikasi..."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Link (opsional — tampil sebagai "Klik Disini")</label>
+      <input type="text" id="msgLink" placeholder="https://example.com" />
+    </div>
 
     <div class="btn-row">
       <button class="btn btn-send" onclick="kirimPesan()">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
-        Kirim Sekarang
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+        Kirim
       </button>
-      <button class="btn btn-hapus" onclick="hapusPesan()">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
-        Hapus Popup
+      <button class="btn btn-hapus-semua" onclick="hapusSemuaPopup()">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        Hapus Popup Aktif
       </button>
     </div>
 
-    <div id="statusBar" class="status-bar"></div>
+    <div id="statusMsg" class="status-msg"></div>
   </div>
 
-  <!-- Kanan: History -->
-  <div class="card history-panel">
-    <div class="history-header">
-      <div class="history-title">Riwayat Pengiriman</div>
-      <button class="clear-btn" onclick="clearHistory()">Hapus riwayat</button>
+  <div class="card">
+    <div class="card-label" style="margin-bottom:10px;">Riwayat</div>
+
+    <div class="stats">
+      <div class="stat-box"><div class="stat-n blue" id="sTotal">0</div><div class="stat-l">TOTAL</div></div>
+      <div class="stat-box"><div class="stat-n green" id="sOk">0</div><div class="stat-l">SUKSES</div></div>
+      <div class="stat-box"><div class="stat-n red" id="sFail">0</div><div class="stat-l">GAGAL</div></div>
     </div>
 
-    <div class="stat-row">
-      <div class="stat">
-        <div class="stat-num blue" id="statTotal">0</div>
-        <div class="stat-lbl">TOTAL</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num green" id="statOk">0</div>
-        <div class="stat-lbl">SUKSES</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num red" id="statFail">0</div>
-        <div class="stat-lbl">GAGAL</div>
-      </div>
+    <div class="history-head">
+      <span style="font-size:12px;color:#888;">Pesan terkirim</span>
+      <button class="clear-all" onclick="clearHistory()">Hapus semua riwayat</button>
     </div>
 
     <div class="history-list" id="historyList">
-      <div class="empty-state">
-        <div class="empty-icon">📭</div>
-        Belum ada riwayat pengiriman
-      </div>
+      <div class="empty"><div class="empty-icon">📭</div>Belum ada riwayat</div>
     </div>
   </div>
+
 </div>
 
 <script>
 const DB_URL = "https://famss-75ca3-default-rtdb.asia-southeast1.firebasedatabase.app";
-const HISTORY_KEY = "notif_history";
+const HISTORY_KEY = "notif_history_v2";
 
-// clock
 setInterval(() => {
-  document.getElementById("clock").textContent = new Date().toLocaleString("id-ID", {
-    day:"2-digit", month:"short", year:"numeric",
-    hour:"2-digit", minute:"2-digit", second:"2-digit"
-  });
+  document.getElementById("clock").textContent = new Date().toLocaleTimeString("id-ID");
 }, 1000);
 
 document.getElementById("target").addEventListener("change", function() {
   document.getElementById("usernameWrap").style.display = this.value === "personal" ? "block" : "none";
 });
 
-// --- History helpers ---
-function getHistory() {
-  return JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
-}
-function saveHistory(list) {
-  localStorage.setItem(HISTORY_KEY, JSON.stringify(list.slice(0, 100)));
-}
-function addHistory(item) {
+function getHistory() { return JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]"); }
+function saveHistory(list) { localStorage.setItem(HISTORY_KEY, JSON.stringify(list.slice(0,100))); }
+function addHistory(item) { const l = getHistory(); l.unshift(item); saveHistory(l); renderHistory(); }
+function hapusHistoryItem(idx) { const l = getHistory(); l.splice(idx,1); saveHistory(l); renderHistory(); }
+function clearHistory() { if (!confirm("Hapus semua riwayat?")) return; localStorage.removeItem(HISTORY_KEY); renderHistory(); }
+
+async function hapusPesanDariHistory(idx) {
   const list = getHistory();
-  list.unshift(item);
-  saveHistory(list);
-  renderHistory();
-}
-function clearHistory() {
-  if (!confirm("Hapus semua riwayat?")) return;
-  localStorage.removeItem(HISTORY_KEY);
-  renderHistory();
+  const item = list[idx];
+  if (!item || !item.msgId) { showStatus("msgId tidak ditemukan.", false); return; }
+  try {
+    const res = await fetch(`${DB_URL}/messages/latest.json`);
+    const data = await res.json();
+    if (data && data.msgId === item.msgId) {
+      await fetch(`${DB_URL}/messages/latest.json`, {
+        method: "PUT", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, deleted: true })
+      });
+      showStatus("✅ Popup pesan tersebut berhasil dihapus.", true);
+    } else {
+      showStatus("ℹ️ Pesan ini tidak sedang aktif (sudah diganti pesan lain).", null);
+    }
+  } catch(e) { showStatus("❌ Error: " + e.message, false); }
 }
 
 function renderHistory() {
   const list = getHistory();
   const el = document.getElementById("historyList");
+  document.getElementById("sTotal").textContent = list.length;
+  document.getElementById("sOk").textContent = list.filter(i => i.status === "ok").length;
+  document.getElementById("sFail").textContent = list.filter(i => i.status === "fail").length;
 
-  // update stats
-  const total = list.length;
-  const ok = list.filter(i => i.status === "ok").length;
-  const fail = list.filter(i => i.status === "fail").length;
-  document.getElementById("statTotal").textContent = total;
-  document.getElementById("statOk").textContent = ok;
-  document.getElementById("statFail").textContent = fail;
+  if (!list.length) { el.innerHTML = `<div class="empty"><div class="empty-icon">📭</div>Belum ada riwayat</div>`; return; }
 
-  if (!list.length) {
-    el.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div>Belum ada riwayat pengiriman</div>`;
-    return;
-  }
-
-  el.innerHTML = list.map(item => {
+  el.innerHTML = list.map((item, idx) => {
     const isHapus = item.type === "hapus";
-    const badgeType = isHapus ? `<span class="hi-badge badge-hapus">HAPUS</span>` : `<span class="hi-badge badge-send">KIRIM</span>`;
-    const badgeStatus = item.status === "ok"
-      ? `<span class="hi-badge badge-ok">✓ SUKSES</span>`
-      : `<span class="hi-badge badge-fail">✗ GAGAL</span>`;
-    const targetLabel = isHapus ? "—" : (item.target === "semua" ? "@semua" : `@${item.target}`);
-
-    return `
-      <div class="history-item">
-        <div class="hi-top">
-          ${badgeType}
-          ${badgeStatus}
-          <span class="hi-time">${item.time}</span>
-        </div>
-        ${!isHapus ? `<div class="hi-target">Target: <span>${targetLabel}</span></div>` : ""}
-        <div class="hi-msg ${isHapus ? 'hapus-msg' : ''}">${isHapus ? "Popup dihapus dari semua user" : escHtml(item.msg)}</div>
-        ${item.error ? `<div style="font-size:11px;color:var(--red);margin-top:5px;font-family:var(--mono);">Error: ${escHtml(item.error)}</div>` : ""}
-      </div>`;
+    return `<div class="hi-item">
+      <div class="hi-head">
+        <span class="badge ${isHapus ? 'b-hapus' : 'b-kirim'}">${isHapus ? "HAPUS" : "KIRIM"}</span>
+        <span class="badge ${item.status === 'ok' ? 'b-ok' : 'b-fail'}">${item.status === 'ok' ? '✓ Sukses' : '✗ Gagal'}</span>
+        <span class="hi-time">${item.time}</span>
+      </div>
+      ${!isHapus ? `<div class="hi-target">→ <strong>${item.target === "semua" ? "@semua" : "@" + item.target}</strong></div>` : ""}
+      <div class="hi-msg">${isHapus ? "<em style='color:#aaa'>Popup dihapus</em>" : escHtml(item.msg)}</div>
+      ${item.link ? `<div class="hi-link">🔗 ${escHtml(item.link)}</div>` : ""}
+      ${item.error ? `<div class="hi-err">Error: ${escHtml(item.error)}</div>` : ""}
+      <div class="hi-actions">
+        ${!isHapus ? `<button class="btn-sm btn-sm-blue" onclick="isiFormDariHistory(${idx})">↩ Kirim Ulang</button>` : ""}
+        ${!isHapus && item.msgId ? `<button class="btn-sm btn-sm-red" onclick="hapusPesanDariHistory(${idx})">Hapus popup ini</button>` : ""}
+        <button class="btn-sm btn-sm-gray" onclick="hapusHistoryItem(${idx})">Hapus</button>
+      </div>
+    </div>`;
   }).join("");
 }
 
+function isiFormDariHistory(idx) {
+  const list = getHistory();
+  const item = list[idx];
+  if (!item || item.type === "hapus") return;
+
+  // isi target
+  const targetEl = document.getElementById("target");
+  if (item.target === "semua") {
+    targetEl.value = "semua";
+    document.getElementById("usernameWrap").style.display = "none";
+  } else {
+    targetEl.value = "personal";
+    document.getElementById("usernameWrap").style.display = "block";
+    document.getElementById("username").value = item.target;
+  }
+
+  // isi pesan & link
+  document.getElementById("msgText").value = item.msg || "";
+  document.getElementById("msgLink").value = item.link || "";
+
+  // scroll ke form & fokus textarea
+  document.querySelector(".card").scrollIntoView({ behavior: "smooth", block: "start" });
+  setTimeout(() => document.getElementById("msgText").focus(), 400);
+
+  showStatus("✏️ Form sudah diisi dari riwayat. Cek lalu klik Kirim.", null);
+}
+
 function escHtml(str) {
+  if (!str) return "";
   return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
-
 function nowStr() {
-  return new Date().toLocaleString("id-ID", {
-    day:"2-digit", month:"short", year:"numeric",
-    hour:"2-digit", minute:"2-digit", second:"2-digit"
-  });
+  return new Date().toLocaleString("id-ID", { day:"2-digit", month:"short", year:"numeric", hour:"2-digit", minute:"2-digit", second:"2-digit" });
 }
 
-// --- Kirim pesan ---
 async function kirimPesan() {
-  const target = document.getElementById("target").value;
+  const target   = document.getElementById("target").value;
   const username = document.getElementById("username").value.trim().toLowerCase();
-  const text = document.getElementById("msgText").value.trim();
+  const text     = document.getElementById("msgText").value.trim();
+  const link     = document.getElementById("msgLink").value.trim();
 
   if (!text) { showStatus("Pesan tidak boleh kosong!", false); return; }
   if (target === "personal" && !username) { showStatus("Username harus diisi!", false); return; }
 
   const finalText = target === "semua" ? `@semua ${text}` : `@${username} ${text}`;
   const msgId = Date.now();
-
   showStatus("Mengirim...", null);
+
+  const payload = {
+    text: finalText,
+    username: target === "semua" ? "semua" : username,
+    msgId,
+    deleted: false,
+    link: link || null
+  };
 
   try {
     const res = await fetch(`${DB_URL}/messages/latest.json`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        text: finalText,
-        username: target === "semua" ? "semua" : username,
-        msgId, deleted: false
-      })
+      method: "PUT", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
     });
-
     if (res.ok) {
-      showStatus(`✅ Pesan terkirim ke ${target === "semua" ? "semua user" : "@" + username}`, true);
-      addHistory({ type:"kirim", target: target === "semua" ? "semua" : username, msg: text, status:"ok", time: nowStr() });
+      showStatus(`✅ Terkirim ke ${target === "semua" ? "semua user" : "@" + username}`, true);
+      addHistory({ type:"kirim", target: target === "semua" ? "semua" : username, msg: text, link: link || null, msgId, status:"ok", time: nowStr() });
       document.getElementById("msgText").value = "";
+      document.getElementById("msgLink").value = "";
     } else {
-      const errText = await res.text();
-      showStatus("❌ Gagal kirim. Cek Rules Firebase.", false);
-      addHistory({ type:"kirim", target: target === "semua" ? "semua" : username, msg: text, status:"fail", time: nowStr(), error: `HTTP ${res.status}` });
+      showStatus("❌ Gagal. Cek Rules Firebase.", false);
+      addHistory({ type:"kirim", target: target === "semua" ? "semua" : username, msg: text, msgId, status:"fail", time: nowStr(), error: `HTTP ${res.status}` });
     }
   } catch(e) {
     showStatus("❌ Error: " + e.message, false);
-    addHistory({ type:"kirim", target: target === "semua" ? "semua" : username, msg: text, status:"fail", time: nowStr(), error: e.message });
+    addHistory({ type:"kirim", target: target === "semua" ? "semua" : username, msg: text, msgId, status:"fail", time: nowStr(), error: e.message });
   }
 }
 
-// --- Hapus popup ---
-async function hapusPesan() {
+async function hapusSemuaPopup() {
   showStatus("Menghapus...", null);
   try {
     const res = await fetch(`${DB_URL}/messages/latest.json`);
     const data = await res.json();
-
     if (!data) { showStatus("Tidak ada pesan aktif.", false); return; }
-
     const res2 = await fetch(`${DB_URL}/messages/latest.json`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      method: "PUT", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...data, deleted: true })
     });
-
     if (res2.ok) {
-      showStatus("✅ Popup berhasil dihapus dari semua user.", true);
+      showStatus("✅ Popup aktif berhasil dihapus.", true);
       addHistory({ type:"hapus", status:"ok", time: nowStr() });
     } else {
       showStatus("❌ Gagal hapus.", false);
       addHistory({ type:"hapus", status:"fail", time: nowStr(), error: `HTTP ${res2.status}` });
     }
-  } catch(e) {
-    showStatus("❌ Error: " + e.message, false);
-    addHistory({ type:"hapus", status:"fail", time: nowStr(), error: e.message });
-  }
+  } catch(e) { showStatus("❌ Error: " + e.message, false); }
 }
 
 function showStatus(msg, ok) {
-  const el = document.getElementById("statusBar");
+  const el = document.getElementById("statusMsg");
   el.textContent = msg;
-  if (ok === null) { el.className = "status-bar"; el.style.display = "block"; el.style.background = "var(--surface2)"; el.style.color = "var(--muted)"; el.style.border = "1px solid var(--border)"; }
-  else { el.style.background = ""; el.style.color = ""; el.style.border = ""; el.className = "status-bar " + (ok ? "ok" : "err"); }
+  if (ok === null) el.className = "status-msg loading";
+  else el.className = "status-msg " + (ok ? "ok" : "err");
 }
 
-// init
 renderHistory();
 </script>
 </body>
