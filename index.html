@@ -2,119 +2,248 @@
 <html lang="id">
 <head>
   <meta name="theme-color" content="#2186f3">
-<link rel="manifest" href="manifest.json">
+  <link rel="manifest" href="manifest.json">
   <meta name="mobile-web-app-capable" content="yes">
   <link rel="icon" href="https://fmgaming0.wordpress.com/wp-content/uploads/2025/11/photo_2026-04-27_15-35-21.jpg">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="transparent">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>FM-NOTIF-USER</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  background: #f0f2f5;
-  min-height: 100vh;
-  padding: 16px;
-  color: #1a1a2e;
-}
-.wrap { max-width: 480px; margin: 0 auto; }
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #f0f2f5;
+      min-height: 100vh;
+      padding: 16px;
+      color: #1a1a2e;
+    }
+    .wrap { max-width: 480px; margin: 0 auto; }
 
-.top-bar {
-  display: flex; align-items: center; gap: 10px;
-  background: #fff; border-radius: 14px;
-  padding: 14px 18px; margin-bottom: 14px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-}
-.top-bar h1 { font-size: 15px; font-weight: 700; flex: 1; }
-.dot-live { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 2px rgba(34,197,94,0.25); animation: blink 2s infinite; }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-.clock { font-size: 11px; color: #888; }
+    .top-bar {
+      display: flex; align-items: center; gap: 10px;
+      background: #fff; border-radius: 14px;
+      padding: 14px 18px; margin-bottom: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .top-bar h1 { font-size: 15px; font-weight: 700; flex: 1; }
+    .dot-live { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 2px rgba(34,197,94,0.25); animation: blink 2s infinite; flex-shrink: 0; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .clock { font-size: 11px; color: #888; white-space: nowrap; }
 
-.card { background: #fff; border-radius: 14px; padding: 18px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
-.card-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #aaa; margin-bottom: 14px; }
+    /* TAB NAV */
+    .tab-nav {
+      display: flex; gap: 6px; margin-bottom: 14px;
+    }
+    .tab-btn {
+      flex: 1; padding: 10px 8px; border: none; border-radius: 10px;
+      font-size: 12px; font-weight: 700; cursor: pointer;
+      font-family: inherit; transition: all 0.15s;
+      background: #fff; color: #aaa;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .tab-btn.active { background: #3b82f6; color: #fff; }
+    .tab-btn:active { transform: scale(0.97); }
 
-.field { margin-bottom: 12px; }
-.field label { font-size: 12px; font-weight: 600; color: #555; display: block; margin-bottom: 5px; }
-select, input[type=text], textarea {
-  width: 100%; padding: 10px 13px;
-  border: 1.5px solid #e8e8e8; border-radius: 10px;
-  font-size: 13px; color: #1a1a2e; font-family: inherit;
-  background: #fafafa; outline: none;
-  transition: border-color 0.15s, background 0.15s;
-}
-select:focus, input:focus, textarea:focus { border-color: #3b82f6; background: #fff; }
-textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
 
-.btn-row { display: flex; gap: 10px; margin-top: 4px; }
-.btn {
-  flex: 1; padding: 12px 8px; border: none; border-radius: 10px;
-  font-size: 13px; font-weight: 700; cursor: pointer;
-  font-family: inherit; transition: all 0.15s;
-  display: flex; align-items: center; justify-content: center; gap: 6px;
-}
-.btn:active { transform: scale(0.97); }
-.btn-send { background: #3b82f6; color: #fff; }
-.btn-send:hover { background: #2563eb; }
-.btn-hapus-semua { background: #fee2e2; color: #dc2626; }
-.btn-hapus-semua:hover { background: #fecaca; }
+    .card { background: #fff; border-radius: 14px; padding: 18px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+    .card-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #aaa; margin-bottom: 14px; }
 
-.status-msg { margin-top: 12px; font-size: 12px; padding: 10px 13px; border-radius: 8px; display: none; font-weight: 500; }
-.status-msg.ok { background: #dcfce7; color: #16a34a; display: block; }
-.status-msg.err { background: #fee2e2; color: #dc2626; display: block; }
-.status-msg.loading { background: #eff6ff; color: #3b82f6; display: block; }
+    .field { margin-bottom: 12px; }
+    .field label { font-size: 12px; font-weight: 600; color: #555; display: block; margin-bottom: 5px; }
+    select, input[type=text], textarea {
+      width: 100%; padding: 10px 13px;
+      border: 1.5px solid #e8e8e8; border-radius: 10px;
+      font-size: 13px; color: #1a1a2e; font-family: inherit;
+      background: #fafafa; outline: none;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    select:focus, input:focus, textarea:focus { border-color: #3b82f6; background: #fff; }
+    textarea { resize: none; min-height: 80px; line-height: 1.6; overflow-y: hidden; }
 
-.stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 14px; }
-.stat-box { background: #f8faff; border-radius: 10px; padding: 12px 8px; text-align: center; }
-.stat-n { font-size: 22px; font-weight: 700; }
-.stat-n.blue { color: #3b82f6; }
-.stat-n.green { color: #22c55e; }
-.stat-n.red { color: #ef4444; }
-.stat-l { font-size: 10px; color: #aaa; font-weight: 600; letter-spacing: 0.5px; margin-top: 2px; }
+    /* Bold toolbar */
+    .msg-toolbar {
+      display: flex; align-items: center; gap: 6px;
+      margin-bottom: 5px; flex-wrap: wrap;
+    }
+    .tb-label { font-size: 11px; color: #aaa; }
+    .tb-btn {
+      font-size: 11px; padding: 3px 9px; border-radius: 6px;
+      border: 1.5px solid #e8e8e8; background: #fafafa;
+      cursor: pointer; font-family: inherit; font-weight: 700;
+      transition: all 0.15s; color: #555;
+    }
+    .tb-btn:hover { background: #eff6ff; border-color: #3b82f6; color: #3b82f6; }
+    .tb-btn:active { transform: scale(0.96); }
+    .tb-hint { font-size: 10px; color: #bbb; margin-left: 2px; }
 
-.history-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-.clear-all { font-size: 12px; color: #aaa; background: none; border: none; cursor: pointer; font-family: inherit; padding: 4px 8px; border-radius: 6px; }
-.clear-all:hover { background: #f0f2f5; color: #555; }
+    /* Preview area */
+    .msg-preview {
+      margin-top: 8px; padding: 10px 12px;
+      background: #f8faff; border-radius: 8px;
+      border: 1.5px dashed #dbeafe;
+      font-size: 13px; color: #333; line-height: 1.6;
+      min-height: 36px; word-break: break-word;
+      display: none;
+    }
+    .msg-preview.has-content { display: block; }
+    .msg-preview strong { font-weight: 700; }
 
-.history-list { display: flex; flex-direction: column; gap: 8px; }
+    .btn-row { display: flex; gap: 10px; margin-top: 4px; }
+    .btn {
+      flex: 1; padding: 12px 8px; border: none; border-radius: 10px;
+      font-size: 13px; font-weight: 700; cursor: pointer;
+      font-family: inherit; transition: all 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-send { background: #3b82f6; color: #fff; }
+    .btn-send:hover { background: #2563eb; }
+    .btn-hapus-semua { background: #fee2e2; color: #dc2626; }
+    .btn-hapus-semua:hover { background: #fecaca; }
+    .btn-green { background: #dcfce7; color: #16a34a; }
+    .btn-green:hover { background: #bbf7d0; }
 
-.hi-item { border: 1.5px solid #f0f0f0; border-radius: 10px; padding: 12px 14px; animation: fadeUp 0.2s ease; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+    .status-msg { margin-top: 12px; font-size: 12px; padding: 10px 13px; border-radius: 8px; display: none; font-weight: 500; }
+    .status-msg.ok { background: #dcfce7; color: #16a34a; display: block; }
+    .status-msg.err { background: #fee2e2; color: #dc2626; display: block; }
+    .status-msg.loading { background: #eff6ff; color: #3b82f6; display: block; }
 
-.hi-head { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap; }
-.badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; letter-spacing: 0.3px; }
-.b-kirim { background: #eff6ff; color: #3b82f6; }
-.b-hapus { background: #fee2e2; color: #dc2626; }
-.b-ok { background: #dcfce7; color: #16a34a; }
-.b-fail { background: #fee2e2; color: #dc2626; }
-.hi-time { font-size: 10px; color: #bbb; margin-left: auto; }
+    .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 14px; }
+    .stat-box { background: #f8faff; border-radius: 10px; padding: 12px 8px; text-align: center; }
+    .stat-n { font-size: 22px; font-weight: 700; }
+    .stat-n.blue { color: #3b82f6; }
+    .stat-n.green { color: #22c55e; }
+    .stat-n.red { color: #ef4444; }
+    .stat-l { font-size: 10px; color: #aaa; font-weight: 600; letter-spacing: 0.5px; margin-top: 2px; }
 
-.hi-target { font-size: 11px; color: #888; margin-bottom: 4px; }
-.hi-target strong { color: #f59e0b; }
-.hi-msg { font-size: 13px; color: #333; line-height: 1.5; word-break: break-word; }
-.hi-link { font-size: 11px; color: #3b82f6; margin-top: 4px; word-break: break-all; }
-.hi-err { font-size: 11px; color: #dc2626; margin-top: 4px; }
+    /* SEARCH BAR */
+    .search-wrap {
+      position: relative; margin-bottom: 12px;
+    }
+    .search-wrap input {
+      padding-left: 36px;
+      background: #f8faff;
+    }
+    .search-icon {
+      position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+      color: #aaa; font-size: 14px; pointer-events: none;
+    }
+    .search-clear {
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: #bbb; cursor: pointer; font-size: 16px;
+      display: none; line-height: 1;
+    }
+    .search-result-count {
+      font-size: 11px; color: #888; margin-bottom: 8px; padding-left: 2px;
+    }
 
-.hi-actions { display: flex; justify-content: flex-end; gap: 6px; margin-top: 8px; }
-.btn-sm {
-  font-size: 11px; border: none; border-radius: 6px; padding: 4px 10px;
-  cursor: pointer; font-family: inherit; font-weight: 600; transition: background 0.15s;
-}
-.btn-sm-red { background: #fee2e2; color: #dc2626; }
-.btn-sm-red:hover { background: #fecaca; }
-.btn-sm-gray { background: #f0f0f0; color: #888; }
-.btn-sm-gray:hover { background: #e5e5e5; }
-.btn-sm-blue { background: #eff6ff; color: #3b82f6; }
-.btn-sm-blue:hover { background: #dbeafe; }
+    .history-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .clear-all { font-size: 12px; color: #aaa; background: none; border: none; cursor: pointer; font-family: inherit; padding: 4px 8px; border-radius: 6px; }
+    .clear-all:hover { background: #f0f2f5; color: #555; }
 
-.empty { text-align: center; padding: 32px; color: #bbb; font-size: 13px; }
-.empty-icon { font-size: 24px; margin-bottom: 8px; }
-</style>
+    .history-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .hi-item { border: 1.5px solid #f0f0f0; border-radius: 10px; padding: 12px 14px; animation: fadeUp 0.2s ease; }
+    .hi-item.matched { border-color: #bfdbfe; background: #f0f7ff; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+
+    .hi-head { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap; }
+    .badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; letter-spacing: 0.3px; }
+    .b-kirim { background: #eff6ff; color: #3b82f6; }
+    .b-hapus { background: #fee2e2; color: #dc2626; }
+    .b-ok { background: #dcfce7; color: #16a34a; }
+    .b-fail { background: #fee2e2; color: #dc2626; }
+    .b-match { background: #fef3c7; color: #d97706; }
+    .hi-time { font-size: 10px; color: #bbb; margin-left: auto; }
+
+    .hi-target { font-size: 11px; color: #888; margin-bottom: 4px; }
+    .hi-target strong { color: #f59e0b; }
+    .hi-msg { font-size: 13px; color: #333; line-height: 1.5; word-break: break-word; }
+    .hi-msg mark { background: #fde68a; color: #92400e; border-radius: 2px; padding: 0 2px; }
+    .hi-link { font-size: 11px; color: #3b82f6; margin-top: 4px; word-break: break-all; }
+    .hi-err { font-size: 11px; color: #dc2626; margin-top: 4px; }
+
+    .hi-actions { display: flex; justify-content: flex-end; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+    .btn-sm {
+      font-size: 11px; border: none; border-radius: 6px; padding: 4px 10px;
+      cursor: pointer; font-family: inherit; font-weight: 600; transition: background 0.15s;
+    }
+    .btn-sm-red { background: #fee2e2; color: #dc2626; }
+    .btn-sm-red:hover { background: #fecaca; }
+    .btn-sm-gray { background: #f0f0f0; color: #888; }
+    .btn-sm-gray:hover { background: #e5e5e5; }
+    .btn-sm-blue { background: #eff6ff; color: #3b82f6; }
+    .btn-sm-blue:hover { background: #dbeafe; }
+    .btn-sm-green { background: #dcfce7; color: #16a34a; }
+    .btn-sm-green:hover { background: #bbf7d0; }
+
+    .empty { text-align: center; padding: 32px; color: #bbb; font-size: 13px; }
+    .empty-icon { font-size: 24px; margin-bottom: 8px; }
+
+    /* ===== SAVED LINKS ===== */
+    .link-add-form { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+    .link-add-form input { flex: 1; min-width: 100px; }
+    .link-add-form .btn-add-link {
+      padding: 10px 14px; border: none; border-radius: 10px;
+      background: #3b82f6; color: #fff; font-size: 13px; font-weight: 700;
+      cursor: pointer; font-family: inherit; white-space: nowrap;
+      transition: background 0.15s;
+    }
+    .link-add-form .btn-add-link:hover { background: #2563eb; }
+    .link-add-form .btn-add-link:active { transform: scale(0.97); }
+
+    .link-list { display: flex; flex-direction: column; gap: 8px; }
+    .link-item {
+      display: flex; align-items: center; gap: 10px;
+      border: 1.5px solid #e8e8e8; border-radius: 10px;
+      padding: 10px 12px; background: #fafafa;
+      animation: fadeUp 0.2s ease;
+    }
+    .link-item-icon {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: #eff6ff; color: #3b82f6;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; flex-shrink: 0;
+    }
+    .link-item-body { flex: 1; min-width: 0; }
+    .link-item-name { font-size: 13px; font-weight: 600; color: #1a1a2e; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .link-item-url { font-size: 11px; color: #3b82f6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .link-item-actions { display: flex; gap: 5px; flex-shrink: 0; }
+
+    .link-edit-row {
+      display: none; flex-direction: column; gap: 6px;
+      margin-top: 8px; padding-top: 8px;
+      border-top: 1px solid #e8e8e8;
+    }
+    .link-edit-row.open { display: flex; }
+    .link-edit-row input { font-size: 12px; }
+
+    .link-status { font-size: 11px; padding: 7px 10px; border-radius: 7px; margin-top: 8px; display: none; font-weight: 500; }
+    .link-status.ok { background: #dcfce7; color: #16a34a; display: block; }
+    .link-status.err { background: #fee2e2; color: #dc2626; display: block; }
+
+    /* paste-from-link button in kirim form */
+    .quick-links-row {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-top: -4px; margin-bottom: 8px;
+    }
+    .ql-chip {
+      font-size: 11px; padding: 4px 10px; border-radius: 20px;
+      background: #eff6ff; color: #3b82f6; border: none;
+      cursor: pointer; font-family: inherit; font-weight: 600;
+      transition: background 0.15s; white-space: nowrap;
+    }
+    .ql-chip:hover { background: #dbeafe; }
+    .ql-chip:active { transform: scale(0.96); }
+    .ql-label { font-size: 11px; color: #aaa; align-self: center; }
+
+    /* empty link list */
+    .link-empty { text-align: center; padding: 24px; color: #bbb; font-size: 13px; }
+  </style>
 </head>
 <body>
 <div class="wrap">
@@ -125,62 +254,125 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
     <span class="clock" id="clock">—</span>
   </div>
 
-  <div class="card">
-    <div class="card-label">Kirim Pesan</div>
-
-    <div class="field">
-      <label>Target penerima</label>
-      <select id="target">
-        <option value="semua">@semua — semua user</option>
-        <option value="personal">Personal — username tertentu</option>
-      </select>
-    </div>
-
-    <div class="field" id="usernameWrap" style="display:none;">
-      <label>Username (sebelum @gmail.com)</label>
-      <input type="text" id="username" placeholder="contoh: nadya22" />
-    </div>
-
-    <div class="field">
-      <label>Pesan</label>
-      <textarea id="msgText" placeholder="Tulis pesan notifikasi..."></textarea>
-    </div>
-
-    <div class="field">
-      <label>Link (opsional — tampil sebagai "Klik Disini")</label>
-      <input type="text" id="msgLink" placeholder="https://example.com" />
-    </div>
-
-    <div class="btn-row">
-      <button class="btn btn-send" onclick="kirimPesan()">
-        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
-        Kirim
-      </button>
-      <button class="btn btn-hapus-semua" onclick="hapusSemuaPopup()">
-        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
-        Hapus Popup Aktif
-      </button>
-    </div>
-
-    <div id="statusMsg" class="status-msg"></div>
+  <!-- TAB NAV -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('kirim')">📤 Kirim</button>
+    <button class="tab-btn" onclick="switchTab('riwayat')">📋 Riwayat</button>
+    <button class="tab-btn" onclick="switchTab('links')">🔗 Saved Links</button>
   </div>
 
-  <div class="card">
-    <div class="card-label" style="margin-bottom:10px;">Riwayat</div>
+  <!-- ===== TAB: KIRIM ===== -->
+  <div class="tab-panel active" id="tab-kirim">
+    <div class="card">
+      <div class="card-label">Kirim Pesan</div>
 
-    <div class="stats">
-      <div class="stat-box"><div class="stat-n blue" id="sTotal">0</div><div class="stat-l">TOTAL</div></div>
-      <div class="stat-box"><div class="stat-n green" id="sOk">0</div><div class="stat-l">SUKSES</div></div>
-      <div class="stat-box"><div class="stat-n red" id="sFail">0</div><div class="stat-l">GAGAL</div></div>
+      <div class="field">
+        <label>Target penerima</label>
+        <select id="target">
+          <option value="semua">@semua — semua user</option>
+          <option value="personal">Personal — username tertentu</option>
+        </select>
+      </div>
+
+      <div class="field" id="usernameWrap" style="display:none;">
+        <label>Username (sebelum @gmail.com)</label>
+        <input type="text" id="username" placeholder="contoh: nadya22" />
+      </div>
+
+      <div class="field">
+        <label>Pesan</label>
+        <div class="msg-toolbar">
+          <span class="tb-label">Format:</span>
+          <button class="tb-btn" onclick="wrapBold()" title="Tebalkan teks yang dipilih"><b>B</b></button>
+          <span class="tb-hint">atau ketik *kata* untuk tebal</span>
+        </div>
+        <textarea id="msgText" placeholder="Tulis pesan notifikasi...&#10;Contoh: *Perhatian* saldo kamu segera habis!" oninput="onMsgInput(this)" rows="4"></textarea>
+        <div class="msg-preview" id="msgPreview"></div>
+      </div>
+
+      <div class="field">
+        <label>Link (opsional — tampil sebagai "Klik Disini")</label>
+        <!-- Quick-paste saved links -->
+        <div id="quickLinksRow" class="quick-links-row" style="display:none;"></div>
+        <input type="text" id="msgLink" placeholder="https://example.com" />
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-send" onclick="kirimPesan()">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+          Kirim
+        </button>
+        <button class="btn btn-hapus-semua" onclick="hapusSemuaPopup()">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          Hapus Popup
+        </button>
+      </div>
+
+      <div id="statusMsg" class="status-msg"></div>
+    </div>
+  </div>
+
+  <!-- ===== TAB: RIWAYAT ===== -->
+  <div class="tab-panel" id="tab-riwayat">
+    <div class="card">
+      <div class="card-label" style="margin-bottom:10px;">Riwayat</div>
+
+      <div class="stats">
+        <div class="stat-box"><div class="stat-n blue" id="sTotal">0</div><div class="stat-l">TOTAL</div></div>
+        <div class="stat-box"><div class="stat-n green" id="sOk">0</div><div class="stat-l">SUKSES</div></div>
+        <div class="stat-box"><div class="stat-n red" id="sFail">0</div><div class="stat-l">GAGAL</div></div>
+      </div>
+
+      <!-- Search -->
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Cari pesan, target, link..." oninput="onSearchInput(this)" />
+        <button class="search-clear" id="searchClear" onclick="clearSearch()">×</button>
+      </div>
+      <div id="searchResultCount" class="search-result-count" style="display:none;"></div>
+
+      <div class="history-head">
+        <span style="font-size:12px;color:#888;">Pesan terkirim</span>
+        <button class="clear-all" onclick="clearHistory()">Hapus semua</button>
+      </div>
+
+      <div class="history-list" id="historyList">
+        <div class="empty"><div class="empty-icon">📭</div>Belum ada riwayat</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB: SAVED LINKS ===== -->
+  <div class="tab-panel" id="tab-links">
+    <div class="card">
+      <div class="card-label">Saved Links</div>
+      <p style="font-size:12px;color:#888;margin-bottom:14px;line-height:1.6;">
+        Simpan link yang sering dipakai. Klik chip nama di form Kirim untuk langsung tempel.
+      </p>
+
+      <!-- Add form -->
+      <div class="field">
+        <label>Nama link</label>
+        <input type="text" id="newLinkName" placeholder="contoh: Mutasi Saldo" maxlength="40" />
+      </div>
+      <div class="field">
+        <label>URL</label>
+        <input type="text" id="newLinkUrl" placeholder="https://example.com" />
+      </div>
+      <div class="btn-row" style="margin-bottom:4px;">
+        <button class="btn btn-send" onclick="tambahLink()">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          Simpan Link
+        </button>
+      </div>
+      <div id="linkStatus" class="link-status"></div>
     </div>
 
-    <div class="history-head">
-      <span style="font-size:12px;color:#888;">Pesan terkirim</span>
-      <button class="clear-all" onclick="clearHistory()">Hapus semua riwayat</button>
-    </div>
-
-    <div class="history-list" id="historyList">
-      <div class="empty"><div class="empty-icon">📭</div>Belum ada riwayat</div>
+    <div class="card">
+      <div class="card-label" style="margin-bottom:10px;">Daftar Link Tersimpan</div>
+      <div class="link-list" id="linkList">
+        <div class="link-empty">Belum ada link tersimpan</div>
+      </div>
     </div>
   </div>
 
@@ -189,76 +381,129 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
 <script>
 const DB_URL = "https://famss-75ca3-default-rtdb.asia-southeast1.firebasedatabase.app";
 const HISTORY_KEY = "notif_history_v2";
+const LINKS_KEY   = "notif_saved_links_v1";
 
+/* ──────────────── CLOCK ──────────────── */
 setInterval(() => {
   document.getElementById("clock").textContent = new Date().toLocaleTimeString("id-ID");
 }, 1000);
 
+/* ──────────────── TAB ──────────────── */
+function switchTab(name) {
+  document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById("tab-" + name).classList.add("active");
+  const idx = ["kirim","riwayat","links"].indexOf(name);
+  document.querySelectorAll(".tab-btn")[idx].classList.add("active");
+  if (name === "riwayat") renderHistory();
+  if (name === "links")   renderLinks();
+  if (name === "kirim")   renderQuickLinks();
+}
+
+/* ──────────────── TARGET SELECT ──────────────── */
 document.getElementById("target").addEventListener("change", function() {
   document.getElementById("usernameWrap").style.display = this.value === "personal" ? "block" : "none";
 });
 
-function getHistory() { return JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]"); }
-function saveHistory(list) { localStorage.setItem(HISTORY_KEY, JSON.stringify(list.slice(0,100))); }
-function addHistory(item) { const l = getHistory(); l.unshift(item); saveHistory(l); renderHistory(); }
-function hapusHistoryItem(idx) { const l = getHistory(); l.splice(idx,1); saveHistory(l); renderHistory(); }
-function clearHistory() { if (!confirm("Hapus semua riwayat?")) return; localStorage.removeItem(HISTORY_KEY); renderHistory(); }
+/* ──────────────── HISTORY HELPERS ──────────────── */
+function getHistory()         { return JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]"); }
+function saveHistory(list)    { localStorage.setItem(HISTORY_KEY, JSON.stringify(list.slice(0,100))); }
+function addHistory(item)     { const l = getHistory(); l.unshift(item); saveHistory(l); }
+function hapusHistoryItem(idx){ const l = getHistory(); l.splice(idx,1); saveHistory(l); renderHistory(); }
+function clearHistory()       { if (!confirm("Hapus semua riwayat?")) return; localStorage.removeItem(HISTORY_KEY); renderHistory(); }
 
-async function hapusPesanDariHistory(idx) {
-  const list = getHistory();
-  const item = list[idx];
-  if (!item || !item.msgId) { showStatus("msgId tidak ditemukan.", false); return; }
-  try {
-    const res = await fetch(`${DB_URL}/messages/latest.json`);
-    const data = await res.json();
-    if (data && data.msgId === item.msgId) {
-      await fetch(`${DB_URL}/messages/latest.json`, {
-        method: "PUT", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, deleted: true })
-      });
-      showStatus("✅ Popup pesan tersebut berhasil dihapus.", true);
-    } else {
-      showStatus("ℹ️ Pesan ini tidak sedang aktif (sudah diganti pesan lain).", null);
-    }
-  } catch(e) { showStatus("❌ Error: " + e.message, false); }
+/* ──────────────── SEARCH ──────────────── */
+let searchQuery = "";
+
+function onSearchInput(el) {
+  searchQuery = el.value.trim().toLowerCase();
+  document.getElementById("searchClear").style.display = searchQuery ? "block" : "none";
+  renderHistory();
 }
 
+function clearSearch() {
+  document.getElementById("searchInput").value = "";
+  searchQuery = "";
+  document.getElementById("searchClear").style.display = "none";
+  renderHistory();
+}
+
+function highlightText(str, query) {
+  if (!query || !str) return escHtml(str);
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return escHtml(str).replace(new RegExp(escaped, "gi"), m => `<mark>${m}</mark>`);
+}
+
+/* ──────────────── RENDER HISTORY ──────────────── */
 function renderHistory() {
-  const list = getHistory();
+  const rawList = getHistory();
   const el = document.getElementById("historyList");
-  document.getElementById("sTotal").textContent = list.length;
-  document.getElementById("sOk").textContent = list.filter(i => i.status === "ok").length;
-  document.getElementById("sFail").textContent = list.filter(i => i.status === "fail").length;
+  const countEl = document.getElementById("searchResultCount");
 
-  if (!list.length) { el.innerHTML = `<div class="empty"><div class="empty-icon">📭</div>Belum ada riwayat</div>`; return; }
+  document.getElementById("sTotal").textContent = rawList.length;
+  document.getElementById("sOk").textContent   = rawList.filter(i => i.status === "ok").length;
+  document.getElementById("sFail").textContent  = rawList.filter(i => i.status === "fail").length;
 
-  el.innerHTML = list.map((item, idx) => {
-    const isHapus = item.type === "hapus";
-    return `<div class="hi-item">
+  let list = rawList;
+  let matchedIndices = new Set();
+
+  if (searchQuery) {
+    // collect indices that match
+    rawList.forEach((item, i) => {
+      const haystack = [item.msg, item.target, item.link, item.error].filter(Boolean).join(" ").toLowerCase();
+      if (haystack.includes(searchQuery)) matchedIndices.add(i);
+    });
+
+    // sort: matched first, then rest
+    const matched    = rawList.map((item, i) => ({ item, i })).filter(x => matchedIndices.has(x.i));
+    const unmatched  = rawList.map((item, i) => ({ item, i })).filter(x => !matchedIndices.has(x.i));
+    list = [...matched, ...unmatched];
+
+    countEl.style.display = "block";
+    countEl.textContent   = matchedIndices.size
+      ? `${matchedIndices.size} hasil ditemukan dari ${rawList.length} riwayat`
+      : `Tidak ada hasil untuk "${searchQuery}"`;
+  } else {
+    list = rawList.map((item, i) => ({ item, i }));
+    countEl.style.display = "none";
+  }
+
+  if (!rawList.length) {
+    el.innerHTML = `<div class="empty"><div class="empty-icon">📭</div>Belum ada riwayat</div>`;
+    return;
+  }
+
+  el.innerHTML = list.map(({ item, i }) => {
+    const isHapus   = item.type === "hapus";
+    const isMatched = matchedIndices.has(i);
+    const msgDisplay  = isHapus ? "<em style='color:#aaa'>Popup dihapus</em>" : renderBoldHistory(item.msg, searchQuery);
+    const linkDisplay = item.link ? highlightText(item.link, searchQuery) : "";
+    return `<div class="hi-item${isMatched && searchQuery ? " matched" : ""}">
       <div class="hi-head">
         <span class="badge ${isHapus ? 'b-hapus' : 'b-kirim'}">${isHapus ? "HAPUS" : "KIRIM"}</span>
         <span class="badge ${item.status === 'ok' ? 'b-ok' : 'b-fail'}">${item.status === 'ok' ? '✓ Sukses' : '✗ Gagal'}</span>
+        ${isMatched && searchQuery ? `<span class="badge b-match">⭐ Match</span>` : ""}
         <span class="hi-time">${item.time}</span>
       </div>
       ${!isHapus ? `<div class="hi-target">→ <strong>${item.target === "semua" ? "@semua" : "@" + item.target}</strong></div>` : ""}
-      <div class="hi-msg">${isHapus ? "<em style='color:#aaa'>Popup dihapus</em>" : escHtml(item.msg)}</div>
-      ${item.link ? `<div class="hi-link">🔗 ${escHtml(item.link)}</div>` : ""}
+      <div class="hi-msg">${msgDisplay}</div>
+      ${item.link ? `<div class="hi-link">🔗 ${linkDisplay}</div>` : ""}
       ${item.error ? `<div class="hi-err">Error: ${escHtml(item.error)}</div>` : ""}
       <div class="hi-actions">
-        ${!isHapus ? `<button class="btn-sm btn-sm-blue" onclick="isiFormDariHistory(${idx})">↩ Kirim Ulang</button>` : ""}
-        ${!isHapus && item.msgId ? `<button class="btn-sm btn-sm-red" onclick="hapusPesanDariHistory(${idx})">Hapus popup ini</button>` : ""}
-        <button class="btn-sm btn-sm-gray" onclick="hapusHistoryItem(${idx})">Hapus</button>
+        ${!isHapus ? `<button class="btn-sm btn-sm-blue" onclick="isiFormDariHistory(${i})">↩ Kirim Ulang</button>` : ""}
+        ${!isHapus && item.msgId ? `<button class="btn-sm btn-sm-red" onclick="hapusPesanDariHistory(${i})">Hapus popup</button>` : ""}
+        <button class="btn-sm btn-sm-gray" onclick="hapusHistoryItem(${i})">Hapus</button>
       </div>
     </div>`;
   }).join("");
 }
 
+/* ──────────────── FORM FROM HISTORY ──────────────── */
 function isiFormDariHistory(idx) {
   const list = getHistory();
   const item = list[idx];
   if (!item || item.type === "hapus") return;
 
-  // isi target
   const targetEl = document.getElementById("target");
   if (item.target === "semua") {
     targetEl.value = "semua";
@@ -268,26 +513,62 @@ function isiFormDariHistory(idx) {
     document.getElementById("usernameWrap").style.display = "block";
     document.getElementById("username").value = item.target;
   }
+  document.getElementById("msgText").value  = item.msg  || "";
+  document.getElementById("msgLink").value  = item.link || "";
 
-  // isi pesan & link
-  document.getElementById("msgText").value = item.msg || "";
-  document.getElementById("msgLink").value = item.link || "";
-
-  // scroll ke form & fokus textarea
-  document.querySelector(".card").scrollIntoView({ behavior: "smooth", block: "start" });
+  switchTab("kirim");
   setTimeout(() => document.getElementById("msgText").focus(), 400);
-
-  showStatus("✏️ Form sudah diisi dari riwayat. Cek lalu klik Kirim.", null);
+  showStatus("✏️ Form sudah diisi dari riwayat.", null);
 }
 
+/* ──────────────── HAPUS POPUP DARI HISTORY ──────────────── */
+async function hapusPesanDariHistory(idx) {
+  const list = getHistory();
+  const item = list[idx];
+  if (!item || !item.msgId) { showStatus("msgId tidak ditemukan.", false); return; }
+  try {
+    const res  = await fetch(`${DB_URL}/messages/latest.json`);
+    const data = await res.json();
+    if (data && data.msgId === item.msgId) {
+      await fetch(`${DB_URL}/messages/latest.json`, {
+        method: "PUT", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, deleted: true })
+      });
+      showStatus("✅ Popup pesan tersebut berhasil dihapus.", true);
+    } else {
+      showStatus("ℹ️ Pesan ini tidak sedang aktif.", null);
+    }
+  } catch(e) { showStatus("❌ Error: " + e.message, false); }
+}
+
+/* ──────────────── UTILS ──────────────── */
 function escHtml(str) {
   if (!str) return "";
   return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
+function renderBoldHistory(str, query) {
+  // 1. escape HTML
+  let s = escHtml(str || "");
+  // 2. parse *bold*
+  s = s.replace(/\*(.*?)\*/g, "<strong>$1</strong>");
+  // 3. highlight search query
+  if (query) {
+    const esc = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    s = s.replace(new RegExp(esc, "gi"), m => `<mark>${m}</mark>`);
+  }
+  return s;
+}
 function nowStr() {
   return new Date().toLocaleString("id-ID", { day:"2-digit", month:"short", year:"numeric", hour:"2-digit", minute:"2-digit", second:"2-digit" });
 }
+function showStatus(msg, ok) {
+  const el = document.getElementById("statusMsg");
+  el.textContent = msg;
+  if (ok === null) el.className = "status-msg loading";
+  else el.className = "status-msg " + (ok ? "ok" : "err");
+}
 
+/* ──────────────── KIRIM PESAN ──────────────── */
 async function kirimPesan() {
   const target   = document.getElementById("target").value;
   const username = document.getElementById("username").value.trim().toLowerCase();
@@ -298,14 +579,13 @@ async function kirimPesan() {
   if (target === "personal" && !username) { showStatus("Username harus diisi!", false); return; }
 
   const finalText = target === "semua" ? `@semua ${text}` : `@${username} ${text}`;
-  const msgId = Date.now();
+  const msgId     = Date.now();
   showStatus("Mengirim...", null);
 
   const payload = {
     text: finalText,
     username: target === "semua" ? "semua" : username,
-    msgId,
-    deleted: false,
+    msgId, deleted: false,
     link: link || null
   };
 
@@ -329,10 +609,11 @@ async function kirimPesan() {
   }
 }
 
+/* ──────────────── HAPUS SEMUA POPUP ──────────────── */
 async function hapusSemuaPopup() {
   showStatus("Menghapus...", null);
   try {
-    const res = await fetch(`${DB_URL}/messages/latest.json`);
+    const res  = await fetch(`${DB_URL}/messages/latest.json`);
     const data = await res.json();
     if (!data) { showStatus("Tidak ada pesan aktif.", false); return; }
     const res2 = await fetch(`${DB_URL}/messages/latest.json`, {
@@ -349,14 +630,159 @@ async function hapusSemuaPopup() {
   } catch(e) { showStatus("❌ Error: " + e.message, false); }
 }
 
-function showStatus(msg, ok) {
-  const el = document.getElementById("statusMsg");
-  el.textContent = msg;
-  if (ok === null) el.className = "status-msg loading";
-  else el.className = "status-msg " + (ok ? "ok" : "err");
+/* ══════════════════════════════════════════
+   SAVED LINKS
+══════════════════════════════════════════ */
+function getLinks()       { return JSON.parse(localStorage.getItem(LINKS_KEY) || "[]"); }
+function saveLinks(list)  { localStorage.setItem(LINKS_KEY, JSON.stringify(list)); }
+
+function tambahLink() {
+  const name = document.getElementById("newLinkName").value.trim();
+  const url  = document.getElementById("newLinkUrl").value.trim();
+  const statusEl = document.getElementById("linkStatus");
+
+  if (!name) { showLinkStatus("Nama link tidak boleh kosong!", false); return; }
+  if (!url)  { showLinkStatus("URL tidak boleh kosong!", false); return; }
+  if (!/^https?:\/\//i.test(url)) { showLinkStatus("URL harus diawali https:// atau http://", false); return; }
+
+  const list = getLinks();
+  list.push({ id: Date.now(), name, url });
+  saveLinks(list);
+
+  document.getElementById("newLinkName").value = "";
+  document.getElementById("newLinkUrl").value  = "";
+
+  showLinkStatus("✅ Link berhasil disimpan!", true);
+  renderLinks();
+  renderQuickLinks();
 }
 
+function hapusLink(id) {
+  if (!confirm("Hapus link ini?")) return;
+  saveLinks(getLinks().filter(l => l.id !== id));
+  renderLinks();
+  renderQuickLinks();
+}
+
+function editLink(id) {
+  const row = document.getElementById("edit-row-" + id);
+  if (!row) return;
+  row.classList.toggle("open");
+}
+
+function simpanEditLink(id) {
+  const name = document.getElementById("edit-name-" + id).value.trim();
+  const url  = document.getElementById("edit-url-"  + id).value.trim();
+  if (!name || !url) { showLinkStatus("Nama & URL wajib diisi!", false); return; }
+
+  const list = getLinks().map(l => l.id === id ? { ...l, name, url } : l);
+  saveLinks(list);
+  showLinkStatus("✅ Link diperbarui!", true);
+  renderLinks();
+  renderQuickLinks();
+}
+
+function pasteLink(url) {
+  document.getElementById("msgLink").value = url;
+  switchTab("kirim");
+  setTimeout(() => document.getElementById("msgLink").focus(), 200);
+}
+
+function showLinkStatus(msg, ok) {
+  const el = document.getElementById("linkStatus");
+  el.textContent  = msg;
+  el.className    = "link-status " + (ok ? "ok" : "err");
+  setTimeout(() => { el.className = "link-status"; }, 3000);
+}
+
+function renderLinks() {
+  const list = getLinks();
+  const el   = document.getElementById("linkList");
+  if (!list.length) {
+    el.innerHTML = `<div class="link-empty">Belum ada link tersimpan</div>`;
+    return;
+  }
+  el.innerHTML = list.map(l => `
+    <div class="link-item" id="link-item-${l.id}">
+      <div class="link-item-icon">🔗</div>
+      <div class="link-item-body">
+        <div class="link-item-name">${escHtml(l.name)}</div>
+        <div class="link-item-url">${escHtml(l.url)}</div>
+        <!-- edit row -->
+        <div class="link-edit-row" id="edit-row-${l.id}">
+          <input type="text" id="edit-name-${l.id}" value="${escHtml(l.name)}" placeholder="Nama" />
+          <input type="text" id="edit-url-${l.id}"  value="${escHtml(l.url)}"  placeholder="URL" />
+          <button class="btn btn-send" style="padding:8px 12px;font-size:12px;border-radius:8px;" onclick="simpanEditLink(${l.id})">Simpan</button>
+        </div>
+      </div>
+      <div class="link-item-actions">
+        <button class="btn-sm btn-sm-green" onclick="pasteLink('${escHtml(l.url)}')">Tempel</button>
+        <button class="btn-sm btn-sm-blue"  onclick="editLink(${l.id})">Edit</button>
+        <button class="btn-sm btn-sm-red"   onclick="hapusLink(${l.id})">Hapus</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderQuickLinks() {
+  const list = getLinks();
+  const row  = document.getElementById("quickLinksRow");
+  if (!list.length) { row.style.display = "none"; return; }
+  row.style.display = "flex";
+  row.innerHTML = `<span class="ql-label">Link:</span>` +
+    list.map(l => `<button class="ql-chip" onclick="pasteLink('${escHtml(l.url)}')" title="${escHtml(l.url)}">${escHtml(l.name)}</button>`).join("");
+}
+
+/* ──────────────── BOLD SYNTAX ──────────────── */
+function parseBold(text) {
+  // *kata* → <strong>kata</strong>
+  return escHtml(text).replace(/\*(.*?)\*/g, "<strong>$1</strong>");
+}
+
+function onMsgInput(el) {
+  // auto-grow textarea
+  el.style.height = "auto";
+  el.style.height = (el.scrollHeight) + "px";
+
+  // update preview
+  const val = el.value.trim();
+  const preview = document.getElementById("msgPreview");
+  if (val) {
+    preview.innerHTML = parseBold(val);
+    preview.classList.add("has-content");
+  } else {
+    preview.innerHTML = "";
+    preview.classList.remove("has-content");
+  }
+}
+
+function wrapBold() {
+  const ta = document.getElementById("msgText");
+  const start = ta.selectionStart;
+  const end   = ta.selectionEnd;
+  const val   = ta.value;
+
+  if (start === end) {
+    // tidak ada seleksi — sisipkan placeholder
+    const insert = "*teks*";
+    ta.value = val.slice(0, start) + insert + val.slice(end);
+    ta.selectionStart = start + 1;
+    ta.selectionEnd   = start + insert.length - 1;
+  } else {
+    // wrap teks yang dipilih
+    const selected = val.slice(start, end);
+    const wrapped  = "*" + selected + "*";
+    ta.value = val.slice(0, start) + wrapped + val.slice(end);
+    ta.selectionStart = start;
+    ta.selectionEnd   = start + wrapped.length;
+  }
+  ta.focus();
+  onMsgInput(ta);
+}
+
+/* ──────────────── INIT ──────────────── */
 renderHistory();
+renderQuickLinks();
 </script>
 </body>
 </html>
