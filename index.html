@@ -40,7 +40,7 @@
     .tab-btn {
       flex: 1; padding: 10px 8px; border: none; border-radius: 10px;
       font-size: 12px; font-weight: 700; cursor: pointer;
-      font-family: inherit; transition: all 0.15s;
+      font-family: inherit; transition: background 0.15s, color 0.15s;
       background: #fff; color: #aaa;
       box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
@@ -63,7 +63,7 @@
       transition: border-color 0.15s, background 0.15s;
     }
     select:focus, input:focus, textarea:focus { border-color: #3b82f6; background: #fff; }
-    textarea { resize: none; min-height: 80px; line-height: 1.6; overflow-y: hidden; }
+    textarea { resize: none; min-height: 200px; line-height: 1.6; overflow-y: hidden; }
 
     /* Bold toolbar */
     .msg-toolbar {
@@ -75,7 +75,7 @@
       font-size: 11px; padding: 3px 9px; border-radius: 6px;
       border: 1.5px solid #e8e8e8; background: #fafafa;
       cursor: pointer; font-family: inherit; font-weight: 700;
-      transition: all 0.15s; color: #555;
+      transition: background 0.15s, border-color 0.15s, color 0.15s; color: #555;
     }
     .tb-btn:hover { background: #eff6ff; border-color: #3b82f6; color: #3b82f6; }
     .tb-btn:active { transform: scale(0.96); }
@@ -97,7 +97,7 @@
     .btn {
       flex: 1; padding: 12px 8px; border: none; border-radius: 10px;
       font-size: 13px; font-weight: 700; cursor: pointer;
-      font-family: inherit; transition: all 0.15s;
+      font-family: inherit; transition: background 0.15s;
       display: flex; align-items: center; justify-content: center; gap: 6px;
     }
     .btn:active { transform: scale(0.97); }
@@ -146,11 +146,10 @@
     .clear-all { font-size: 12px; color: #aaa; background: none; border: none; cursor: pointer; font-family: inherit; padding: 4px 8px; border-radius: 6px; }
     .clear-all:hover { background: #f0f2f5; color: #555; }
 
-    .history-list { display: flex; flex-direction: column; gap: 8px; }
+    .history-list { display: flex; flex-direction: column; gap: 8px; content-visibility: auto; }
 
-    .hi-item { border: 1.5px solid #f0f0f0; border-radius: 10px; padding: 12px 14px; animation: fadeUp 0.2s ease; }
+    .hi-item { border: 1.5px solid #f0f0f0; border-radius: 10px; padding: 12px 14px; content-visibility: auto; contain-intrinsic-size: 120px; }
     .hi-item.matched { border-color: #bfdbfe; background: #f0f7ff; }
-    @keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
 
     .hi-head { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap; }
     .badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; letter-spacing: 0.3px; }
@@ -202,7 +201,6 @@
       display: flex; align-items: center; gap: 10px;
       border: 1.5px solid #e8e8e8; border-radius: 10px;
       padding: 10px 12px; background: #fafafa;
-      animation: fadeUp 0.2s ease;
     }
     .link-item-icon {
       width: 30px; height: 30px; border-radius: 8px;
@@ -243,6 +241,9 @@
 
     /* empty link list */
     .link-empty { text-align: center; padding: 24px; color: #bbb; font-size: 13px; }
+
+    /* small hint under username field */
+    .field-hint { font-size: 10px; color: #bbb; margin-top: 4px; }
   </style>
 </head>
 <body>
@@ -277,6 +278,7 @@
       <div class="field" id="usernameWrap" style="display:none;">
         <label>Username (sebelum @gmail.com)</label>
         <input type="text" id="username" placeholder="contoh: nadya22" />
+        <div class="field-hint">Paste email otomatis dipotong jadi nama depan saja.</div>
       </div>
 
       <div class="field">
@@ -286,7 +288,7 @@
           <button class="tb-btn" onclick="wrapBold()" title="Tebalkan teks yang dipilih"><b>B</b></button>
           <span class="tb-hint">atau ketik *kata* untuk tebal</span>
         </div>
-        <textarea id="msgText" placeholder="Tulis pesan notifikasi...&#10;Contoh: *Perhatian* saldo kamu segera habis!" oninput="onMsgInput(this)" rows="4"></textarea>
+        <textarea id="msgText" placeholder="Tulis pesan notifikasi...&#10;Contoh: *Perhatian* saldo kamu segera habis!" oninput="onMsgInput(this)" rows="9"></textarea>
         <div class="msg-preview" id="msgPreview"></div>
       </div>
 
@@ -405,6 +407,31 @@ document.getElementById("target").addEventListener("change", function() {
   document.getElementById("usernameWrap").style.display = this.value === "personal" ? "block" : "none";
 });
 
+/* ──────────────── USERNAME: AUTO-STRIP EMAIL ────────────────
+   Kalau user paste/ketik "rindiyani@gmail.com", otomatis
+   dipotong jadi "rindiyani" saja (apapun domainnya). */
+function stripEmailToFirstName(val) {
+  if (!val) return val;
+  const atIdx = val.indexOf("@");
+  return atIdx > -1 ? val.slice(0, atIdx) : val;
+}
+const usernameInput = document.getElementById("username");
+usernameInput.addEventListener("input", function() {
+  const cleaned = stripEmailToFirstName(this.value).trim().toLowerCase();
+  if (cleaned !== this.value) {
+    const pos = this.selectionStart;
+    this.value = cleaned;
+    // jaga posisi kursor tetap wajar
+    const newPos = Math.min(pos, cleaned.length);
+    this.setSelectionRange(newPos, newPos);
+  }
+});
+usernameInput.addEventListener("paste", function(e) {
+  e.preventDefault();
+  const text = (e.clipboardData || window.clipboardData).getData("text");
+  this.value = stripEmailToFirstName(text).trim().toLowerCase();
+});
+
 /* ──────────────── HISTORY HELPERS ──────────────── */
 function getHistory()         { return JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]"); }
 function saveHistory(list)    { localStorage.setItem(HISTORY_KEY, JSON.stringify(list.slice(0,100))); }
@@ -412,16 +439,22 @@ function addHistory(item)     { const l = getHistory(); l.unshift(item); saveHis
 function hapusHistoryItem(idx){ const l = getHistory(); l.splice(idx,1); saveHistory(l); renderHistory(); }
 function clearHistory()       { if (!confirm("Hapus semua riwayat?")) return; localStorage.removeItem(HISTORY_KEY); renderHistory(); }
 
-/* ──────────────── SEARCH ──────────────── */
+/* ──────────────── SEARCH (debounced biar gak lag) ──────────────── */
 let searchQuery = "";
+let searchDebounceTimer = null;
 
 function onSearchInput(el) {
-  searchQuery = el.value.trim().toLowerCase();
-  document.getElementById("searchClear").style.display = searchQuery ? "block" : "none";
-  renderHistory();
+  clearTimeout(searchDebounceTimer);
+  document.getElementById("searchClear").style.display = el.value ? "block" : "none";
+  // debounce 220ms — render hanya setelah user berhenti ngetik sejenak
+  searchDebounceTimer = setTimeout(() => {
+    searchQuery = el.value.trim().toLowerCase();
+    renderHistory();
+  }, 220);
 }
 
 function clearSearch() {
+  clearTimeout(searchDebounceTimer);
   document.getElementById("searchInput").value = "";
   searchQuery = "";
   document.getElementById("searchClear").style.display = "none";
@@ -434,7 +467,7 @@ function highlightText(str, query) {
   return escHtml(str).replace(new RegExp(escaped, "gi"), m => `<mark>${m}</mark>`);
 }
 
-/* ──────────────── RENDER HISTORY ──────────────── */
+/* ──────────────── RENDER HISTORY (dioptimalkan) ──────────────── */
 function renderHistory() {
   const rawList = getHistory();
   const el = document.getElementById("historyList");
@@ -444,45 +477,44 @@ function renderHistory() {
   document.getElementById("sOk").textContent   = rawList.filter(i => i.status === "ok").length;
   document.getElementById("sFail").textContent  = rawList.filter(i => i.status === "fail").length;
 
-  let list = rawList;
-  let matchedIndices = new Set();
-
-  if (searchQuery) {
-    // collect indices that match
-    rawList.forEach((item, i) => {
-      const haystack = [item.msg, item.target, item.link, item.error].filter(Boolean).join(" ").toLowerCase();
-      if (haystack.includes(searchQuery)) matchedIndices.add(i);
-    });
-
-    // sort: matched first, then rest
-    const matched    = rawList.map((item, i) => ({ item, i })).filter(x => matchedIndices.has(x.i));
-    const unmatched  = rawList.map((item, i) => ({ item, i })).filter(x => !matchedIndices.has(x.i));
-    list = [...matched, ...unmatched];
-
-    countEl.style.display = "block";
-    countEl.textContent   = matchedIndices.size
-      ? `${matchedIndices.size} hasil ditemukan dari ${rawList.length} riwayat`
-      : `Tidak ada hasil untuk "${searchQuery}"`;
-  } else {
-    list = rawList.map((item, i) => ({ item, i }));
-    countEl.style.display = "none";
-  }
-
   if (!rawList.length) {
     el.innerHTML = `<div class="empty"><div class="empty-icon">📭</div>Belum ada riwayat</div>`;
+    countEl.style.display = "none";
     return;
   }
 
-  el.innerHTML = list.map(({ item, i }) => {
+  let list;
+  if (searchQuery) {
+    const matched = [];
+    const unmatched = [];
+    for (let i = 0; i < rawList.length; i++) {
+      const item = rawList[i];
+      const haystack = (item.msg || "") + " " + (item.target || "") + " " + (item.link || "") + " " + (item.error || "");
+      if (haystack.toLowerCase().includes(searchQuery)) matched.push({ item, i, m: true });
+      else unmatched.push({ item, i, m: false });
+    }
+    list = matched.concat(unmatched);
+    countEl.style.display = "block";
+    countEl.textContent = matched.length
+      ? `${matched.length} hasil ditemukan dari ${rawList.length} riwayat`
+      : `Tidak ada hasil untuk "${searchQuery}"`;
+  } else {
+    list = rawList.map((item, i) => ({ item, i, m: false }));
+    countEl.style.display = "none";
+  }
+
+  // pakai array.join lalu satu kali innerHTML write (lebih cepat dari banyak DOM ops)
+  const html = new Array(list.length);
+  for (let n = 0; n < list.length; n++) {
+    const { item, i, m } = list[n];
     const isHapus   = item.type === "hapus";
-    const isMatched = matchedIndices.has(i);
     const msgDisplay  = isHapus ? "<em style='color:#aaa'>Popup dihapus</em>" : renderBoldHistory(item.msg, searchQuery);
     const linkDisplay = item.link ? highlightText(item.link, searchQuery) : "";
-    return `<div class="hi-item${isMatched && searchQuery ? " matched" : ""}">
+    html[n] = `<div class="hi-item${m ? " matched" : ""}">
       <div class="hi-head">
         <span class="badge ${isHapus ? 'b-hapus' : 'b-kirim'}">${isHapus ? "HAPUS" : "KIRIM"}</span>
         <span class="badge ${item.status === 'ok' ? 'b-ok' : 'b-fail'}">${item.status === 'ok' ? '✓ Sukses' : '✗ Gagal'}</span>
-        ${isMatched && searchQuery ? `<span class="badge b-match">⭐ Match</span>` : ""}
+        ${m ? `<span class="badge b-match">⭐ Match</span>` : ""}
         <span class="hi-time">${item.time}</span>
       </div>
       ${!isHapus ? `<div class="hi-target">→ <strong>${item.target === "semua" ? "@semua" : "@" + item.target}</strong></div>` : ""}
@@ -495,7 +527,8 @@ function renderHistory() {
         <button class="btn-sm btn-sm-gray" onclick="hapusHistoryItem(${i})">Hapus</button>
       </div>
     </div>`;
-  }).join("");
+  }
+  el.innerHTML = html.join("");
 }
 
 /* ──────────────── FORM FROM HISTORY ──────────────── */
@@ -511,7 +544,7 @@ function isiFormDariHistory(idx) {
   } else {
     targetEl.value = "personal";
     document.getElementById("usernameWrap").style.display = "block";
-    document.getElementById("username").value = item.target;
+    document.getElementById("username").value = stripEmailToFirstName(item.target);
   }
   document.getElementById("msgText").value  = item.msg  || "";
   document.getElementById("msgLink").value  = item.link || "";
@@ -547,11 +580,8 @@ function escHtml(str) {
   return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
 function renderBoldHistory(str, query) {
-  // 1. escape HTML
   let s = escHtml(str || "");
-  // 2. parse *bold*
   s = s.replace(/\*(.*?)\*/g, "<strong>$1</strong>");
-  // 3. highlight search query
   if (query) {
     const esc = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     s = s.replace(new RegExp(esc, "gi"), m => `<mark>${m}</mark>`);
@@ -571,7 +601,7 @@ function showStatus(msg, ok) {
 /* ──────────────── KIRIM PESAN ──────────────── */
 async function kirimPesan() {
   const target   = document.getElementById("target").value;
-  const username = document.getElementById("username").value.trim().toLowerCase();
+  const username = stripEmailToFirstName(document.getElementById("username").value.trim()).toLowerCase();
   const text     = document.getElementById("msgText").value.trim();
   const link     = document.getElementById("msgLink").value.trim();
 
@@ -639,7 +669,6 @@ function saveLinks(list)  { localStorage.setItem(LINKS_KEY, JSON.stringify(list)
 function tambahLink() {
   const name = document.getElementById("newLinkName").value.trim();
   const url  = document.getElementById("newLinkUrl").value.trim();
-  const statusEl = document.getElementById("linkStatus");
 
   if (!name) { showLinkStatus("Nama link tidak boleh kosong!", false); return; }
   if (!url)  { showLinkStatus("URL tidak boleh kosong!", false); return; }
@@ -735,25 +764,27 @@ function renderQuickLinks() {
 
 /* ──────────────── BOLD SYNTAX ──────────────── */
 function parseBold(text) {
-  // *kata* → <strong>kata</strong>
   return escHtml(text).replace(/\*(.*?)\*/g, "<strong>$1</strong>");
 }
 
+let msgInputRaf = null;
 function onMsgInput(el) {
-  // auto-grow textarea
   el.style.height = "auto";
   el.style.height = (el.scrollHeight) + "px";
 
-  // update preview
-  const val = el.value.trim();
-  const preview = document.getElementById("msgPreview");
-  if (val) {
-    preview.innerHTML = parseBold(val);
-    preview.classList.add("has-content");
-  } else {
-    preview.innerHTML = "";
-    preview.classList.remove("has-content");
-  }
+  // throttle preview update lewat requestAnimationFrame biar gak lag saat ngetik cepat
+  if (msgInputRaf) cancelAnimationFrame(msgInputRaf);
+  msgInputRaf = requestAnimationFrame(() => {
+    const val = el.value.trim();
+    const preview = document.getElementById("msgPreview");
+    if (val) {
+      preview.innerHTML = parseBold(val);
+      preview.classList.add("has-content");
+    } else {
+      preview.innerHTML = "";
+      preview.classList.remove("has-content");
+    }
+  });
 }
 
 function wrapBold() {
@@ -763,13 +794,11 @@ function wrapBold() {
   const val   = ta.value;
 
   if (start === end) {
-    // tidak ada seleksi — sisipkan placeholder
     const insert = "*teks*";
     ta.value = val.slice(0, start) + insert + val.slice(end);
     ta.selectionStart = start + 1;
     ta.selectionEnd   = start + insert.length - 1;
   } else {
-    // wrap teks yang dipilih
     const selected = val.slice(start, end);
     const wrapped  = "*" + selected + "*";
     ta.value = val.slice(0, start) + wrapped + val.slice(end);
