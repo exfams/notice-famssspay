@@ -271,7 +271,7 @@
         <label>Target penerima</label>
         <select id="target">
           <option value="semua">@semua — semua user</option>
-          <option value="personal">Personal — username tertentu</option>
+          <option value="personal" selected>Personal — username tertentu</option>
         </select>
       </div>
 
@@ -403,9 +403,16 @@ function switchTab(name) {
 }
 
 /* ──────────────── TARGET SELECT ──────────────── */
-document.getElementById("target").addEventListener("change", function() {
-  document.getElementById("usernameWrap").style.display = this.value === "personal" ? "block" : "none";
-});
+function updateUsernameWrapVisibility() {
+  document.getElementById("usernameWrap").style.display =
+    document.getElementById("target").value === "personal" ? "block" : "none";
+}
+document.getElementById("target").addEventListener("change", updateUsernameWrapVisibility);
+// FIX: dulu default select "@semua" dan field username baru muncul setelah
+// user ganti dropdown manual. Sekarang default-nya "Personal" (lihat atribut
+// selected di <option>), jadi begitu halaman dibuka field username langsung
+// tampil tanpa perlu pilih opsi lagi.
+updateUsernameWrapVisibility();
 
 /* ──────────────── USERNAME: AUTO-STRIP EMAIL ────────────────
    Kalau user paste/ketik "rindiyani@gmail.com", otomatis
@@ -575,10 +582,29 @@ async function hapusPesanDariHistory(idx) {
 }
 
 /* ──────────────── UTILS ──────────────── */
+// FIX (XSS): sebelumnya escHtml cuma escape & < > tapi TIDAK escape kutip
+// (' dan "), padahal hasilnya sering ditaruh di dalam atribut HTML kayak
+// onclick="pasteLink('...')" dan title="...". Kalau ada nama/url link yang
+// mengandung tanda kutip, itu bisa "kabur" dari atribut dan inject script
+// (stored XSS). Sekarang kutip ikut di-escape.
 function escHtml(str) {
   if (!str) return "";
-  return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  return str
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#39;");
 }
+
+// FIX: helper validasi URL dipusatkan di sini, dipakai di 3 tempat
+// (tambah link, edit link, kirim pesan) supaya konsisten — sebelumnya
+// cuma dicek pas "tambah link baru", pas "edit link" dan pas "kirim
+// pesan" linknya lolos tanpa validasi sama sekali (termasuk javascript:).
+function isValidUrl(url) {
+  return /^https?:\/\//i.test((url || "").trim());
+}
+
 function renderBoldHistory(str, query) {
   let s = escHtml(str || "");
   s = s.replace(/\*(.*?)\*/g, "<strong>$1</strong>");
@@ -607,6 +633,9 @@ async function kirimPesan() {
 
   if (!text) { showStatus("Pesan tidak boleh kosong!", false); return; }
   if (target === "personal" && !username) { showStatus("Username harus diisi!", false); return; }
+  // FIX: dulu link kirim gak divalidasi sama sekali, padahal link ini nanti
+  // dibuka pakai window.open() di halaman overlay user.
+  if (link && !isValidUrl(link)) { showStatus("Link harus diawali https:// atau http://", false); return; }
 
   const finalText = target === "semua" ? `@semua ${text}` : `@${username} ${text}`;
   const msgId     = Date.now();
@@ -672,7 +701,7 @@ function tambahLink() {
 
   if (!name) { showLinkStatus("Nama link tidak boleh kosong!", false); return; }
   if (!url)  { showLinkStatus("URL tidak boleh kosong!", false); return; }
-  if (!/^https?:\/\//i.test(url)) { showLinkStatus("URL harus diawali https:// atau http://", false); return; }
+  if (!isValidUrl(url)) { showLinkStatus("URL harus diawali https:// atau http://", false); return; }
 
   const list = getLinks();
   list.push({ id: Date.now(), name, url });
@@ -703,6 +732,9 @@ function simpanEditLink(id) {
   const name = document.getElementById("edit-name-" + id).value.trim();
   const url  = document.getElementById("edit-url-"  + id).value.trim();
   if (!name || !url) { showLinkStatus("Nama & URL wajib diisi!", false); return; }
+  // FIX: dulu edit link gak divalidasi format URL-nya sama sekali
+  // (beda dengan tambah link baru yang sudah dicek).
+  if (!isValidUrl(url)) { showLinkStatus("URL harus diawali https:// atau http://", false); return; }
 
   const list = getLinks().map(l => l.id === id ? { ...l, name, url } : l);
   saveLinks(list);
