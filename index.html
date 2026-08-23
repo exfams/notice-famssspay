@@ -561,16 +561,39 @@ function isiFormDariHistory(idx) {
   showStatus("✏️ Form sudah diisi dari riwayat.", null);
 }
 
+/* ──────────────── PATH HELPER (FIX ARSITEKTUR) ────────────────
+   FIX BUG UTAMA: sebelumnya SEMUA pesan (ke user manapun) ditulis
+   lewat PUT ke SATU node tunggal "messages/latest". Akibatnya,
+   begitu admin kirim pesan ke user lain, node itu ke-overwrite total
+   dan data pesan user sebelumnya HILANG dari database — walau belum
+   diklik "Mengerti". Kalau device user sebelumnya sempat reconnect
+   (app minimize/sleep/ganti jaringan), dia akan fetch ulang data
+   terbaru yang sudah bukan miliknya lagi -> popup seakan hilang.
+
+   Sekarang tiap target punya PATH TERPISAH di database:
+   - broadcast (@semua)   -> messages/broadcast
+   - personal (per user)  -> messages/users/<username>
+   Jadi kirim ke user B TIDAK PERNAH menyentuh data milik user A. */
+function getMsgPath(target, username) {
+  return target === "semua" ? "messages/broadcast" : `messages/users/${username}`;
+}
+
+// FIX: ingat path pesan TERAKHIR yang baru dikirim, supaya tombol
+// "Hapus Popup" tahu popup MANA yang mau dihapus (dulu selalu menghapus
+// node tunggal "messages/latest" siapapun targetnya).
+let lastSentPath = null;
+
 /* ──────────────── HAPUS POPUP DARI HISTORY ──────────────── */
 async function hapusPesanDariHistory(idx) {
   const list = getHistory();
   const item = list[idx];
   if (!item || !item.msgId) { showStatus("msgId tidak ditemukan.", false); return; }
+  const path = getMsgPath(item.target === "semua" ? "semua" : "personal", item.target);
   try {
-    const res  = await fetch(`${DB_URL}/messages/latest.json`);
+    const res  = await fetch(`${DB_URL}/${path}.json`);
     const data = await res.json();
     if (data && data.msgId === item.msgId) {
-      await fetch(`${DB_URL}/messages/latest.json`, {
+      await fetch(`${DB_URL}/${path}.json`, {
         method: "PUT", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...data, deleted: true })
       });
@@ -639,6 +662,10 @@ async function kirimPesan() {
 
   const finalText = target === "semua" ? `@semua ${text}` : `@${username} ${text}`;
   const msgId     = Date.now();
+  // FIX: path ditentukan per-target (lihat getMsgPath), bukan node tunggal
+  // "messages/latest" lagi — supaya pesan ke user lain tidak menimpa/
+  // menghapus pesan yang masih aktif untuk user sebelumnya.
+  const path      = getMsgPath(target, username);
   showStatus("Mengirim...", null);
 
   const payload = {
@@ -649,13 +676,14 @@ async function kirimPesan() {
   };
 
   try {
-    const res = await fetch(`${DB_URL}/messages/latest.json`, {
+    const res = await fetch(`${DB_URL}/${path}.json`, {
       method: "PUT", headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     });
     if (res.ok) {
       showStatus(`✅ Terkirim ke ${target === "semua" ? "semua user" : "@" + username}`, true);
       addHistory({ type:"kirim", target: target === "semua" ? "semua" : username, msg: text, link: link || null, msgId, status:"ok", time: nowStr() });
+      lastSentPath = path;
       document.getElementById("msgText").value = "";
       document.getElementById("msgLink").value = "";
     } else {
@@ -670,12 +698,17 @@ async function kirimPesan() {
 
 /* ──────────────── HAPUS SEMUA POPUP ──────────────── */
 async function hapusSemuaPopup() {
+  // FIX: dulu selalu menghapus node tunggal "messages/latest" (siapapun
+  // targetnya, bahkan bisa menghapus pesan user LAIN yang tidak sedang
+  // difokuskan admin). Sekarang menghapus path pesan TERAKHIR yang baru
+  // saja dikirim admin (lastSentPath), sesuai target yang dituju.
+  if (!lastSentPath) { showStatus("Belum ada pesan yang dikirim untuk dihapus.", false); return; }
   showStatus("Menghapus...", null);
   try {
-    const res  = await fetch(`${DB_URL}/messages/latest.json`);
+    const res  = await fetch(`${DB_URL}/${lastSentPath}.json`);
     const data = await res.json();
     if (!data) { showStatus("Tidak ada pesan aktif.", false); return; }
-    const res2 = await fetch(`${DB_URL}/messages/latest.json`, {
+    const res2 = await fetch(`${DB_URL}/${lastSentPath}.json`, {
       method: "PUT", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...data, deleted: true })
     });
