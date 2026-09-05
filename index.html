@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta name="theme-color" content="#2186f3">
+  <meta name="theme-color" content="#0b0b0c">
   <link rel="manifest" href="manifest.json">
   <meta name="mobile-web-app-capable" content="yes">
   <link rel="icon" href="https://fmgaming0.wordpress.com/wp-content/uploads/2025/11/photo_2026-04-27_15-35-21.jpg">
@@ -12,57 +12,74 @@
   <title>FM-NOTIF-USER</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    /* ============================================================
+       TEMA: dark + 1 warna aksen biru (mengikuti referensi foto).
+       Struktur/layout tidak berubah — cuma token warna di bawah ini.
+       ============================================================ */
+    :root {
+      --bg:        #0d0e12;
+      --surface:   #16181f;
+      --surface-2: #101217;
+      --border:    #242730;
+      --text:      #e8eaf0;
+      --text-70:   rgba(232,234,240,0.72);
+      --text-55:   rgba(232,234,240,0.55);
+      --text-35:   rgba(232,234,240,0.35);
+      --hl:        rgba(33,134,243,0.25);
+      --accent:       #2186f3;
+      --accent-hover: #1a74d6;
+      --accent-text:  #ffffff;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background: #14161c;
+      background: var(--bg);
       min-height: 100vh;
       padding: 16px;
-      color: #e4e6eb;
+      color: var(--text);
     }
     .wrap { max-width: 480px; margin: 0 auto; }
 
     .top-bar {
       display: flex; align-items: center; gap: 10px;
-      background: #1c1f26; border-radius: 14px;
+      background: var(--surface); border-radius: 14px;
       padding: 14px 18px; margin-bottom: 14px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
     }
     .top-bar h1 { font-size: 15px; font-weight: 700; flex: 1; }
-    .dot-live { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 2px rgba(34,197,94,0.25); animation: blink 2s infinite; flex-shrink: 0; }
+    .dot-live { width: 7px; height: 7px; border-radius: 50%; background: var(--text); box-shadow: 0 0 0 2px rgba(234,234,234,0.18); animation: blink 2s infinite; flex-shrink: 0; }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-    .clock { font-size: 11px; color: #8b8f98; white-space: nowrap; }
+    .clock { font-size: 11px; color: var(--text-55); white-space: nowrap; }
 
     /* TAB NAV */
     .tab-nav {
       display: flex; gap: 6px; margin-bottom: 14px;
     }
     .tab-btn {
-      flex: 1; padding: 10px 8px; border: none; border-radius: 10px;
+      flex: 1; padding: 10px 8px; border: 1px solid var(--border); border-radius: 10px;
       font-size: 12px; font-weight: 700; cursor: pointer;
       font-family: inherit; transition: background 0.15s, color 0.15s;
-      background: #1c1f26; color: #6b7280;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+      background: var(--surface); color: var(--text-55);
     }
-    .tab-btn.active { background: #3b82f6; color: #fff; }
+    .tab-btn.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
     .tab-btn:active { transform: scale(0.97); }
 
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
 
-    .card { background: #1c1f26; border-radius: 14px; padding: 18px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
-    .card-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #6b7280; margin-bottom: 14px; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 14px; }
+    .card-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-55); margin-bottom: 14px; }
 
     .field { margin-bottom: 12px; }
-    .field label { font-size: 12px; font-weight: 600; color: #9ca3af; display: block; margin-bottom: 5px; }
+    .field label { font-size: 12px; font-weight: 600; color: var(--text-70); display: block; margin-bottom: 5px; }
     select, input[type=text], textarea {
       width: 100%; padding: 10px 13px;
-      border: 1.5px solid #2a2e37; border-radius: 10px;
-      font-size: 13px; color: #e4e6eb; font-family: inherit;
-      background: #23262e; outline: none;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      font-size: 13px; color: var(--text); font-family: inherit;
+      background: var(--surface-2); outline: none;
       transition: border-color 0.15s, background 0.15s;
     }
-    select:focus, input:focus, textarea:focus { border-color: #3b82f6; background: #262a33; }
+    select:focus, input:focus, textarea:focus { border-color: var(--accent); background: #14161c; }
     textarea { resize: none; min-height: 200px; line-height: 1.6; overflow-y: hidden; }
 
     /* Bold toolbar */
@@ -70,56 +87,56 @@
       display: flex; align-items: center; gap: 6px;
       margin-bottom: 5px; flex-wrap: wrap;
     }
-    .tb-label { font-size: 11px; color: #6b7280; }
+    .tb-label { font-size: 11px; color: var(--text-55); }
     .tb-btn {
       font-size: 11px; padding: 3px 9px; border-radius: 6px;
-      border: 1.5px solid #2a2e37; background: #23262e;
+      border: 1.5px solid var(--border); background: var(--surface-2);
       cursor: pointer; font-family: inherit; font-weight: 700;
-      transition: background 0.15s, border-color 0.15s, color 0.15s; color: #9ca3af;
+      transition: background 0.15s, border-color 0.15s, color 0.15s; color: var(--text-70);
     }
-    .tb-btn:hover { background: #1e2a44; border-color: #3b82f6; color: #60a5fa; }
+    .tb-btn:hover { background: #14161c; border-color: var(--accent); color: var(--accent); }
     .tb-btn:active { transform: scale(0.96); }
-    .tb-hint { font-size: 10px; color: #5b5f68; margin-left: 2px; }
+    .tb-hint { font-size: 10px; color: var(--text-35); margin-left: 2px; }
 
     /* Preview area */
     .msg-preview {
       margin-top: 8px; padding: 10px 12px;
-      background: #182031; border-radius: 8px;
-      border: 1.5px dashed #2c3e5c;
-      font-size: 13px; color: #d1d5db; line-height: 1.6;
+      background: var(--surface-2); border-radius: 8px;
+      border: 1.5px dashed var(--border);
+      font-size: 13px; color: var(--text-70); line-height: 1.6;
       min-height: 36px; word-break: break-word;
       display: none;
     }
     .msg-preview.has-content { display: block; }
-    .msg-preview strong { font-weight: 700; }
+    .msg-preview strong { font-weight: 700; color: var(--text); }
 
     .btn-row { display: flex; gap: 10px; margin-top: 4px; }
     .btn {
-      flex: 1; padding: 12px 8px; border: none; border-radius: 10px;
+      flex: 1; padding: 12px 8px; border: 1px solid var(--border); border-radius: 10px;
       font-size: 13px; font-weight: 700; cursor: pointer;
       font-family: inherit; transition: background 0.15s;
       display: flex; align-items: center; justify-content: center; gap: 6px;
     }
     .btn:active { transform: scale(0.97); }
-    .btn-send { background: #3b82f6; color: #fff; }
-    .btn-send:hover { background: #2563eb; }
-    .btn-hapus-semua { background: #3a1f22; color: #f87171; }
-    .btn-hapus-semua:hover { background: #4a262a; }
-    .btn-green { background: #173523; color: #4ade80; }
-    .btn-green:hover { background: #1e4530; }
+    .btn-send { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+    .btn-send:hover { background: var(--accent-hover); }
+    .btn-hapus-semua { background: var(--surface-2); color: var(--text-70); }
+    .btn-hapus-semua:hover { background: #202126; color: var(--text); }
+    .btn-green { background: var(--surface-2); color: var(--text-70); }
+    .btn-green:hover { background: #202126; color: var(--text); }
 
-    .status-msg { margin-top: 12px; font-size: 12px; padding: 10px 13px; border-radius: 8px; display: none; font-weight: 500; }
-    .status-msg.ok { background: #173523; color: #4ade80; display: block; }
-    .status-msg.err { background: #3a1f22; color: #f87171; display: block; }
-    .status-msg.loading { background: #182031; color: #60a5fa; display: block; }
+    .status-msg { margin-top: 12px; font-size: 12px; padding: 10px 13px; border-radius: 8px; display: none; font-weight: 500; border: 1px solid var(--border); }
+    .status-msg.ok { background: var(--surface-2); color: var(--text); display: block; }
+    .status-msg.err { background: var(--surface-2); color: var(--text); display: block; font-weight: 700; }
+    .status-msg.loading { background: var(--surface-2); color: var(--text-70); display: block; }
 
     .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 14px; }
-    .stat-box { background: #182031; border-radius: 10px; padding: 12px 8px; text-align: center; }
-    .stat-n { font-size: 22px; font-weight: 700; }
-    .stat-n.blue { color: #3b82f6; }
-    .stat-n.green { color: #22c55e; }
-    .stat-n.red { color: #ef4444; }
-    .stat-l { font-size: 10px; color: #6b7280; font-weight: 600; letter-spacing: 0.5px; margin-top: 2px; }
+    .stat-box { background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 8px; text-align: center; }
+    .stat-n { font-size: 22px; font-weight: 700; color: var(--text); }
+    .stat-n.blue { color: var(--text); }
+    .stat-n.green { color: var(--text); }
+    .stat-n.red { color: var(--text-55); }
+    .stat-l { font-size: 10px; color: var(--text-35); font-weight: 600; letter-spacing: 0.5px; margin-top: 2px; }
 
     /* SEARCH BAR */
     .search-wrap {
@@ -127,103 +144,104 @@
     }
     .search-wrap input {
       padding-left: 36px;
-      background: #182031;
+      background: var(--surface-2);
     }
     .search-icon {
       position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
-      color: #6b7280; font-size: 14px; pointer-events: none;
+      color: var(--text-35); font-size: 14px; pointer-events: none;
     }
     .search-clear {
       position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-      background: none; border: none; color: #6b7280; cursor: pointer; font-size: 16px;
+      background: none; border: none; color: var(--text-35); cursor: pointer; font-size: 16px;
       display: none; line-height: 1;
     }
     .search-result-count {
-      font-size: 11px; color: #6b7280; margin-bottom: 8px; padding-left: 2px;
+      font-size: 11px; color: var(--text-35); margin-bottom: 8px; padding-left: 2px;
     }
 
     .history-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-    .clear-all { font-size: 12px; color: #6b7280; background: none; border: none; cursor: pointer; font-family: inherit; padding: 4px 8px; border-radius: 6px; }
-    .clear-all:hover { background: #23262e; color: #d1d5db; }
+    .clear-all { font-size: 12px; color: var(--text-35); background: none; border: none; cursor: pointer; font-family: inherit; padding: 4px 8px; border-radius: 6px; }
+    .clear-all:hover { background: var(--surface-2); color: var(--text-70); }
 
     .history-list { display: flex; flex-direction: column; gap: 8px; content-visibility: auto; }
 
-    .hi-item { border: 1.5px solid #23262e; border-radius: 10px; padding: 12px 14px; content-visibility: auto; contain-intrinsic-size: 120px; }
-    .hi-item.matched { border-color: #3b5f99; background: #182031; }
+    .hi-item { border: 1.5px solid var(--border); border-radius: 10px; padding: 12px 14px; content-visibility: auto; contain-intrinsic-size: 120px; }
+    .hi-item.matched { border-color: var(--text-55); background: var(--surface-2); }
 
     .hi-head { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap; }
-    .badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; letter-spacing: 0.3px; }
-    .b-kirim { background: #182031; color: #60a5fa; }
-    .b-hapus { background: #3a1f22; color: #f87171; }
-    .b-ok { background: #173523; color: #4ade80; }
-    .b-fail { background: #3a1f22; color: #f87171; }
-    .b-match { background: #3a2e12; color: #fbbf24; }
-    .hi-time { font-size: 10px; color: #5b5f68; margin-left: auto; }
+    .badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; letter-spacing: 0.3px; background: var(--surface-2); color: var(--text-70); border: 1px solid var(--border); }
+    .b-kirim { background: var(--surface-2); color: var(--text-70); }
+    .b-hapus { background: var(--surface-2); color: var(--text-35); }
+    .b-ok { background: var(--surface-2); color: var(--text); }
+    .b-fail { background: var(--surface-2); color: var(--text); font-weight: 700; }
+    .b-match { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+    .hi-time { font-size: 10px; color: var(--text-35); margin-left: auto; }
 
-    .hi-target { font-size: 11px; color: #6b7280; margin-bottom: 4px; }
-    .hi-target strong { color: #fbbf24; }
-    .hi-msg { font-size: 13px; color: #d1d5db; line-height: 1.5; word-break: break-word; }
-    .hi-msg mark { background: #7c5b0d; color: #fde68a; border-radius: 2px; padding: 0 2px; }
-    .hi-link { font-size: 11px; color: #60a5fa; margin-top: 4px; word-break: break-all; }
-    .hi-err { font-size: 11px; color: #f87171; margin-top: 4px; }
+    .hi-target { font-size: 11px; color: var(--text-35); margin-bottom: 4px; }
+    .hi-target strong { color: var(--text); }
+    .hi-msg { font-size: 13px; color: var(--text-70); line-height: 1.5; word-break: break-word; }
+    .hi-msg mark { background: var(--hl); color: var(--text); border-radius: 2px; padding: 0 2px; }
+    .hi-link { font-size: 11px; color: var(--accent); margin-top: 4px; word-break: break-all; text-decoration: underline; }
+    .hi-err { font-size: 11px; color: var(--text-55); margin-top: 4px; }
 
     .hi-actions { display: flex; justify-content: flex-end; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
     .btn-sm {
-      font-size: 11px; border: none; border-radius: 6px; padding: 4px 10px;
+      font-size: 11px; border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px;
       cursor: pointer; font-family: inherit; font-weight: 600; transition: background 0.15s;
+      background: var(--surface-2); color: var(--text-70);
     }
-    .btn-sm-red { background: #3a1f22; color: #f87171; }
-    .btn-sm-red:hover { background: #4a262a; }
-    .btn-sm-gray { background: #23262e; color: #8b8f98; }
-    .btn-sm-gray:hover { background: #2a2e37; }
-    .btn-sm-blue { background: #182031; color: #60a5fa; }
-    .btn-sm-blue:hover { background: #1e2a44; }
-    .btn-sm-green { background: #173523; color: #4ade80; }
-    .btn-sm-green:hover { background: #1e4530; }
+    .btn-sm-red { background: var(--surface-2); color: var(--text-70); }
+    .btn-sm-red:hover { background: #202126; color: var(--text); }
+    .btn-sm-gray { background: var(--surface-2); color: var(--text-35); }
+    .btn-sm-gray:hover { background: #202126; color: var(--text-70); }
+    .btn-sm-blue { background: var(--surface-2); color: var(--text-70); }
+    .btn-sm-blue:hover { background: #202126; color: var(--text); }
+    .btn-sm-green { background: var(--surface-2); color: var(--text-70); }
+    .btn-sm-green:hover { background: #202126; color: var(--text); }
 
-    .empty { text-align: center; padding: 32px; color: #6b7280; font-size: 13px; }
+    .empty { text-align: center; padding: 32px; color: var(--text-35); font-size: 13px; }
     .empty-icon { font-size: 24px; margin-bottom: 8px; }
 
     /* ===== SAVED LINKS ===== */
     .link-add-form { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
     .link-add-form input { flex: 1; min-width: 100px; }
     .link-add-form .btn-add-link {
-      padding: 10px 14px; border: none; border-radius: 10px;
-      background: #3b82f6; color: #fff; font-size: 13px; font-weight: 700;
+      padding: 10px 14px; border: 1px solid var(--accent); border-radius: 10px;
+      background: var(--accent); color: var(--accent-text); font-size: 13px; font-weight: 700;
       cursor: pointer; font-family: inherit; white-space: nowrap;
       transition: background 0.15s;
     }
-    .link-add-form .btn-add-link:hover { background: #2563eb; }
+    .link-add-form .btn-add-link:hover { background: var(--accent-hover); }
     .link-add-form .btn-add-link:active { transform: scale(0.97); }
 
     .link-list { display: flex; flex-direction: column; gap: 8px; }
     .link-item {
       display: flex; align-items: center; gap: 10px;
-      border: 1.5px solid #2a2e37; border-radius: 10px;
-      padding: 10px 12px; background: #1c1f26;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      padding: 10px 12px; background: var(--surface-2);
     }
     .link-item-icon {
       width: 30px; height: 30px; border-radius: 8px;
-      background: #182031; color: #60a5fa;
+      background: var(--surface); color: var(--accent);
       display: flex; align-items: center; justify-content: center;
-      font-size: 13px; flex-shrink: 0;
+      font-size: 13px; flex-shrink: 0; border: 1px solid var(--border);
     }
     .link-item-body { flex: 1; min-width: 0; }
-    .link-item-name { font-size: 13px; font-weight: 600; color: #e4e6eb; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .link-item-url { font-size: 11px; color: #60a5fa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .link-item-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .link-item-url { font-size: 11px; color: var(--text-35); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .link-item-actions { display: flex; gap: 5px; flex-shrink: 0; }
 
     .link-edit-row {
       display: none; flex-direction: column; gap: 6px;
       margin-top: 8px; padding-top: 8px;
-      border-top: 1px solid #2a2e37;
+      border-top: 1px solid var(--border);
     }
     .link-edit-row.open { display: flex; }
     .link-edit-row input { font-size: 12px; }
 
-    .link-status { font-size: 11px; padding: 7px 10px; border-radius: 7px; margin-top: 8px; display: none; font-weight: 500; }
-    .link-status.ok { background: #173523; color: #4ade80; display: block; }
-    .link-status.err { background: #3a1f22; color: #f87171; display: block; }
+    .link-status { font-size: 11px; padding: 7px 10px; border-radius: 7px; margin-top: 8px; display: none; font-weight: 500; border: 1px solid var(--border); }
+    .link-status.ok { background: var(--surface-2); color: var(--text); display: block; }
+    .link-status.err { background: var(--surface-2); color: var(--text); display: block; font-weight: 700; }
 
     /* paste-from-link button in kirim form */
     .quick-links-row {
@@ -231,19 +249,19 @@
     }
     .ql-chip {
       font-size: 11px; padding: 4px 10px; border-radius: 20px;
-      background: #182031; color: #60a5fa; border: none;
+      background: var(--surface-2); color: var(--text-70); border: 1px solid var(--border);
       cursor: pointer; font-family: inherit; font-weight: 600;
       transition: background 0.15s; white-space: nowrap;
     }
-    .ql-chip:hover { background: #1e2a44; }
+    .ql-chip:hover { background: #202126; color: var(--text); }
     .ql-chip:active { transform: scale(0.96); }
-    .ql-label { font-size: 11px; color: #6b7280; align-self: center; }
+    .ql-label { font-size: 11px; color: var(--text-35); align-self: center; }
 
     /* empty link list */
-    .link-empty { text-align: center; padding: 24px; color: #6b7280; font-size: 13px; }
+    .link-empty { text-align: center; padding: 24px; color: var(--text-35); font-size: 13px; }
 
     /* small hint under username field */
-    .field-hint { font-size: 10px; color: #5b5f68; margin-top: 4px; }
+    .field-hint { font-size: 10px; color: var(--text-35); margin-top: 4px; }
   </style>
 </head>
 <body>
@@ -279,6 +297,7 @@
         <label>Username (sebelum @gmail.com)</label>
         <input type="text" id="username" placeholder="contoh: nadya22" />
         <div class="field-hint">Paste email otomatis dipotong jadi nama depan saja.</div>
+        <div class="field-hint">⚠️ Titik (.) dan karakter . # $ [ ] otomatis dibuang karena tidak diizinkan Firebase.</div>
         <!-- FITUR BARU: selain popup overlay, target personal juga otomatis dapat
              notifikasi device asli (judul & isi sudah template tetap, diatur di
              Cloudflare Worker — bukan dari pesan yang diketik di form ini). -->
@@ -341,7 +360,7 @@
       <div id="searchResultCount" class="search-result-count" style="display:none;"></div>
 
       <div class="history-head">
-        <span style="font-size:12px;color:#6b7280;">Pesan terkirim</span>
+        <span style="font-size:12px;color:var(--text-35);">Pesan terkirim</span>
         <button class="clear-all" onclick="clearHistory()">Hapus semua</button>
       </div>
 
@@ -355,7 +374,7 @@
   <div class="tab-panel" id="tab-links">
     <div class="card">
       <div class="card-label">Saved Links</div>
-      <p style="font-size:12px;color:#6b7280;margin-bottom:14px;line-height:1.6;">
+      <p style="font-size:12px;color:var(--text-35);margin-bottom:14px;line-height:1.6;">
         Simpan link yang sering dipakai. Klik chip nama di form Kirim untuk langsung tempel.
       </p>
 
@@ -435,9 +454,21 @@ function stripEmailToFirstName(val) {
   const atIdx = val.indexOf("@");
   return atIdx > -1 ? val.slice(0, atIdx) : val;
 }
+
+// FIX: Firebase Realtime Database MELARANG karakter . # $ [ ] di dalam nama
+// key/path (contoh path kita: messages/users/<username>). Sebelumnya cuma
+// dipotong di tanda "@", jadi email seperti "linda.store@gmail.com" jadi
+// username "linda.store" — titiknya masih kebawa dan bikin path invalid,
+// akibatnya kirim/hapus popup ke user itu gagal diam-diam. Sekarang semua
+// karakter yang dilarang Firebase itu otomatis dibuang juga.
+const FIREBASE_INVALID_CHARS = /[.#$\[\]]/g;
+function cleanUsername(val) {
+  return stripEmailToFirstName(val).replace(FIREBASE_INVALID_CHARS, "");
+}
+
 const usernameInput = document.getElementById("username");
 usernameInput.addEventListener("input", function() {
-  const cleaned = stripEmailToFirstName(this.value).trim().toLowerCase();
+  const cleaned = cleanUsername(this.value).trim().toLowerCase();
   if (cleaned !== this.value) {
     const pos = this.selectionStart;
     this.value = cleaned;
@@ -449,7 +480,7 @@ usernameInput.addEventListener("input", function() {
 usernameInput.addEventListener("paste", function(e) {
   e.preventDefault();
   const text = (e.clipboardData || window.clipboardData).getData("text");
-  this.value = stripEmailToFirstName(text).trim().toLowerCase();
+  this.value = cleanUsername(text).trim().toLowerCase();
 });
 
 /* ──────────────── HISTORY HELPERS ──────────────── */
@@ -529,12 +560,12 @@ function renderHistory() {
     const { item, i, m } = list[n];
     const isHapus   = item.type === "hapus";
     // FIX: kalau popup untuk pesan riwayat ini SUDAH dihapus (item.popupDeleted),
-    // tampilan pesan diganti jadi "Popup dihapus" — di ENTRY yang sama, BUKAN
+    // tampilan pesan diganti jadi "Pesan dihapus" — di ENTRY yang sama, BUKAN
     // dengan membuat entry riwayat baru terpisah.
     const msgDisplay  = isHapus
-      ? "<em style='color:#8b8f98'>Pesan dihapus</em>"
+      ? "<em style='color:var(--text-35)'>Pesan dihapus</em>"
       : (item.popupDeleted
-          ? "<em style='color:#8b8f98'>Pesan dihapus</em>"
+          ? "<em style='color:var(--text-35)'>Pesan dihapus</em>"
           : renderBoldHistory(item.msg, searchQuery));
     const linkDisplay = item.link ? highlightText(item.link, searchQuery) : "";
     html[n] = `<div class="hi-item${m ? " matched" : ""}">
@@ -571,7 +602,7 @@ function isiFormDariHistory(idx) {
   } else {
     targetEl.value = "personal";
     document.getElementById("usernameWrap").style.display = "block";
-    document.getElementById("username").value = stripEmailToFirstName(item.target);
+    document.getElementById("username").value = cleanUsername(item.target);
   }
   document.getElementById("msgText").value  = item.msg  || "";
   document.getElementById("msgLink").value  = item.link || "";
@@ -606,7 +637,7 @@ let lastSentPath = null;
 /* ──────────────── HAPUS POPUP DARI HISTORY ────────────────
    Ini hanya menghapus SATU popup sesuai baris riwayat yang diklik.
    Setelah berhasil, entry riwayat yang sama diperbarui statusnya
-   jadi "Popup dihapus" (popupDeleted:true) — TIDAK membuat entry
+   jadi "Pesan dihapus" (popupDeleted:true) — TIDAK membuat entry
    riwayat baru terpisah. */
 async function hapusPesanDariHistory(idx) {
   const list = getHistory();
@@ -677,7 +708,7 @@ function showStatus(msg, ok) {
 /* ──────────────── KIRIM PESAN ──────────────── */
 async function kirimPesan() {
   const target   = document.getElementById("target").value;
-  const username = stripEmailToFirstName(document.getElementById("username").value.trim()).toLowerCase();
+  const username = cleanUsername(document.getElementById("username").value.trim()).toLowerCase();
   const text     = document.getElementById("msgText").value.trim();
   const link     = document.getElementById("msgLink").value.trim();
 
@@ -774,22 +805,18 @@ async function kirimDeviceNotif(username) {
 }
 
 /* ──────────────── HAPUS SEMUA POPUP ────────────────
-   FIX PERILAKU (sesuai permintaan): tombol ini sekarang MENGHAPUS SEMUA
-   popup yang sedang aktif — baik broadcast (@semua) MAUPUN semua popup
-   personal per-user (messages/users/*) — bukan cuma popup terakhir yang
-   baru dikirim (lastSentPath) seperti sebelumnya. */
+   Tombol ini MENGHAPUS SEMUA popup yang sedang aktif — baik broadcast
+   (@semua) MAUPUN semua popup personal per-user (messages/users/*). */
 async function hapusSemuaPopup() {
   showStatus("Menghapus semua popup...", null);
   try {
     let totalCount = 0;
     let successCount = 0;
 
-    // FIX: dulu tiap hapus-semua bikin entry riwayat baru bertipe "hapus"
-    // (badge HAPUS terpisah, tanpa info target/pesan mana yang kena) —
-    // ini bikin riwayat numpuk & gak jelas pesan mana yang dihapus.
-    // Sekarang: entry KIRIM yang sesuai (dicocokkan lewat msgId per target)
-    // langsung ditandai popupDeleted di tempat, jadi baris riwayat yang
-    // sama berubah teksnya ke "Pesan dihapus" — tetap kelihatan targetnya.
+    // Entry KIRIM yang sesuai (dicocokkan lewat msgId per target) langsung
+    // ditandai popupDeleted di tempat, jadi baris riwayat yang sama berubah
+    // teksnya ke "Pesan dihapus" — tetap kelihatan targetnya, tanpa bikin
+    // entry riwayat baru terpisah.
     const historyList = getHistory();
     let historyChanged = false;
     function markHistoryDeleted(targetKey, msgId) {
