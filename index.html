@@ -279,14 +279,10 @@
         <label>Username (sebelum @gmail.com)</label>
         <input type="text" id="username" placeholder="contoh: nadya22" />
         <div class="field-hint">Paste email otomatis dipotong jadi nama depan saja.</div>
-
-        <!-- FITUR BARU: judul untuk notifikasi device (push notification asli ke HP user).
-             Ditaruh nempel di dalam div yang sama dengan field Username supaya ikut
-             show/hide otomatis mengikuti logic yang sudah ada (updateUsernameWrapVisibility),
-             tanpa perlu ubah fungsi tersebut sama sekali. -->
-        <label style="margin-top:10px;">Judul Notifikasi Device (opsional)</label>
-        <input type="text" id="notifTitle" placeholder="contoh: Info Saldo" maxlength="60" />
-        <div class="field-hint">Selain muncul sebagai popup overlay, pesan personal juga otomatis dikirim sebagai notifikasi asli ke HP user (lewat bukaOlshop). Kosongkan judul untuk pakai judul default "Notifikasi".</div>
+        <!-- FITUR BARU: selain popup overlay, target personal juga otomatis dapat
+             notifikasi device asli (judul & isi sudah template tetap, diatur di
+             Cloudflare Worker — bukan dari pesan yang diketik di form ini). -->
+        <div class="field-hint">📱 Target personal otomatis dapat notifikasi device juga (judul & isi sudah template tetap).</div>
       </div>
 
       <div class="field">
@@ -708,9 +704,7 @@ async function kirimPesan() {
       // ke HP user — khusus untuk target personal saja (broadcast @semua tetap
       // overlay saja, tidak diubah).
       if (target === "personal") {
-        const notifTitle = document.getElementById("notifTitle").value.trim();
-        kirimDeviceNotif(username, notifTitle, text);
-        document.getElementById("notifTitle").value = "";
+        kirimDeviceNotif(username);
       }
     } else {
       showStatus("❌ Gagal. Cek Rules Firebase.", false);
@@ -738,21 +732,20 @@ function showDeviceNotifStatus(msg, ok) {
   else el.className = "status-msg " + (ok ? "ok" : "err");
 }
 
-async function kirimDeviceNotif(username, judul, pesan) {
+async function kirimDeviceNotif(username) {
   if (!WORKER_URL || WORKER_URL.indexOf("GANTI_DENGAN_URL_WORKER_KAMU") > -1) {
     showDeviceNotifStatus("⚠️ Notifikasi device belum aktif: WORKER_URL belum diisi di kode.", false);
     return;
   }
   showDeviceNotifStatus("Mengirim notifikasi device...", null);
   try {
+    // Judul & isi notifikasi SUDAH TEMPLATE TETAP, diatur di Worker
+    // (lihat FIXED_JUDUL / FIXED_PESAN di index.js) — bukan dari pesan
+    // yang diketik admin di form ini. Yang dikirim cuma username.
     const res = await fetch(WORKER_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username,
-        judul_notifikasi: judul || "Notifikasi",
-        pesan_notifikasi: pesan
-      })
+      body: JSON.stringify({ username })
     });
     const data = await res.json().catch(() => ({}));
     const okStatus = res.ok && (data.code === 200 || (data.status || "").toString().toLowerCase().indexOf("ok") > -1);
