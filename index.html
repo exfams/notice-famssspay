@@ -279,6 +279,14 @@
         <label>Username (sebelum @gmail.com)</label>
         <input type="text" id="username" placeholder="contoh: nadya22" />
         <div class="field-hint">Paste email otomatis dipotong jadi nama depan saja.</div>
+
+        <!-- FITUR BARU: judul untuk notifikasi device (push notification asli ke HP user).
+             Ditaruh nempel di dalam div yang sama dengan field Username supaya ikut
+             show/hide otomatis mengikuti logic yang sudah ada (updateUsernameWrapVisibility),
+             tanpa perlu ubah fungsi tersebut sama sekali. -->
+        <label style="margin-top:10px;">Judul Notifikasi Device (opsional)</label>
+        <input type="text" id="notifTitle" placeholder="contoh: Info Saldo" maxlength="60" />
+        <div class="field-hint">Selain muncul sebagai popup overlay, pesan personal juga otomatis dikirim sebagai notifikasi asli ke HP user (lewat bukaOlshop). Kosongkan judul untuk pakai judul default "Notifikasi".</div>
       </div>
 
       <div class="field">
@@ -311,6 +319,9 @@
       </div>
 
       <div id="statusMsg" class="status-msg"></div>
+
+      <!-- FITUR BARU: status khusus notifikasi device, terpisah dari status overlay di atas -->
+      <div id="deviceNotifStatus" class="status-msg"></div>
     </div>
   </div>
 
@@ -384,6 +395,12 @@
 const DB_URL = "https://famss-75ca3-default-rtdb.asia-southeast1.firebasedatabase.app";
 const HISTORY_KEY = "notif_history_v2";
 const LINKS_KEY   = "notif_saved_links_v1";
+
+// FITUR BARU: URL Cloudflare Worker (proxy aman) untuk kirim notifikasi device asli.
+// Setelah deploy Worker (lihat README di project cloudflare-worker), ganti nilai
+// di bawah ini dengan URL Worker kamu, contoh:
+// "https://notif-bukaolshop-proxy.namamu.workers.dev"
+const WORKER_URL = "https://misalnotif.famssspay.workers.dev/";
 
 /* ──────────────── CLOCK ──────────────── */
 setInterval(() => {
@@ -686,6 +703,15 @@ async function kirimPesan() {
       lastSentPath = path;
       document.getElementById("msgText").value = "";
       document.getElementById("msgLink").value = "";
+
+      // FITUR BARU: selain overlay (di atas), kirim juga notifikasi device asli
+      // ke HP user — khusus untuk target personal saja (broadcast @semua tetap
+      // overlay saja, tidak diubah).
+      if (target === "personal") {
+        const notifTitle = document.getElementById("notifTitle").value.trim();
+        kirimDeviceNotif(username, notifTitle, text);
+        document.getElementById("notifTitle").value = "";
+      }
     } else {
       showStatus("❌ Gagal. Cek Rules Firebase.", false);
       addHistory({ type:"kirim", target: target === "semua" ? "semua" : username, msg: text, msgId, status:"fail", time: nowStr(), error: `HTTP ${res.status}` });
@@ -693,6 +719,50 @@ async function kirimPesan() {
   } catch(e) {
     showStatus("❌ Error: " + e.message, false);
     addHistory({ type:"kirim", target: target === "semua" ? "semua" : username, msg: text, msgId, status:"fail", time: nowStr(), error: e.message });
+  }
+}
+
+/* ══════════════════════════════════════════
+   FITUR BARU: NOTIFIKASI DEVICE ASLI
+   (Cloudflare Worker -> API bukaOlshop -> notifikasi muncul di HP user)
+
+   Ini 100% terpisah dari sistem overlay Firebase di atas. Kalau bagian ini
+   gagal/error, TIDAK memengaruhi status overlay yang sudah terkirim sukses
+   di atas — hanya statusnya ditampilkan di kotak "deviceNotifStatus" sendiri.
+══════════════════════════════════════════ */
+function showDeviceNotifStatus(msg, ok) {
+  const el = document.getElementById("deviceNotifStatus");
+  if (!el) return;
+  el.textContent = msg;
+  if (ok === null) el.className = "status-msg loading";
+  else el.className = "status-msg " + (ok ? "ok" : "err");
+}
+
+async function kirimDeviceNotif(username, judul, pesan) {
+  if (!WORKER_URL || WORKER_URL.indexOf("GANTI_DENGAN_URL_WORKER_KAMU") > -1) {
+    showDeviceNotifStatus("⚠️ Notifikasi device belum aktif: WORKER_URL belum diisi di kode.", false);
+    return;
+  }
+  showDeviceNotifStatus("Mengirim notifikasi device...", null);
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username,
+        judul_notifikasi: judul || "Notifikasi",
+        pesan_notifikasi: pesan
+      })
+    });
+    const data = await res.json().catch(() => ({}));
+    const okStatus = res.ok && (data.code === 200 || (data.status || "").toString().toLowerCase().indexOf("ok") > -1);
+    if (okStatus) {
+      showDeviceNotifStatus("📱 Notifikasi device terkirim ke HP @" + username + ".", true);
+    } else {
+      showDeviceNotifStatus("❌ Gagal kirim notifikasi device: " + (data.status || res.status), false);
+    }
+  } catch (e) {
+    showDeviceNotifStatus("❌ Error notifikasi device: " + e.message, false);
   }
 }
 
