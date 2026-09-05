@@ -15,23 +15,23 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background: #f0f2f5;
+      background: #14161c;
       min-height: 100vh;
       padding: 16px;
-      color: #1a1a2e;
+      color: #e4e6eb;
     }
     .wrap { max-width: 480px; margin: 0 auto; }
 
     .top-bar {
       display: flex; align-items: center; gap: 10px;
-      background: #fff; border-radius: 14px;
+      background: #1c1f26; border-radius: 14px;
       padding: 14px 18px; margin-bottom: 14px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
     }
     .top-bar h1 { font-size: 15px; font-weight: 700; flex: 1; }
     .dot-live { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 2px rgba(34,197,94,0.25); animation: blink 2s infinite; flex-shrink: 0; }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-    .clock { font-size: 11px; color: #888; white-space: nowrap; }
+    .clock { font-size: 11px; color: #8b8f98; white-space: nowrap; }
 
     /* TAB NAV */
     .tab-nav {
@@ -41,8 +41,8 @@
       flex: 1; padding: 10px 8px; border: none; border-radius: 10px;
       font-size: 12px; font-weight: 700; cursor: pointer;
       font-family: inherit; transition: background 0.15s, color 0.15s;
-      background: #fff; color: #aaa;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      background: #1c1f26; color: #6b7280;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
     }
     .tab-btn.active { background: #3b82f6; color: #fff; }
     .tab-btn:active { transform: scale(0.97); }
@@ -50,19 +50,19 @@
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
 
-    .card { background: #fff; border-radius: 14px; padding: 18px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
-    .card-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #aaa; margin-bottom: 14px; }
+    .card { background: #1c1f26; border-radius: 14px; padding: 18px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+    .card-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #6b7280; margin-bottom: 14px; }
 
     .field { margin-bottom: 12px; }
-    .field label { font-size: 12px; font-weight: 600; color: #555; display: block; margin-bottom: 5px; }
+    .field label { font-size: 12px; font-weight: 600; color: #9ca3af; display: block; margin-bottom: 5px; }
     select, input[type=text], textarea {
       width: 100%; padding: 10px 13px;
-      border: 1.5px solid #e8e8e8; border-radius: 10px;
-      font-size: 13px; color: #1a1a2e; font-family: inherit;
-      background: #fafafa; outline: none;
+      border: 1.5px solid #2a2e37; border-radius: 10px;
+      font-size: 13px; color: #e4e6eb; font-family: inherit;
+      background: #23262e; outline: none;
       transition: border-color 0.15s, background 0.15s;
     }
-    select:focus, input:focus, textarea:focus { border-color: #3b82f6; background: #fff; }
+    select:focus, input:focus, textarea:focus { border-color: #3b82f6; background: #262a33; }
     textarea { resize: none; min-height: 200px; line-height: 1.6; overflow-y: hidden; }
 
     /* Bold toolbar */
@@ -70,23 +70,23 @@
       display: flex; align-items: center; gap: 6px;
       margin-bottom: 5px; flex-wrap: wrap;
     }
-    .tb-label { font-size: 11px; color: #aaa; }
+    .tb-label { font-size: 11px; color: #6b7280; }
     .tb-btn {
       font-size: 11px; padding: 3px 9px; border-radius: 6px;
-      border: 1.5px solid #e8e8e8; background: #fafafa;
+      border: 1.5px solid #2a2e37; background: #23262e;
       cursor: pointer; font-family: inherit; font-weight: 700;
-      transition: background 0.15s, border-color 0.15s, color 0.15s; color: #555;
+      transition: background 0.15s, border-color 0.15s, color 0.15s; color: #9ca3af;
     }
-    .tb-btn:hover { background: #eff6ff; border-color: #3b82f6; color: #3b82f6; }
+    .tb-btn:hover { background: #1e2a44; border-color: #3b82f6; color: #60a5fa; }
     .tb-btn:active { transform: scale(0.96); }
-    .tb-hint { font-size: 10px; color: #bbb; margin-left: 2px; }
+    .tb-hint { font-size: 10px; color: #5b5f68; margin-left: 2px; }
 
     /* Preview area */
     .msg-preview {
       margin-top: 8px; padding: 10px 12px;
-      background: #f8faff; border-radius: 8px;
-      border: 1.5px dashed #dbeafe;
-      font-size: 13px; color: #333; line-height: 1.6;
+      background: #182031; border-radius: 8px;
+      border: 1.5px dashed #2c3e5c;
+      font-size: 13px; color: #d1d5db; line-height: 1.6;
       min-height: 36px; word-break: break-word;
       display: none;
     }
@@ -103,23 +103,23 @@
     .btn:active { transform: scale(0.97); }
     .btn-send { background: #3b82f6; color: #fff; }
     .btn-send:hover { background: #2563eb; }
-    .btn-hapus-semua { background: #fee2e2; color: #dc2626; }
-    .btn-hapus-semua:hover { background: #fecaca; }
-    .btn-green { background: #dcfce7; color: #16a34a; }
-    .btn-green:hover { background: #bbf7d0; }
+    .btn-hapus-semua { background: #3a1f22; color: #f87171; }
+    .btn-hapus-semua:hover { background: #4a262a; }
+    .btn-green { background: #173523; color: #4ade80; }
+    .btn-green:hover { background: #1e4530; }
 
     .status-msg { margin-top: 12px; font-size: 12px; padding: 10px 13px; border-radius: 8px; display: none; font-weight: 500; }
-    .status-msg.ok { background: #dcfce7; color: #16a34a; display: block; }
-    .status-msg.err { background: #fee2e2; color: #dc2626; display: block; }
-    .status-msg.loading { background: #eff6ff; color: #3b82f6; display: block; }
+    .status-msg.ok { background: #173523; color: #4ade80; display: block; }
+    .status-msg.err { background: #3a1f22; color: #f87171; display: block; }
+    .status-msg.loading { background: #182031; color: #60a5fa; display: block; }
 
     .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 14px; }
-    .stat-box { background: #f8faff; border-radius: 10px; padding: 12px 8px; text-align: center; }
+    .stat-box { background: #182031; border-radius: 10px; padding: 12px 8px; text-align: center; }
     .stat-n { font-size: 22px; font-weight: 700; }
     .stat-n.blue { color: #3b82f6; }
     .stat-n.green { color: #22c55e; }
     .stat-n.red { color: #ef4444; }
-    .stat-l { font-size: 10px; color: #aaa; font-weight: 600; letter-spacing: 0.5px; margin-top: 2px; }
+    .stat-l { font-size: 10px; color: #6b7280; font-weight: 600; letter-spacing: 0.5px; margin-top: 2px; }
 
     /* SEARCH BAR */
     .search-wrap {
@@ -127,61 +127,61 @@
     }
     .search-wrap input {
       padding-left: 36px;
-      background: #f8faff;
+      background: #182031;
     }
     .search-icon {
       position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
-      color: #aaa; font-size: 14px; pointer-events: none;
+      color: #6b7280; font-size: 14px; pointer-events: none;
     }
     .search-clear {
       position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-      background: none; border: none; color: #bbb; cursor: pointer; font-size: 16px;
+      background: none; border: none; color: #6b7280; cursor: pointer; font-size: 16px;
       display: none; line-height: 1;
     }
     .search-result-count {
-      font-size: 11px; color: #888; margin-bottom: 8px; padding-left: 2px;
+      font-size: 11px; color: #6b7280; margin-bottom: 8px; padding-left: 2px;
     }
 
     .history-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-    .clear-all { font-size: 12px; color: #aaa; background: none; border: none; cursor: pointer; font-family: inherit; padding: 4px 8px; border-radius: 6px; }
-    .clear-all:hover { background: #f0f2f5; color: #555; }
+    .clear-all { font-size: 12px; color: #6b7280; background: none; border: none; cursor: pointer; font-family: inherit; padding: 4px 8px; border-radius: 6px; }
+    .clear-all:hover { background: #23262e; color: #d1d5db; }
 
     .history-list { display: flex; flex-direction: column; gap: 8px; content-visibility: auto; }
 
-    .hi-item { border: 1.5px solid #f0f0f0; border-radius: 10px; padding: 12px 14px; content-visibility: auto; contain-intrinsic-size: 120px; }
-    .hi-item.matched { border-color: #bfdbfe; background: #f0f7ff; }
+    .hi-item { border: 1.5px solid #23262e; border-radius: 10px; padding: 12px 14px; content-visibility: auto; contain-intrinsic-size: 120px; }
+    .hi-item.matched { border-color: #3b5f99; background: #182031; }
 
     .hi-head { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap; }
     .badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; letter-spacing: 0.3px; }
-    .b-kirim { background: #eff6ff; color: #3b82f6; }
-    .b-hapus { background: #fee2e2; color: #dc2626; }
-    .b-ok { background: #dcfce7; color: #16a34a; }
-    .b-fail { background: #fee2e2; color: #dc2626; }
-    .b-match { background: #fef3c7; color: #d97706; }
-    .hi-time { font-size: 10px; color: #bbb; margin-left: auto; }
+    .b-kirim { background: #182031; color: #60a5fa; }
+    .b-hapus { background: #3a1f22; color: #f87171; }
+    .b-ok { background: #173523; color: #4ade80; }
+    .b-fail { background: #3a1f22; color: #f87171; }
+    .b-match { background: #3a2e12; color: #fbbf24; }
+    .hi-time { font-size: 10px; color: #5b5f68; margin-left: auto; }
 
-    .hi-target { font-size: 11px; color: #888; margin-bottom: 4px; }
-    .hi-target strong { color: #f59e0b; }
-    .hi-msg { font-size: 13px; color: #333; line-height: 1.5; word-break: break-word; }
-    .hi-msg mark { background: #fde68a; color: #92400e; border-radius: 2px; padding: 0 2px; }
-    .hi-link { font-size: 11px; color: #3b82f6; margin-top: 4px; word-break: break-all; }
-    .hi-err { font-size: 11px; color: #dc2626; margin-top: 4px; }
+    .hi-target { font-size: 11px; color: #6b7280; margin-bottom: 4px; }
+    .hi-target strong { color: #fbbf24; }
+    .hi-msg { font-size: 13px; color: #d1d5db; line-height: 1.5; word-break: break-word; }
+    .hi-msg mark { background: #7c5b0d; color: #fde68a; border-radius: 2px; padding: 0 2px; }
+    .hi-link { font-size: 11px; color: #60a5fa; margin-top: 4px; word-break: break-all; }
+    .hi-err { font-size: 11px; color: #f87171; margin-top: 4px; }
 
     .hi-actions { display: flex; justify-content: flex-end; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
     .btn-sm {
       font-size: 11px; border: none; border-radius: 6px; padding: 4px 10px;
       cursor: pointer; font-family: inherit; font-weight: 600; transition: background 0.15s;
     }
-    .btn-sm-red { background: #fee2e2; color: #dc2626; }
-    .btn-sm-red:hover { background: #fecaca; }
-    .btn-sm-gray { background: #f0f0f0; color: #888; }
-    .btn-sm-gray:hover { background: #e5e5e5; }
-    .btn-sm-blue { background: #eff6ff; color: #3b82f6; }
-    .btn-sm-blue:hover { background: #dbeafe; }
-    .btn-sm-green { background: #dcfce7; color: #16a34a; }
-    .btn-sm-green:hover { background: #bbf7d0; }
+    .btn-sm-red { background: #3a1f22; color: #f87171; }
+    .btn-sm-red:hover { background: #4a262a; }
+    .btn-sm-gray { background: #23262e; color: #8b8f98; }
+    .btn-sm-gray:hover { background: #2a2e37; }
+    .btn-sm-blue { background: #182031; color: #60a5fa; }
+    .btn-sm-blue:hover { background: #1e2a44; }
+    .btn-sm-green { background: #173523; color: #4ade80; }
+    .btn-sm-green:hover { background: #1e4530; }
 
-    .empty { text-align: center; padding: 32px; color: #bbb; font-size: 13px; }
+    .empty { text-align: center; padding: 32px; color: #6b7280; font-size: 13px; }
     .empty-icon { font-size: 24px; margin-bottom: 8px; }
 
     /* ===== SAVED LINKS ===== */
@@ -199,31 +199,31 @@
     .link-list { display: flex; flex-direction: column; gap: 8px; }
     .link-item {
       display: flex; align-items: center; gap: 10px;
-      border: 1.5px solid #e8e8e8; border-radius: 10px;
-      padding: 10px 12px; background: #fafafa;
+      border: 1.5px solid #2a2e37; border-radius: 10px;
+      padding: 10px 12px; background: #1c1f26;
     }
     .link-item-icon {
       width: 30px; height: 30px; border-radius: 8px;
-      background: #eff6ff; color: #3b82f6;
+      background: #182031; color: #60a5fa;
       display: flex; align-items: center; justify-content: center;
       font-size: 13px; flex-shrink: 0;
     }
     .link-item-body { flex: 1; min-width: 0; }
-    .link-item-name { font-size: 13px; font-weight: 600; color: #1a1a2e; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .link-item-url { font-size: 11px; color: #3b82f6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .link-item-name { font-size: 13px; font-weight: 600; color: #e4e6eb; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .link-item-url { font-size: 11px; color: #60a5fa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .link-item-actions { display: flex; gap: 5px; flex-shrink: 0; }
 
     .link-edit-row {
       display: none; flex-direction: column; gap: 6px;
       margin-top: 8px; padding-top: 8px;
-      border-top: 1px solid #e8e8e8;
+      border-top: 1px solid #2a2e37;
     }
     .link-edit-row.open { display: flex; }
     .link-edit-row input { font-size: 12px; }
 
     .link-status { font-size: 11px; padding: 7px 10px; border-radius: 7px; margin-top: 8px; display: none; font-weight: 500; }
-    .link-status.ok { background: #dcfce7; color: #16a34a; display: block; }
-    .link-status.err { background: #fee2e2; color: #dc2626; display: block; }
+    .link-status.ok { background: #173523; color: #4ade80; display: block; }
+    .link-status.err { background: #3a1f22; color: #f87171; display: block; }
 
     /* paste-from-link button in kirim form */
     .quick-links-row {
@@ -231,19 +231,19 @@
     }
     .ql-chip {
       font-size: 11px; padding: 4px 10px; border-radius: 20px;
-      background: #eff6ff; color: #3b82f6; border: none;
+      background: #182031; color: #60a5fa; border: none;
       cursor: pointer; font-family: inherit; font-weight: 600;
       transition: background 0.15s; white-space: nowrap;
     }
-    .ql-chip:hover { background: #dbeafe; }
+    .ql-chip:hover { background: #1e2a44; }
     .ql-chip:active { transform: scale(0.96); }
-    .ql-label { font-size: 11px; color: #aaa; align-self: center; }
+    .ql-label { font-size: 11px; color: #6b7280; align-self: center; }
 
     /* empty link list */
-    .link-empty { text-align: center; padding: 24px; color: #bbb; font-size: 13px; }
+    .link-empty { text-align: center; padding: 24px; color: #6b7280; font-size: 13px; }
 
     /* small hint under username field */
-    .field-hint { font-size: 10px; color: #bbb; margin-top: 4px; }
+    .field-hint { font-size: 10px; color: #5b5f68; margin-top: 4px; }
   </style>
 </head>
 <body>
@@ -310,7 +310,7 @@
         </button>
         <button class="btn btn-hapus-semua" onclick="hapusSemuaPopup()">
           <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
-          Hapus Popup
+          Hapus Semua Popup
         </button>
       </div>
 
@@ -341,7 +341,7 @@
       <div id="searchResultCount" class="search-result-count" style="display:none;"></div>
 
       <div class="history-head">
-        <span style="font-size:12px;color:#888;">Pesan terkirim</span>
+        <span style="font-size:12px;color:#6b7280;">Pesan terkirim</span>
         <button class="clear-all" onclick="clearHistory()">Hapus semua</button>
       </div>
 
@@ -355,7 +355,7 @@
   <div class="tab-panel" id="tab-links">
     <div class="card">
       <div class="card-label">Saved Links</div>
-      <p style="font-size:12px;color:#888;margin-bottom:14px;line-height:1.6;">
+      <p style="font-size:12px;color:#6b7280;margin-bottom:14px;line-height:1.6;">
         Simpan link yang sering dipakai. Klik chip nama di form Kirim untuk langsung tempel.
       </p>
 
@@ -528,7 +528,14 @@ function renderHistory() {
   for (let n = 0; n < list.length; n++) {
     const { item, i, m } = list[n];
     const isHapus   = item.type === "hapus";
-    const msgDisplay  = isHapus ? "<em style='color:#aaa'>Popup dihapus</em>" : renderBoldHistory(item.msg, searchQuery);
+    // FIX: kalau popup untuk pesan riwayat ini SUDAH dihapus (item.popupDeleted),
+    // tampilan pesan diganti jadi "Popup dihapus" — di ENTRY yang sama, BUKAN
+    // dengan membuat entry riwayat baru terpisah.
+    const msgDisplay  = isHapus
+      ? "<em style='color:#8b8f98'>Pesan dihapus</em>"
+      : (item.popupDeleted
+          ? "<em style='color:#8b8f98'>Pesan dihapus</em>"
+          : renderBoldHistory(item.msg, searchQuery));
     const linkDisplay = item.link ? highlightText(item.link, searchQuery) : "";
     html[n] = `<div class="hi-item${m ? " matched" : ""}">
       <div class="hi-head">
@@ -543,7 +550,7 @@ function renderHistory() {
       ${item.error ? `<div class="hi-err">Error: ${escHtml(item.error)}</div>` : ""}
       <div class="hi-actions">
         ${!isHapus ? `<button class="btn-sm btn-sm-blue" onclick="isiFormDariHistory(${i})">↩ Kirim Ulang</button>` : ""}
-        ${!isHapus && item.msgId ? `<button class="btn-sm btn-sm-red" onclick="hapusPesanDariHistory(${i})">Hapus popup</button>` : ""}
+        ${!isHapus && item.msgId && !item.popupDeleted ? `<button class="btn-sm btn-sm-red" onclick="hapusPesanDariHistory(${i})">Hapus popup</button>` : ""}
         <button class="btn-sm btn-sm-gray" onclick="hapusHistoryItem(${i})">Hapus</button>
       </div>
     </div>`;
@@ -596,7 +603,11 @@ function getMsgPath(target, username) {
 // node tunggal "messages/latest" siapapun targetnya).
 let lastSentPath = null;
 
-/* ──────────────── HAPUS POPUP DARI HISTORY ──────────────── */
+/* ──────────────── HAPUS POPUP DARI HISTORY ────────────────
+   Ini hanya menghapus SATU popup sesuai baris riwayat yang diklik.
+   Setelah berhasil, entry riwayat yang sama diperbarui statusnya
+   jadi "Popup dihapus" (popupDeleted:true) — TIDAK membuat entry
+   riwayat baru terpisah. */
 async function hapusPesanDariHistory(idx) {
   const list = getHistory();
   const item = list[idx];
@@ -610,6 +621,9 @@ async function hapusPesanDariHistory(idx) {
         method: "PUT", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...data, deleted: true })
       });
+      list[idx].popupDeleted = true;
+      saveHistory(list);
+      renderHistory();
       showStatus("✅ Popup pesan tersebut berhasil dihapus.", true);
     } else {
       showStatus("ℹ️ Pesan ini tidak sedang aktif.", null);
@@ -759,28 +773,78 @@ async function kirimDeviceNotif(username) {
   }
 }
 
-/* ──────────────── HAPUS SEMUA POPUP ──────────────── */
+/* ──────────────── HAPUS SEMUA POPUP ────────────────
+   FIX PERILAKU (sesuai permintaan): tombol ini sekarang MENGHAPUS SEMUA
+   popup yang sedang aktif — baik broadcast (@semua) MAUPUN semua popup
+   personal per-user (messages/users/*) — bukan cuma popup terakhir yang
+   baru dikirim (lastSentPath) seperti sebelumnya. */
 async function hapusSemuaPopup() {
-  // FIX: dulu selalu menghapus node tunggal "messages/latest" (siapapun
-  // targetnya, bahkan bisa menghapus pesan user LAIN yang tidak sedang
-  // difokuskan admin). Sekarang menghapus path pesan TERAKHIR yang baru
-  // saja dikirim admin (lastSentPath), sesuai target yang dituju.
-  if (!lastSentPath) { showStatus("Belum ada pesan yang dikirim untuk dihapus.", false); return; }
-  showStatus("Menghapus...", null);
+  showStatus("Menghapus semua popup...", null);
   try {
-    const res  = await fetch(`${DB_URL}/${lastSentPath}.json`);
-    const data = await res.json();
-    if (!data) { showStatus("Tidak ada pesan aktif.", false); return; }
-    const res2 = await fetch(`${DB_URL}/${lastSentPath}.json`, {
-      method: "PUT", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...data, deleted: true })
-    });
-    if (res2.ok) {
-      showStatus("✅ Popup aktif berhasil dihapus.", true);
-      addHistory({ type:"hapus", status:"ok", time: nowStr() });
+    let totalCount = 0;
+    let successCount = 0;
+
+    // FIX: dulu tiap hapus-semua bikin entry riwayat baru bertipe "hapus"
+    // (badge HAPUS terpisah, tanpa info target/pesan mana yang kena) —
+    // ini bikin riwayat numpuk & gak jelas pesan mana yang dihapus.
+    // Sekarang: entry KIRIM yang sesuai (dicocokkan lewat msgId per target)
+    // langsung ditandai popupDeleted di tempat, jadi baris riwayat yang
+    // sama berubah teksnya ke "Pesan dihapus" — tetap kelihatan targetnya.
+    const historyList = getHistory();
+    let historyChanged = false;
+    function markHistoryDeleted(targetKey, msgId) {
+      if (msgId == null) return;
+      for (let i = 0; i < historyList.length; i++) {
+        const h = historyList[i];
+        if (h.type === "kirim" && h.target === targetKey && h.msgId === msgId && !h.popupDeleted) {
+          h.popupDeleted = true;
+          historyChanged = true;
+        }
+      }
+    }
+
+    // 1) Hapus popup broadcast (@semua) kalau ada dan masih aktif
+    const resB  = await fetch(`${DB_URL}/messages/broadcast.json`);
+    const dataB = await resB.json();
+    if (dataB && !dataB.deleted) {
+      totalCount++;
+      const r = await fetch(`${DB_URL}/messages/broadcast.json`, {
+        method: "PUT", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...dataB, deleted: true })
+      });
+      if (r.ok) { successCount++; markHistoryDeleted("semua", dataB.msgId); }
+    }
+
+    // 2) Hapus semua popup personal (per user) yang masih aktif
+    const resU  = await fetch(`${DB_URL}/messages/users.json`);
+    const dataU = await resU.json();
+    if (dataU) {
+      const usernames = Object.keys(dataU);
+      for (const uname of usernames) {
+        const udata = dataU[uname];
+        if (udata && !udata.deleted) {
+          totalCount++;
+          const r = await fetch(`${DB_URL}/messages/users/${uname}.json`, {
+            method: "PUT", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ...udata, deleted: true })
+          });
+          if (r.ok) { successCount++; markHistoryDeleted(uname, udata.msgId); }
+        }
+      }
+    }
+
+    if (historyChanged) saveHistory(historyList);
+    renderHistory();
+
+    if (totalCount === 0) {
+      showStatus("Tidak ada popup aktif untuk dihapus.", false);
+      return;
+    }
+
+    if (successCount === totalCount) {
+      showStatus(`✅ Semua popup aktif berhasil dihapus (${successCount}/${totalCount}).`, true);
     } else {
-      showStatus("❌ Gagal hapus.", false);
-      addHistory({ type:"hapus", status:"fail", time: nowStr(), error: `HTTP ${res2.status}` });
+      showStatus(`⚠️ Sebagian popup berhasil dihapus (${successCount}/${totalCount}).`, false);
     }
   } catch(e) { showStatus("❌ Error: " + e.message, false); }
 }
